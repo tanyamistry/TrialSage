@@ -1,0 +1,24 @@
+# --- Core: used from Phase 1 onward -------------------------------------
+httpx==0.27.2               # ClinicalTrials.gov API client
+tenacity==9.0.0             # retry/backoff on flaky network calls
+psycopg[binary]==3.2.3      # PostgreSQL driver (v3)
+pgvector==0.3.6             # registers the `vector` type with psycopg
+python-dotenv==1.0.1        # loads .env
+PyYAML==6.0.2               # loads config.yaml
+tqdm==4.67.1                # progress bars for long ingest/embed runs
+rich==13.9.4                # readable CLI output
+
+# --- Phase 2: retrievers -------------------------------------------------
+sentence-transformers==3.3.1  # bge-small-en-v1.5 embeddings + bge reranker
+torch==2.5.1                  # backend for the above (uses Apple MPS)
+sqlglot==25.34.1              # SQL parsing for the text-to-SQL safety guard
+
+# --- Phase 5: UI ---------------------------------------------------------
+streamlit==1.41.1
+
+# --- Dev -----------------------------------------------------------------
+pytest==8.3.4
+
+# NOTE: RAGAS (Phase 4) lives in requirements-eval.txt. It pulls in the whole
+# LangChain stack, which is easy to get into dependency conflicts with, so we
+# install it separately and only when we actually need it.

@@ -1,0 +1,31 @@
+# Postgres + pgvector in one container.
+#
+# We use the official pgvector image so the extension is already compiled in --
+# `CREATE EXTENSION vector` just works, no build step.
+#
+# Port 5433 (not the default 5432) so this can never collide with another
+# Postgres you might install later.
+
+services:
+  db:
+    image: pgvector/pgvector:pg17
+    container_name: trialsage-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-trialsage}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-trialsage}
+      POSTGRES_DB: ${POSTGRES_DB:-trialsage}
+    ports:
+      - "${POSTGRES_PORT:-5433}:5432"
+    volumes:
+      - trialsage_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      # `make db-up` waits on this so we never try to run SQL against a
+      # container that is still starting up.
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-trialsage} -d ${POSTGRES_DB:-trialsage}"]
+      interval: 3s
+      timeout: 5s
+      retries: 20
+
+volumes:
+  trialsage_pgdata:

@@ -1,0 +1,57 @@
+# TrialSage configuration.
+# Secrets live in .env; everything tunable-but-not-secret lives here.
+
+ingest:
+  api_base: "https://clinicaltrials.gov/api/v2/studies"
+  page_size: 1000            # API maximum (verified; it silently caps above this)
+  request_timeout_s: 60
+
+  # Corpus scoping rule, agreed in planning:
+  #   interventional AND start date >= 2018 AND a real phase (1-4).
+  # The phase filter drops the ~40% of records tagged "NA", which are mostly
+  # device/behavioural studies where "phase" is meaningless. Across all three
+  # therapeutic areas this lands at ~41,000 trials.
+  start_date_from: "2018-01-01"
+  study_type: "INTERVENTIONAL"
+  phases: ["PHASE1", "PHASE2", "PHASE3", "PHASE4"]
+
+  # `query.cond` uses ClinicalTrials.gov's Essie search syntax.
+  # Phase 1 ingests diabetes only -- it is the smallest area (~2,700 trials),
+  # so the whole pipeline runs in a couple of minutes instead of an hour.
+  therapeutic_areas:
+    diabetes:
+      condition_query: "diabetes"
+    oncology:
+      condition_query: "cancer OR neoplasm OR tumor OR carcinoma"
+    cardiovascular:
+      condition_query: "cardiovascular OR heart failure OR hypertension OR coronary"
+
+eligibility:
+  # Kept deliberately low: many genuine criteria are very short ("Pregnancy",
+  # "Prisoners", "Active cancer"). Junk is filtered by shape instead -- see
+  # _is_junk in ingest/eligibility.py. Too long means the split failed and we
+  # captured a whole block, so it gets re-split by sentence.
+  min_chunk_chars: 4
+  max_chunk_chars: 2000
+
+embedding:
+  model: "BAAI/bge-small-en-v1.5"
+  dim: 384
+  batch_size: 128
+  # bge models are trained to embed *queries* with an instruction prefix but
+  # documents without one. Getting this backwards measurably hurts recall.
+  query_prefix: "Represent this sentence for searching relevant passages: "
+
+reranker:
+  model: "BAAI/bge-reranker-base"
+
+retrieval:
+  top_k: 10             # returned to the synthesizer
+  candidate_k: 50       # fetched from pgvector before reranking
+  sql_row_limit: 500    # hard cap injected into every generated SQL statement
+
+# Tables/views the text-to-SQL agent is allowed to reference. Anything else is
+# rejected by the guard before the query ever reaches the database.
+sql_whitelist:
+  - v_trials
+  - v_trial_sites

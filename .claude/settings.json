@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cp -n .env.example .env)",
+      "Bash(python3 -m venv .venv)",
+      "Bash(.venv/bin/pip install *)",
+      "Bash(docker compose *)",
+      "Bash(.venv/bin/python -c \"import httpx,psycopg,yaml,dotenv,tenacity; print\\('core deps ok'\\)\")",
+      "Bash(make schema *)",
+      "Bash(PYTHONPATH=src .venv/bin/pytest -q)",
+      "Bash(make ingest *)",
+      "Bash(make verify *)",
+      "Bash(PYTHONPATH=src .venv/bin/python -)",
+      "Bash(make test *)",
+      "Bash(git config *)",
+      "Bash(gh auth *)",
+      "Bash(gh repo *)",
+      "Bash(git ls-remote *)",
+      "Bash(echo \"=== exit: $? ===\")",
+      "Bash(echo \"exit=$?\")",
+      "Read(//tmp/**)",
+      "Bash(brew install *)"
+    ]
+  }
+}

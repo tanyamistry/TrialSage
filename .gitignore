@@ -1,0 +1,16 @@
+.env
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.DS_Store
+
+# Raw API responses and model caches -- large and fully reproducible.
+# `data/*` rather than `data/`: git does not descend into an excluded
+# directory, so the negation below would never be reached.
+data/*
+!data/.gitkeep
+
+# Trace logs are per-run; eval/results/ IS committed on purpose.
+logs/
