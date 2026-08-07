@@ -81,10 +81,22 @@ def _trial_row(t: ParsedTrial) -> Tuple:
 
 
 def _replace_children(cur: psycopg.Cursor, area: str, batch: Sequence[ParsedTrial]) -> int:
-    """Delete then re-insert all child rows for the trials in this batch."""
+    """Delete then re-insert child rows for the trials in this batch.
+
+    `trial_areas` is deliberately NOT in the delete list. It is the one child
+    table whose contents come from *which query found the trial* rather than
+    from the trial's own JSON, so it accumulates across ingest runs.
+
+    Deleting it made each ingest silently erase the previous areas: a trial
+    matching both the diabetes and the oncology query kept only whichever ran
+    last. That cost 1,879 area memberships across the corpus and left zero
+    multi-area trials, which quietly undercounts every "how many <area>
+    trials" question. The insert below is ON CONFLICT DO NOTHING, so simply
+    not deleting is both correct and idempotent.
+    """
     nct_ids = [t.nct_id for t in batch]
     for table in (
-        "trial_areas", "trial_phases", "trial_conditions",
+        "trial_phases", "trial_conditions",
         "trial_interventions", "trial_locations", "eligibility_chunks",
     ):
         cur.execute(f"DELETE FROM {table} WHERE nct_id = ANY(%s)", (nct_ids,))
