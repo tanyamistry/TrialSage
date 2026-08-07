@@ -19,6 +19,12 @@ services:
       - "${POSTGRES_PORT:-5433}:5432"
     volumes:
       - trialsage_pgdata:/var/lib/postgresql/data
+    # Docker gives a container only 64MB of /dev/shm by default. Postgres uses
+    # dynamic shared memory for parallel workers, and building the pgvector
+    # HNSW index over ~50k vectors blows straight through 64MB -- it fails with
+    # "could not resize shared memory segment ... No space left on device",
+    # which is misleading because the actual disk has hundreds of GB free.
+    shm_size: 1gb
     healthcheck:
       # `make db-up` waits on this so we never try to run SQL against a
       # container that is still starting up.

@@ -19,7 +19,8 @@
       "Bash(echo \"=== exit: $? ===\")",
       "Bash(echo \"exit=$?\")",
       "Read(//tmp/**)",
-      "Bash(brew install *)"
+      "Bash(brew install *)",
+      "Bash(git commit *)"
     ]
   }
 }

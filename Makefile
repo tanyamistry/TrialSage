@@ -1,4 +1,5 @@
-.PHONY: help venv install db-up db-down db-reset db-shell schema ingest verify test
+.PHONY: help venv install db-up db-down db-reset db-shell schema ingest verify test \
+        embed sql-smoke sql semantic hybrid
 
 # Pull .env in so targets can use POSTGRES_* / READONLY_* without duplicating
 # them here. The leading '-' means "don't fail if .env doesn't exist yet".
@@ -18,9 +19,14 @@ help:
 	@echo "  make db-down    - stop the database (data is preserved)"
 	@echo "  make db-reset   - DESTROY the database volume and rebuild from scratch"
 	@echo "  make db-shell   - open a psql prompt inside the container"
-	@echo "  make ingest     - fetch + parse + load (default: diabetes)"
+	@echo "  make ingest     - fetch + parse + load (default: diabetes; AREA=oncology)"
 	@echo "  make verify     - print row counts and sample rows"
-	@echo "  make test       - run the parser unit tests"
+	@echo "  make test       - run the test suite"
+	@echo ""
+	@echo "  make embed      - embed eligibility criteria + build the HNSW index"
+	@echo "  make sql-smoke  - measure text-to-SQL accuracy against gold SQL"
+	@echo "  make sql   Q='...'  - run one text-to-SQL question"
+	@echo "  make semantic Q='...'  - run one semantic search"
 
 venv:
 	@test -d .venv || python3 -m venv .venv
@@ -66,3 +72,15 @@ verify:
 
 test:
 	.venv/bin/pytest -q
+
+embed:
+	$(PY) -m trialsage.embed.build_index
+
+sql-smoke:
+	PYTHONPATH=src:. .venv/bin/python -m eval.sql_smoke
+
+sql:
+	$(PY) -m trialsage.retrieval.cli sql "$(Q)"
+
+semantic:
+	$(PY) -m trialsage.retrieval.cli semantic "$(Q)"

@@ -50,6 +50,13 @@ retrieval:
   candidate_k: 50       # fetched from pgvector before reranking
   sql_row_limit: 500    # hard cap injected into every generated SQL statement
 
+  # pgvector HNSW tuning. These two settings are correctness-critical, not
+  # just performance knobs, whenever a vector search is combined with a WHERE
+  # filter -- which for us is every hybrid query and every polarity-filtered
+  # query. See the comment in retrieval/semantic.py::_tune_hnsw.
+  hnsw_ef_search: 100
+  hnsw_iterative_scan: relaxed_order   # off | relaxed_order | strict_order
+
 # Tables/views the text-to-SQL agent is allowed to reference. Anything else is
 # rejected by the guard before the query ever reaches the database.
 sql_whitelist:

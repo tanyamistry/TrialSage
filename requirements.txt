@@ -13,6 +13,11 @@ sentence-transformers==3.3.1  # bge-small-en-v1.5 embeddings + bge reranker
 torch==2.5.1                  # backend for the above (uses Apple MPS)
 sqlglot==25.34.1              # SQL parsing for the text-to-SQL safety guard
 
+# Optional LLM backends. Installed so that switching LLM_PROVIDER in .env
+# actually works without a second install step; unused when running on Ollama.
+anthropic==0.42.0
+openai==1.59.6
+
 # --- Phase 5: UI ---------------------------------------------------------
 streamlit==1.41.1
 

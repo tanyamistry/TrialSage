@@ -4,7 +4,7 @@ A hybrid agentic RAG assistant over public ClinicalTrials.gov data. Ask a
 question in plain English, get a grounded answer with an NCT ID citation for
 every trial-specific claim.
 
-**Status: Phase 1 of 5 complete** (data ingestion). See [Roadmap](#roadmap).
+**Status: Phase 2 of 5 complete** (both retrievers working independently). See [Roadmap](#roadmap).
 
 ## The idea
 
@@ -38,7 +38,17 @@ make install      # creates .venv, installs deps, copies .env.example -> .env
 make db-up        # starts Postgres+pgvector on port 5433, applies schema
 make ingest       # fetches and loads diabetes (~2,700 trials, under a minute)
 make verify       # prints a data-quality report
-make test         # 81 tests
+make test         # full test suite
+```
+
+Then the retrievers (needs `ollama pull llama3.1:8b` first):
+
+```bash
+make ingest AREA=cardiovascular    # + AREA=oncology for the full corpus
+make embed                         # embed criteria, build the HNSW index
+make sql-smoke                     # text-to-SQL accuracy against gold SQL
+make sql      Q="how many phase 3 trials started in 2024"
+make semantic Q="prior immunotherapy failure"
 ```
 
 `make help` lists every target. To start over: `make db-reset`.
@@ -102,6 +112,46 @@ Real-corpus behaviours it handles, all found by profiling live records:
   genuine exclusions under 15 characters, so junk is filtered by *shape*
   (no letters, or ends in a colon) rather than by length.
 
+## What Phase 2 built
+
+Two retrievers, deliberately kept independently runnable. Being able to
+interrogate each one alone is what will make the Phase 3 router debuggable —
+when a hybrid answer looks wrong, you need to know which half is at fault.
+
+### Text-to-SQL
+
+`question → LLM → guard → execute`, with the Postgres error fed back for a
+repair attempt. Measured against hand-written gold SQL on 12 questions
+(`make sql-smoke`):
+
+| Metric | llama3.1:8b (local) |
+|---|---|
+| Execution accuracy (strict) | 11/12 (92%) |
+| Execution accuracy (lenient) | 12/12 (100%) |
+| Correct on first attempt | 11/12 (92%) |
+| Guard rejections | 0 |
+| Mean latency | 1.5 s |
+
+Execution accuracy compares query *results* against gold SQL rather than
+comparing SQL strings — there are many correct ways to write the same query.
+"Lenient" means the right value was present but in an unexpected column
+(the model returned an extra label alongside the number).
+
+**A local 8B model is good enough at SQL here, so no API fallback is needed.**
+That was the main open risk going into this phase. Two things made it work:
+the denormalized single-table view (no joins to hallucinate) and putting the
+real enum values in the prompt.
+
+### Semantic search
+
+pgvector HNSW over ~1M eligibility criteria, bge-small-en-v1.5 (384-dim),
+embedded locally on the Apple GPU at ~180 chunks/sec. Typical query latency is
+~200 ms warm, with top hits scoring 0.9+ cosine similarity.
+
+Every hit carries its **polarity** (inclusion vs exclusion), and search can be
+restricted to a candidate set of NCT IDs — that restriction is the mechanism
+the Phase 3 hybrid route is built on.
+
 ## Safety
 
 The text-to-SQL agent (Phase 2) is constrained by three independent layers,
@@ -114,9 +164,17 @@ because prompt instructions are not a security control:
 3. **Session defaults** — read-only transactions and a statement timeout,
    applied at the role level so every connection inherits them.
 
-Layer 1 is already live and tested (`tests/test_readonly_role.py`): writes,
-DDL, and stacked statements are all refused, and `SELECT * FROM trials` gets
-`permission denied`.
+Layers 1 and 2 are live and tested independently. `tests/test_readonly_role.py`
+proves the database refuses writes, DDL and stacked statements, and that
+`SELECT * FROM trials` gets `permission denied`.
+`tests/test_sql_guard.py` attacks the parser with stacked statements,
+`SELECT ... INTO`, comment-hidden payloads, CTEs laundering forbidden tables,
+`pg_catalog` reads, and filesystem functions.
+
+The guard is a parse-and-inspect allowlist, not a keyword blocklist — keyword
+filtering is trivially defeated by casing, comments, or whitespace, whereas
+rejecting anything whose syntax tree is not a plain SELECT over approved
+relations is not.
 
 The synthesizer will answer only from retrieved context, cite an NCT ID for
 every trial-specific claim, and say "no matching trials found" rather than
@@ -130,8 +188,12 @@ src/trialsage/
   config.py     config.yaml + .env
   db.py         connect() read/write, connect_readonly() for the SQL agent
   ingest/       fetch, parse, ages, eligibility, load, run, verify
+  llm/          swappable providers (ollama | anthropic | openai) + roles
+  embed/        bge-small embeddings, resumable bulk embed, HNSW build
+  retrieval/    guard, schema_card, sql_agent, semantic, cli
+eval/           sql_smoke.py — text-to-SQL accuracy vs gold SQL
 docs/           api_fields.md — verified API paths and profiling notes
-tests/          parser tests + read-only role enforcement
+tests/          parsers, SQL guard, LLM config, read-only role, semantic search
 ```
 
 `v_trials` is a materialized view that flattens phases, conditions, sites and
@@ -144,8 +206,8 @@ model, and it doubles as the security boundary.
 | Phase | Scope | Status |
 |---|---|---|
 | 1 | Ingest, normalise, load structured tables | ✅ done |
-| 2 | Semantic search and text-to-SQL, separately; ingest remaining areas | next |
-| 3 | Router + hybrid path + synthesizer with citation guardrails | |
+| 2 | Semantic search and text-to-SQL, separately; ingest remaining areas | ✅ done |
+| 3 | Router + hybrid path + synthesizer with citation guardrails | next |
 | 4 | Eval harness, vector-only and SQL-only baselines, reranker before/after | |
 | 5 | Streamlit UI, tracing, architecture diagram and results | |
 
