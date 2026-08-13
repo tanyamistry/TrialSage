@@ -4,7 +4,8 @@ A hybrid agentic RAG assistant over public ClinicalTrials.gov data. Ask a
 question in plain English, get a grounded answer with an NCT ID citation for
 every trial-specific claim.
 
-**Status: Phase 2 of 5 complete** (both retrievers working independently). See [Roadmap](#roadmap).
+**Status: Phase 2 of 5 complete and verified** — both retrievers work independently over the
+full 39,343-trial corpus. `eval/phase2_verify.py` passes 16/16. See [Roadmap](#roadmap).
 
 ## The idea
 
@@ -77,16 +78,20 @@ ClinicalTrials.gov API v2
      load.py           upsert into Postgres, refresh v_trials
 ```
 
-### Loaded (diabetes)
+### Loaded corpus
 
 | | |
 |---|---|
-| Trials | 2,696 |
-| Eligibility criteria | 51,646 |
-| Sites | 36,922 |
-| Conditions | 4,968 |
-| Interventions | 6,069 |
-| Ingest time | ~7s cold, ~3s cached |
+| Trials | 39,343 |
+| Eligibility criteria | 965,998 |
+| — inclusion / exclusion / unspecified | 410,544 / 532,528 / 22,926 |
+| Sites | 550,934 |
+| Areas | oncology 30,589 · cardiovascular 7,937 · diabetes 2,696 |
+| Trials in more than one area | 1,869 |
+| Database size | 4.0 GB (1.5 GB of that is the HNSW index) |
+
+Exclusion criteria outnumber inclusion roughly 1.3:1 — verified against an
+independent bullet count of the raw text, not just assumed.
 
 ### The two normalisation jobs
 
@@ -130,7 +135,7 @@ repair attempt. Measured against hand-written gold SQL on 12 questions
 | Execution accuracy (lenient) | 12/12 (100%) |
 | Correct on first attempt | 11/12 (92%) |
 | Guard rejections | 0 |
-| Mean latency | 1.5 s |
+| Mean latency | 2.3 s |
 
 Execution accuracy compares query *results* against gold SQL rather than
 comparing SQL strings — there are many correct ways to write the same query.
@@ -144,13 +149,29 @@ real enum values in the prompt.
 
 ### Semantic search
 
-pgvector HNSW over ~1M eligibility criteria, bge-small-en-v1.5 (384-dim),
-embedded locally on the Apple GPU at ~180 chunks/sec. Typical query latency is
-~200 ms warm, with top hits scoring 0.9+ cosine similarity.
+pgvector HNSW over **965,998** eligibility criteria, bge-small-en-v1.5
+(384-dim), embedded locally on the Apple GPU. The index is 1.5 GB; the whole
+database is 4 GB.
+
+Measured warm latency (median of 5, after a one-time 6.8 s model load):
+
+| Query | Median |
+|---|---|
+| unfiltered, top 10 criteria | 25 ms |
+| unfiltered, top 10 trials (deduplicated) | 25 ms |
+| polarity-filtered (exclusion only) | 28 ms |
+| scoped to a 434-trial candidate set | 43 ms |
 
 Every hit carries its **polarity** (inclusion vs exclusion), and search can be
 restricted to a candidate set of NCT IDs — that restriction is the mechanism
 the Phase 3 hybrid route is built on.
+
+Filtered search needs `hnsw.iterative_scan`. By default pgvector walks the
+graph for `ef_search` candidates and applies the `WHERE` clause *afterwards*,
+so an inclusion-only search can return zero rows even though 410k inclusion
+criteria are indexed — and it returns them as an empty result, not an error.
+`eval/phase2_verify.py` asserts that filtered searches come back full,
+specifically to catch that regression.
 
 ## Safety
 
