@@ -49,6 +49,10 @@ retrieval:
   top_k: 10             # returned to the synthesizer
   candidate_k: 50       # fetched from pgvector before reranking
   sql_row_limit: 500    # hard cap injected into every generated SQL statement
+  # Ceiling on the candidate set the hybrid route's SQL filter may return.
+  # Large enough that a broad filter still works, small enough that the
+  # scoped vector search stays fast.
+  hybrid_max_candidates: 2000
 
   # pgvector HNSW tuning. These two settings are correctness-critical, not
   # just performance knobs, whenever a vector search is combined with a WHERE

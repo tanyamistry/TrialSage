@@ -1,5 +1,5 @@
 .PHONY: help venv install db-up db-down db-reset db-shell schema ingest verify test \
-        embed sql-smoke sql semantic hybrid
+        embed sql-smoke sql semantic hybrid ask ask-explain phase3-verify rechunk
 
 # Pull .env in so targets can use POSTGRES_* / READONLY_* without duplicating
 # them here. The leading '-' means "don't fail if .env doesn't exist yet".
@@ -27,6 +27,9 @@ help:
 	@echo "  make sql-smoke  - measure text-to-SQL accuracy against gold SQL"
 	@echo "  make sql   Q='...'  - run one text-to-SQL question"
 	@echo "  make semantic Q='...'  - run one semantic search"
+	@echo "  make ask   Q='...'  - full pipeline: route -> retrieve -> cited answer"
+	@echo "  make ask-explain Q='...'  - same, showing the routing decision"
+	@echo "  make phase3-verify  - the three example questions, end to end"
 
 venv:
 	@test -d .venv || python3 -m venv .venv
@@ -84,3 +87,15 @@ sql:
 
 semantic:
 	$(PY) -m trialsage.retrieval.cli semantic "$(Q)"
+
+ask:
+	$(PY) -m trialsage.ask "$(Q)"
+
+ask-explain:
+	$(PY) -m trialsage.ask "$(Q)" --explain
+
+phase3-verify:
+	PYTHONPATH=src:. .venv/bin/python -m eval.phase3_verify
+
+rechunk:
+	$(PY) -m trialsage.ingest.rechunk

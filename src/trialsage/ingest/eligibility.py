@@ -67,18 +67,52 @@ def unescape(text: str) -> str:
 
 # --- section header detection ----------------------------------------------
 
-# Anchored form: the header sits on its own line, possibly bulleted or bolded
-# ("**Inclusion Criteria:**", "* Exclusion criteria", "1. INCLUSION CRITERIA:").
-# The trailing (?!\w) stops "Inclusion Criteria for Cohort B" from being treated
-# as a bare header while still allowing a trailing colon or bold marker.
+# Anchored form: the header sits on its own line, possibly bulleted or bolded.
+#
+# An earlier version required the line to end immediately after "Criteria"
+# (plus an optional colon). That missed 894 trials (2.3% of the corpus) whose
+# headers carry a trailing qualifier, and the consequence was severe rather
+# than cosmetic: when "Key Exclusion Criteria with:" goes undetected, every
+# exclusion below it inherits the preceding *inclusion* tag, and the system
+# reports that a trial ALLOWS patients it in fact EXCLUDES.
+#
+# Real spellings this has to handle, all observed in the corpus:
+#   "Inclusion Criteria:"      "Key Exclusion Criteria with:"
+#   "Inclusion Criteria："     (full-width colon, from CJK input)
+#   "Inclusion Criteria -"     "Inclusion Criteria:-"    "Inclusion Criteria."
+#   "Inclusion Criteria (abbreviated):"   "Inclusion Criteria 1:"
+#   "Inclusion Criteria include, but are not limited to:"
+#
+# And must NOT match, also observed:
+#   "* Inclusion in another clinical trial"     <- a criterion, no "criteria"
+#   "Inclusion of Women and Minorities"         <- a section, no "criteria"
+#   "Note: Other protocol defined Inclusion/Exclusion criteria may apply."
+#   "* Exclusion criteria will be assessed at screening"   <- prose
+#
+# The distinguishing signals: the word "criteria" must be present (unless the
+# bare "Inclusion:" form is used), and a trailing qualifier is only accepted
+# when the line ends in a colon or is short and verb-free.
+_COLON = r"[:：]"          # ASCII and full-width colon
+_VERBS = r"(?:will|would|may|might|must|shall|should|are|is|were|was|be|been|" \
+         r"apply|applies|applied|assess|assessed|include[sd]|listed|meet|meets|" \
+         r"see|refer|note[sd]?)"
+
 _HEADER_ANCHORED = re.compile(
-    r"""^[ \t]*                      # leading indent
-        (?:[*\-•]|\d+[.)])?     # optional bullet/number
-        [ \t]*\**[ \t]*              # optional bold markers
-        (?:key[ \t]+)?               # "Key Inclusion Criteria"
+    rf"""^[ \t]*                          # leading indent
+        (?:[*\-•]|\d+[.)])?          # optional bullet / number
+        [ \t]*\**[ \t]*                   # optional bold markers
+        (?:key[ \t]+)?                    # "Key Inclusion Criteria"
         (?P<kind>inclusion|exclusion)
-        (?:[ \t]+criteria)?
-        [ \t]*:?[ \t]*\**[ \t]*      # optional colon / closing bold
+        (?:
+            [ \t]+criteria                # "Inclusion Criteria ..."
+            (?:
+                [^\n]{{0,60}}{_COLON}     #   any short qualifier, ending in a colon
+              | [ \t]*[.\-–—]?  #   or nothing but trailing punctuation
+              | (?:[ \t]+(?!{_VERBS}\b)[\w(),/&'-]+){{1,4}}   # or <=4 verb-free words
+            )
+          | [ \t]*{_COLON}                # or the bare "Inclusion:" form
+        )
+        [ \t]*{_COLON}?[ \t]*[.\-]?[ \t]*\**[ \t]*
         $""",
     re.IGNORECASE | re.MULTILINE | re.VERBOSE,
 )

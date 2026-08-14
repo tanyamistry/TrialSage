@@ -4,8 +4,9 @@ A hybrid agentic RAG assistant over public ClinicalTrials.gov data. Ask a
 question in plain English, get a grounded answer with an NCT ID citation for
 every trial-specific claim.
 
-**Status: Phase 2 of 5 complete and verified** — both retrievers work independently over the
-full 39,343-trial corpus. `eval/phase2_verify.py` passes 16/16. See [Roadmap](#roadmap).
+**Status: Phase 3 of 5 complete and verified** — router, hybrid path and cited synthesis
+work end to end. All three example questions answer correctly; `eval/phase3_verify.py`
+passes 23/23. See [Roadmap](#roadmap).
 
 ## The idea
 
@@ -173,6 +174,98 @@ criteria are indexed — and it returns them as an empty result, not an error.
 `eval/phase2_verify.py` asserts that filtered searches come back full,
 specifically to catch that regression.
 
+## What Phase 3 built
+
+```
+question
+   |
+   v
+ROUTER  ── LLM classify, rule-based fallback ──> {route, confidence, reasoning}
+   |
+   +── structured ──> text-to-SQL ─────────────────┐
+   |                                               |
+   +── semantic ────> vector search ───────────────┤
+   |                                               |
+   +── hybrid ──────> SQL filter FIRST             |
+                      -> candidate NCT IDs         |
+                      -> vector search scoped ─────┤
+                                                   v
+                                            SYNTHESIZER
+                                                   |
+                                          CITATION GUARDRAIL
+                                                   |
+                                            answer + trace
+```
+
+### The router is inspectable
+
+Every decision returns the route, a confidence, a plain-language reason, and
+which mechanism decided (`llm`, `rules`, or `llm+rules`):
+
+```bash
+make ask Q="which recruiting phase 2 oncology trials in Massachusetts allow autoimmune history?"
+```
+```
+[route: hybrid | confidence 0.90 | via llm]
+  why: clear structured filter and eligibility concept
+```
+
+`--explain` additionally shows the generated SQL, the candidate count, the
+retrieved criteria with their polarity, and the stage-by-stage timing.
+
+There is always a **deterministic rule-based fallback**. It triggers when the
+local model is unreachable, returns unparseable JSON, invents a route name, or
+reports low confidence — and `source` records what actually decided, so a
+degraded decision is visible rather than disguised as a confident one. The
+fallback routes all three example questions correctly with no LLM call at all.
+
+### The hybrid route splits the question
+
+The router separates a hybrid question into its two halves:
+
+| | |
+|---|---|
+| structured half | "recruiting phase 2 oncology trials in Massachusetts" |
+| semantic half | "history of autoimmune disease" |
+
+This split is load-bearing. Sending the whole question to the SQL agent made it
+try to express the medical concept as a column filter —
+`AND 'autoimmune disease' = ANY(conditions)` — which matches nothing and turned
+a good question into a false "no trials found".
+
+### Citation guardrail
+
+Two failure modes, handled differently:
+
+- **Fabricated citations** — an NCT ID never present in the retrieved context.
+  Always neutralised, replaced with `[unverified: NCTxxxxxxxx]` by default.
+  Silent deletion would leave the sentence intact and still looking sourced.
+- **Uncited claims** — a trial-specific assertion naming no trial. Flagged, not
+  removed, because the detection is heuristic.
+
+Aggregate summaries ("None of the trials allow X") are exempt *when the answer
+cites specifics elsewhere* — a guardrail that cries wolf on correct answers is
+one people learn to ignore.
+
+### Tracing
+
+Every query appends a JSON line to `logs/traces.jsonl` with the route,
+confidence, per-stage latency, token counts and guardrail outcome. Latency is
+split by stage because "14 seconds" is not actionable but "route 3.0s,
+retrieve 3.9s, synth 9.3s" is.
+
+Measured over the verification run (llama3.1:8b, all local):
+
+| Route | Total | Route | Retrieve | Synth |
+|---|---|---|---|---|
+| structured | 3.6–18.3 s | 0.0–9.0 s | 2.1–7.8 s | 1.5 s |
+| semantic | 18.8 s | 2.3 s | 7.6 s | 8.9 s |
+| hybrid | 16.1–37.3 s | 3.0–8.8 s | 3.9–14.4 s | 9.3–14.1 s |
+
+Mean 21.1 s and 2,045 tokens per query. Zero fabricated citations across every
+traced query.
+
+
 ## Safety
 
 The text-to-SQL agent (Phase 2) is constrained by three independent layers,
@@ -228,8 +321,8 @@ model, and it doubles as the security boundary.
 |---|---|---|
 | 1 | Ingest, normalise, load structured tables | ✅ done |
 | 2 | Semantic search and text-to-SQL, separately; ingest remaining areas | ✅ done |
-| 3 | Router + hybrid path + synthesizer with citation guardrails | next |
-| 4 | Eval harness, vector-only and SQL-only baselines, reranker before/after | |
+| 3 | Router + hybrid path + synthesizer with citation guardrails | ✅ done |
+| 4 | Eval harness, vector-only and SQL-only baselines, reranker before/after | next |
 | 5 | Streamlit UI, tracing, architecture diagram and results | |
 
 ## Data source

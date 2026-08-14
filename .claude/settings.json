@@ -20,7 +20,20 @@
       "Bash(echo \"exit=$?\")",
       "Read(//tmp/**)",
       "Bash(brew install *)",
-      "Bash(git commit *)"
+      "Bash(git commit *)",
+      "Bash(.venv/bin/pytest tests/test_router.py tests/test_citations.py -q)",
+      "Bash(PYTHONPATH=src .venv/bin/python -m trialsage.ask \"how many phase 3 diabetes trials started in 2024?\" --explain)",
+      "Bash(PYTHONPATH=src .venv/bin/python -m trialsage.ask \"find trials whose eligibility mentions prior immunotherapy failure\" --explain)",
+      "Bash(PYTHONPATH=src .venv/bin/python -m trialsage.ask \"which recruiting phase 2 oncology trials in Massachusetts allow patients with a history of autoimmune disease?\" --explain)",
+      "Bash(python3 -)",
+      "Bash(PYTHONPATH=src .venv/bin/python -m trialsage.ingest.rechunk --dry-run)",
+      "Bash(sort -nrk 3)",
+      "Bash(awk '{printf \" cpu=%6s%% %s\\\\n\", $3, substr\\($0, index\\($0,$11\\), 45\\)}')",
+      "Bash(.venv/bin/pytest tests/test_citations.py -q)",
+      "Bash(PYTHONPATH=src:. .venv/bin/python -m eval.phase3_verify)",
+      "Bash(PYTHONPATH=src .venv/bin/python -c ' *)",
+      "Bash(make help *)",
+      "Bash(.venv/bin/pytest -q)"
     ]
   }
 }

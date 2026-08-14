@@ -90,6 +90,60 @@ class TestHeaderVariants:
         assert len(criteria) == 2
         assert all(c.criterion_type == "inclusion" for c in criteria)
 
+    @pytest.mark.parametrize(
+        "header",
+        [
+            "Key Exclusion Criteria with:",          # the one that caused the bug
+            "Exclusion Criteria：",              # full-width colon (CJK input)
+            "Exclusion criteria：",
+            "Exclusion Criteria -",
+            "Exclusion Criteria:-",
+            "Exclusion Criteria.",
+            "Exclusion Criteria (abbreviated):",
+            "Exclusion Criteria 1:",
+            "Exclusion Criteria include, but are not limited to:",
+            "Exclusion Criteria for the Study",
+        ],
+    )
+    def test_headers_with_trailing_qualifiers(self, header):
+        """Regression guard for a polarity inversion.
+
+        An earlier regex required the line to end right after "Criteria", so
+        "Key Exclusion Criteria with:" went undetected and every exclusion
+        below it inherited the preceding INCLUSION tag. Across the corpus that
+        mis-tagged 1,455 exclusions as inclusions -- i.e. the system reported
+        that trials ALLOWED patients they in fact EXCLUDED.
+        """
+        text = (f"Inclusion Criteria:\n* Age 18 years or older at screening\n\n"
+                f"{header}\n* History of autoimmune disease requiring treatment")
+        criteria = split_eligibility(text)
+        autoimmune = [c for c in criteria if "autoimmune" in c.text.lower()]
+        assert autoimmune, f"criterion lost entirely for header {header!r}"
+        assert autoimmune[0].criterion_type == "exclusion", (
+            f"header {header!r} not recognised; criterion mis-tagged as "
+            f"{autoimmune[0].criterion_type}")
+
+    @pytest.mark.parametrize(
+        "line",
+        [
+            "* Inclusion in another clinical trial",
+            "Inclusion of Women and Minorities",
+            "* Exclusion criteria will be assessed at screening",
+            "Note: Other protocol defined Inclusion/Exclusion criteria may apply.",
+        ],
+    )
+    def test_prose_is_not_mistaken_for_a_header(self, line):
+        """The loosened header pattern must not start eating real criteria.
+
+        All four of these appear verbatim in the corpus. The distinguishing
+        signal is that a real header contains the word "criteria" and either
+        ends in a colon or is short and verb-free.
+        """
+        text = f"Inclusion Criteria:\n* Age 18 years or older at screening\n{line}"
+        criteria = split_eligibility(text)
+        assert all(c.criterion_type == "inclusion" for c in criteria), (
+            f"{line!r} was treated as a section header")
+
     def test_inline_headers_without_newlines(self):
         """~5% of records run the headers inline rather than on their own line."""
         text = ("Inclusion Criteria: Adults aged 18 years or older with type 2 diabetes. "
