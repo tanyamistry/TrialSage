@@ -116,6 +116,7 @@ def ask(
     use_llm_router: bool = True,
     citation_mode: str = "flag",
     trace: bool = True,
+    rerank: bool = False,
 ) -> AskResult:
     """Answer a question end to end."""
     watch = Stopwatch()
@@ -134,13 +135,14 @@ def ask(
 
     elif decision.route == "semantic":
         query = decision.semantic_query or question
-        hits = search_trials(query, k=k)
+        hits = search_trials(query, k=k, rerank=rerank)
         t_retrieve = watch.lap()
         answer = synthesize_from_hits(question, hits, citation_mode=citation_mode)
 
     else:  # hybrid
         hybrid = retrieve_hybrid(question, semantic_query=decision.semantic_query,
-                                 structured_query=decision.structured_query, k=k)
+                                 structured_query=decision.structured_query, k=k,
+                                 rerank=rerank)
         hits = hybrid.hits
         t_retrieve = watch.lap()
         if hybrid.error:

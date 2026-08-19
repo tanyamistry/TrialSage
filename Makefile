@@ -1,5 +1,6 @@
 .PHONY: help venv install db-up db-down db-reset db-shell schema ingest verify test \
-        embed sql-smoke sql semantic hybrid ask ask-explain phase3-verify rechunk
+        embed sql-smoke sql semantic hybrid ask ask-explain phase3-verify rechunk \
+        eval eval-gold eval-rerank eval-ragas eval-report
 
 # Pull .env in so targets can use POSTGRES_* / READONLY_* without duplicating
 # them here. The leading '-' means "don't fail if .env doesn't exist yet".
@@ -30,6 +31,12 @@ help:
 	@echo "  make ask   Q='...'  - full pipeline: route -> retrieve -> cited answer"
 	@echo "  make ask-explain Q='...'  - same, showing the routing decision"
 	@echo "  make phase3-verify  - the three example questions, end to end"
+	@echo ""
+	@echo "  make eval-gold   - validate the 50-question set, compute draft gold answers"
+	@echo "  make eval        - router vs vector-only vs SQL-only (~45 min, local LLM)"
+	@echo "  make eval-rerank - same, with the cross-encoder reranker on"
+	@echo "  make eval-ragas  - RAGAS faithfulness + context precision"
+	@echo "  make eval-report - regenerate eval/results/RESULTS.md"
 
 venv:
 	@test -d .venv || python3 -m venv .venv
@@ -99,3 +106,19 @@ phase3-verify:
 
 rechunk:
 	$(PY) -m trialsage.ingest.rechunk
+
+# --- Phase 4: evaluation -------------------------------------------------
+eval-gold:
+	PYTHONPATH=src:. .venv/bin/python -m eval.gold
+
+eval:
+	PYTHONPATH=src:. .venv/bin/python -m eval.run_eval
+
+eval-rerank:
+	PYTHONPATH=src:. .venv/bin/python -m eval.run_eval --configs router --rerank
+
+eval-ragas:
+	PYTHONPATH=src:. .venv/bin/python -m eval.ragas_eval --tag base
+
+eval-report:
+	PYTHONPATH=src:. .venv/bin/python -m eval.report

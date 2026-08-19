@@ -70,7 +70,11 @@ class Hit:
     nct_id: str
     criterion_type: str
     criterion_text: str
-    score: float               # cosine similarity, 1.0 = identical
+    score: float               # bi-encoder cosine similarity, 1.0 = identical
+    # Cross-encoder score, populated only when the reranker has run. Kept
+    # alongside `score` rather than overwriting it so the two rankings can be
+    # compared directly -- which is the whole point of the Phase 4 before/after.
+    rerank_score: Optional[float] = None
     brief_title: Optional[str] = None
     overall_status: Optional[str] = None
     phase_display: Optional[str] = None
@@ -155,12 +159,18 @@ def search_trials(
     nct_ids: Optional[Sequence[str]] = None,
     criterion_type: CriterionFilter = None,
     candidate_k: Optional[int] = None,
+    rerank: bool = False,
 ) -> List[Hit]:
     """Like :func:`search` but deduplicated to the best hit per trial.
 
     Retrieving criteria means one trial with several matching criteria can fill
     the entire result set. When the question is "which trials...", that is the
     wrong granularity, so we over-fetch and keep each trial's strongest hit.
+
+    With ``rerank=True`` the shortlist is reordered by a cross-encoder before
+    the top ``k`` are taken. The over-fetch (``candidate_k``) is what gives the
+    reranker something to improve on -- reranking exactly ``k`` candidates can
+    only reorder them, never bring a better one into view.
     """
     cfg = settings()["retrieval"]
     k = k or cfg["top_k"]
@@ -173,6 +183,10 @@ def search_trials(
         if hit.nct_id not in best or hit.score > best[hit.nct_id].score:
             best[hit.nct_id] = hit
     ranked = sorted(best.values(), key=lambda h: h.score, reverse=True)
+
+    if rerank and ranked:
+        from .rerank import rerank as _rerank
+        return _rerank(query, ranked, top_k=k)
     return ranked[:k]
 
 

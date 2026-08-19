@@ -1,0 +1,3679 @@
+[
+  {
+    "config": "router",
+    "question_id": "s01",
+    "question": "How many phase 3 diabetes trials started in 2024?",
+    "predicted_route": "structured",
+    "answer": "75",
+    "hits": [],
+    "sql": "SELECT COUNT(*) FROM v_trials WHERE phases @> ARRAY['PHASE3'] AND therapeutic_areas @> ARRAY['diabetes'] AND start_year = 2024 LIMIT 500",
+    "sql_rows": 1,
+    "scalar": "75",
+    "cited": [],
+    "fabricated": [],
+    "uncited_claims": 0,
+    "n_context_items": 1,
+    "latency_s": 4.56,
+    "total_tokens": 1382,
+    "error": null,
+    "route_confidence": 0.7,
+    "route_source": "rules",
+    "route_reasoning": "asks for a value computed over columns (how many, started in, phase 3)"
+  },
+  {
+    "config": "router",
+    "question_id": "s02",
+    "question": "How many oncology trials are currently recruiting?",
+    "predicted_route": "structured",
+    "answer": "9523",
+    "hits": [],
+    "sql": "SELECT COUNT(*) FROM v_trials WHERE overall_status = 'RECRUITING' AND therapeutic_areas @> ARRAY['oncology'] LIMIT 500",
+    "sql_rows": 1,
+    "scalar": "9523",
+    "cited": [],
+    "fabricated": [],
+    "uncited_claims": 0,
+    "n_context_items": 1,
+    "latency_s": 4.015,
+    "total_tokens": 1364,
+    "error": null,
+    "route_confidence": 0.7,
+    "route_source": "rules",
+    "route_reasoning": "asks for a value computed over columns (how many, recruiting)"
+  },
+  {
+    "config": "router",
+    "question_id": "s03",
+    "question": "What is the average enrollment of completed phase 3 trials?",
+    "predicted_route": "structured",
+    "answer": "520.9751948972360028",
+    "hits": [],
+    "sql": "SELECT AVG(enrollment_count) FROM v_trials WHERE overall_status = 'COMPLETED' AND phases @> ARRAY['PHASE3'] LIMIT 500",
+    "sql_rows": 1,
+    "scalar": "520.9751948972360028",
+    "cited": [],
+    "fabricated": [],
+    "uncited_claims": 0,
+    "n_context_items": 1,
+    "latency_s": 4.049,
+    "total_tokens": 1382,
+    "error": null,
+    "route_confidence": 0.7,
+    "route_source": "rules",
+    "route_reasoning": "asks for a value computed over columns (average, phase 3)"
+  },
+  {
+    "config": "router",
+    "question_id": "s04",
+    "question": "How many cardiovascular trials started in 2023?",
+    "predicted_route": "structured",
+    "answer": "838",
+    "hits": [],
+    "sql": "SELECT COUNT(*) FROM v_trials WHERE therapeutic_areas @> ARRAY['cardiovascular'] AND start_year = 2023 LIMIT 500",
+    "sql_rows": 1,
+    "scalar": "838",
+    "cited": [],
+    "fabricated": [],
+    "uncited_claims": 0,
+    "n_context_items": 1,
+    "latency_s": 3.752,
+    "total_tokens": 1358,
+    "error": null,
+    "route_confidence": 0.7,
+    "route_source": "rules",
+    "route_reasoning": "asks for a value computed over columns (how many, started in, in 2023)"
+  },
+  {
+    "config": "router",
+    "question_id": "s05",
+    "question": "How many trials were terminated?",
+    "predicted_route": "structured",
+    "answer": "3120",
+    "hits": [],
+    "sql": "SELECT COUNT(*) FROM v_trials WHERE overall_status = 'TERMINATED' LIMIT 500",
+    "sql_rows": 1,
+    "scalar": "3120",
+    "cited": [],
+    "fabricated": [],
+    "uncited_claims": 0,
+    "n_context_items": 1,
+    "latency_s": 2.375,
+    "total_tokens": 1334,
+    "error": null,
+    "route_confidence": 0.7,
+    "route_source": "rules",
+    "route_reasoning": "asks for a value computed over columns (how many, terminated)"
+  },
+  {
+    "config": "router",
+    "question_id": "s06",
+    "question": "How many phase 1 oncology trials have a site in California?",
+    "predicted_route": "structured",
+    "answer": "2172",
+    "hits": [],
+    "sql": "SELECT COUNT(*) FROM v_trials WHERE phases @> ARRAY['PHASE1'] AND therapeutic_areas @> ARRAY['oncology'] AND 'California' = ANY(states) LIMIT 500",
+    "sql_rows": 1,
+    "scalar": "2172",
+    "cited": [],
+    "fabricated": [],
+    "uncited_claims": 0,
+    "n_context_items": 1,
+    "latency_s": 4.489,
+    "total_tokens": 1390,
+    "error": null,
+    "route_confidence": 0.7,
+    "route_source": "rules",
+    "route_reasoning": "asks for a value computed over columns (how many, phase 1)"
+  },
+  {
+    "config": "router",
+    "question_id": "s07",
+    "question": "What is the total enrollment across all recruiting trials?",
+    "predicted_route": "structured",
+    "answer": "3575134",
+    "hits": [],
+    "sql": "SELECT SUM(enrollment_count) FROM v_trials WHERE overall_status = 'RECRUITING' LIMIT 500",
+    "sql_rows": 1,
+    "scalar": "3575134",
+    "cited": [],
+    "fabricated": [],
+    "uncited_claims": 0,
+    "n_context_items": 1,
+    "latency_s": 2.902,
+    "total_tokens": 1352,
+    "error": null,
+    "route_confidence": 0.7,
+    "route_source": "rules",
+    "route_reasoning": "asks for a value computed over columns (total, recruiting)"
+  },
+  {
+    "config": "router",
+    "question_id": "s08",
+    "question": "How many trials have more than 1000 participants?",
+    "predicted_route": "structured",
+    "answer": "931",
+    "hits": [],
+    "sql": "SELECT COUNT(*) FROM v_trials WHERE enrollment_count > 1000 LIMIT 500",
+    "sql_rows": 1,
+    "scalar": "931",
+    "cited": [],
+    "fabricated": [],
+    "uncited_claims": 0,
+    "n_context_items": 1,
+    "latency_s": 2.221,
+    "total_tokens": 1338,
+    "error": null,
+    "route_confidence": 0.7,
+    "route_source": "rules",
+    "route_reasoning": "asks for a value computed over columns (how many)"
+  },
+  {
+    "config": "router",
+    "question_id": "s09",
+    "question": "How many trials accept healthy volunteers?",
+    "predicted_route": "structured",
+    "answer": "2227",
+    "hits": [],
+    "sql": "SELECT COUNT(*) FROM v_trials WHERE healthy_volunteers = TRUE LIMIT 500",
+    "sql_rows": 1,
+    "scalar": "2227",
+    "cited": [],
+    "fabricated": [],
+    "uncited_claims": 0,
+    "n_context_items": 1,
+    "latency_s": 2.216,
+    "total_tokens": 1330,
+    "error": null,
+    "route_confidence": 0.7,
+    "route_source": "rules",
+    "route_reasoning": "asks for a value computed over columns (how many)"
+  },
+  {
+    "config": "router",
+    "question_id": "s10",
+    "question": "How many diabetes trials are sponsored by Novo Nordisk A/S?",
+    "predicted_route": "structured",
+    "answer": "138",
+    "hits": [],
+    "sql": "SELECT COUNT(*) FROM v_trials WHERE therapeutic_areas @> ARRAY['diabetes'] AND lead_sponsor = 'Novo Nordisk A/S' LIMIT 500",
+    "sql_rows": 1,
+    "scalar": "138",
+    "cited": [],
+    "fabricated": [],
+    "uncited_claims": 0,
+    "n_context_items": 1,
+    "latency_s": 3.608,
+    "total_tokens": 1376,
+    "error": null,
+    "route_confidence": 0.7,
+    "route_source": "rules",
+    "route_reasoning": "asks for a value computed over columns (how many)"
+  },
+  {
+    "config": "router",
+    "question_id": "s11",
+    "question": "What is the largest enrollment of any single trial?",
+    "predicted_route": "semantic",
+    "answer": "Based on the provided eligibility criteria, there are no trials that explicitly state they allow enrollment in another clinical trial. However, some trials exclude patients who are enrolled in other clinical trials.\n\nHere are the details of each trial's criterion:\n\n\u2022 NCT07243704 EXCLUDES patients who are enrolled in any other clinical trial.\n\u2022 NCT04116112 EXCLUDES patients who are enrolled in any other clinical trial.\n\u2022 NCT04062760 EXCLUDES patients who are enrolled in another clinical trial.\n\u2022 NCT06964464 EXCLUDES patients who are enrolled in another clinical trial.\n\u2022 NCT04334174 EXCLUDES patients who are enrolled in any other treatment clinical trial.\n\u2022 NCT07362966 EXCLUDES patients who are currently enrolled in another clinical trial.\n\u2022 NCT04427306 EXCLUDES patients who are currently enrolled in another clinical trial.\n\u2022 NCT07371689 EXCLUDES patients who are currently enrolled in another clinical trial.\n\u2022 NCT06342609 EXCLUDES patients who are currently enrolled in another trial.",
+    "hits": [
+      {
+        "nct_id": "NCT07243704",
+        "criterion_type": "exclusion",
+        "criterion_text": "Enrolled in any other clinical trial",
+        "score": 0.7255488528819957,
+        "rerank_score": 0.7070903778076172
+      },
+      {
+        "nct_id": "NCT04116112",
+        "criterion_type": "exclusion",
+        "criterion_text": "Enrollment in any other clinical trial",
+        "score": 0.7525265364333085,
+        "rerank_score": 0.6695836186408997
+      },
+      {
+        "nct_id": "NCT04062760",
+        "criterion_type": "exclusion",
+        "criterion_text": "Enrollment in another clinical trial",
+        "score": 0.6856319870414769,
+        "rerank_score": 0.5303806662559509
+      },
+      {
+        "nct_id": "NCT06964464",
+        "criterion_type": "exclusion",
+        "criterion_text": "Enrollment in another clinical trial",
+        "score": 0.6856319495658917,
+        "rerank_score": 0.5303806662559509
+      },
+      {
+        "nct_id": "NCT04824443",
+        "criterion_type": "exclusion",
+        "criterion_text": "Enrollment onto any other interventional investigational study",
+        "score": 0.6794870663912186,
+        "rerank_score": 0.34722036123275757
+      },
+      {
+        "nct_id": "NCT04334174",
+        "criterion_type": "exclusion",
+        "criterion_text": "Enrolled in any other treatment clinical trial.",
+        "score": 0.6857852901604264,
+        "rerank_score": 0.344880610704422
+      },
+      {
+        "nct_id": "NCT07362966",
+        "criterion_type": "exclusion",
+        "criterion_text": "Current enrollment in another clinical trial;",
+        "score": 0.683820762178807,
+        "rerank_score": 0.3328263461589813
+      },
+      {
+        "nct_id": "NCT04427306",
+        "criterion_type": "exclusion",
+        "criterion_text": "Current enrollment in another clinical trial",
+        "score": 0.691125186942473,
+        "rerank_score": 0.3288901150226593
+      },
+      {
+        "nct_id": "NCT07371689",
+        "criterion_type": "exclusion",
+        "criterion_text": "Current enrollment in another clinical trial",
+        "score": 0.691125186942473,
+        "rerank_score": 0.3288901150226593
+      },
+      {
+        "nct_id": "NCT06342609",
+        "criterion_type": "exclusion",
+        "criterion_text": "Current enrollment in another trial",
+        "score": 0.713807761868608,
+        "rerank_score": 0.2664808928966522
+      }
+    ],
+    "sql": null,
+    "sql_rows": 0,
+    "scalar": null,
+    "cited": [
+      "NCT04062760",
+      "NCT04116112",
+      "NCT04334174",
+      "NCT04427306",
+      "NCT06342609",
+      "NCT06964464",
+      "NCT07243704",
+      "NCT07362966",
+      "NCT07371689"
+    ],
+    "fabricated": [],
+    "uncited_claims": 1,
+    "n_context_items": 10,
+    "latency_s": 29.632,
+    "total_tokens": 1074,
+    "error": null,
+    "route_confidence": 0.35,
+    "route_source": "rules",
+    "route_reasoning": "no clear structured or semantic signal; defaulting to semantic search"
+  },
+  {
+    "config": "router",
+    "question_id": "s12",
+    "question": "How many trials have sites in more than one country?",
+    "predicted_route": "structured",
+    "answer": "5732",
+    "hits": [],
+    "sql": "SELECT COUNT(*) FROM v_trials WHERE ARRAY_LENGTH(countries, 1) > 1 LIMIT 500",
+    "sql_rows": 1,
+    "scalar": "5732",
+    "cited": [],
+    "fabricated": [],
+    "uncited_claims": 0,
+    "n_context_items": 1,
+    "latency_s": 3.481,
+    "total_tokens": 1352,
+    "error": null,
+    "route_confidence": 0.7,
+    "route_source": "rules",
+    "route_reasoning": "asks for a value computed over columns (how many)"
+  },
+  {
+    "config": "router",
+    "question_id": "s13",
+    "question": "How many phase 4 cardiovascular trials are there?",
+    "predicted_route": "structured",
+    "answer": "2034",
+    "hits": [],
+    "sql": "SELECT COUNT(*) FROM v_trials WHERE phases @> ARRAY['PHASE4'] AND therapeutic_areas @> ARRAY['cardiovascular'] LIMIT 500",
+    "sql_rows": 1,
+    "scalar": "2034",
+    "cited": [],
+    "fabricated": [],
+    "uncited_claims": 0,
+    "n_context_items": 1,
+    "latency_s": 3.485,
+    "total_tokens": 1366,
+    "error": null,
+    "route_confidence": 0.7,
+    "route_source": "rules",
+    "route_reasoning": "asks for a value computed over columns (how many, phase 4)"
+  },
+  {
+    "config": "router",
+    "question_id": "s14",
+    "question": "How many trials started in 2025?",
+    "predicted_route": "structured",
+    "answer": "4934",
+    "hits": [],
+    "sql": "SELECT COUNT(*) FROM v_trials WHERE start_year = 2025 LIMIT 500",
+    "sql_rows": 1,
+    "scalar": "4934",
+    "cited": [],
+    "fabricated": [],
+    "uncited_claims": 0,
+    "n_context_items": 1,
+    "latency_s": 3.065,
+    "total_tokens": 1336,
+    "error": null,
+    "route_confidence": 0.7,
+    "route_source": "rules",
+    "route_reasoning": "asks for a value computed over columns (how many, started in, in 2025)"
+  },
+  {
+    "config": "router",
+    "question_id": "s15",
+    "question": "How many trials enrol female participants only?",
+    "predicted_route": "structured",
+    "answer": "3172",
+    "hits": [],
+    "sql": "SELECT COUNT(*) FROM v_trials WHERE sex = 'FEMALE' LIMIT 500",
+    "sql_rows": 1,
+    "scalar": "3172",
+    "cited": [],
+    "fabricated": [],
+    "uncited_claims": 0,
+    "n_context_items": 1,
+    "latency_s": 2.835,
+    "total_tokens": 1334,
+    "error": null,
+    "route_confidence": 0.7,
+    "route_source": "rules",
+    "route_reasoning": "asks for a value computed over columns (how many)"
+  },
+  {
+    "config": "router",
+    "question_id": "s16",
+    "question": "How many oncology trials list Massachusetts as a location?",
+    "predicted_route": "structured",
+    "answer": "2404",
+    "hits": [],
+    "sql": "SELECT COUNT(*) FROM v_trials WHERE therapeutic_areas @> ARRAY['oncology'] AND 'Massachusetts' = ANY(states) LIMIT 500",
+    "sql_rows": 1,
+    "scalar": "2404",
+    "cited": [],
+    "fabricated": [],
+    "uncited_claims": 0,
+    "n_context_items": 1,
+    "latency_s": 3.93,
+    "total_tokens": 1366,
+    "error": null,
+    "route_confidence": 0.7,
+    "route_source": "rules",
+    "route_reasoning": "asks for a value computed over columns (how many)"
+  },
+  {
+    "config": "router",
+    "question_id": "s17",
+    "question": "How many trials have a minimum age below 18 years?",
+    "predicted_route": "structured",
+    "answer": "2238",
+    "hits": [],
+    "sql": "SELECT COUNT(*) FROM v_trials WHERE min_age_years < 18.000 LIMIT 500",
+    "sql_rows": 1,
+    "scalar": "2238",
+    "cited": [],
+    "fabricated": [],
+    "uncited_claims": 0,
+    "n_context_items": 1,
+    "latency_s": 2.986,
+    "total_tokens": 1346,
+    "error": null,
+    "route_confidence": 0.7,
+    "route_source": "rules",
+    "route_reasoning": "asks for a value computed over columns (how many)"
+  },
+  {
+    "config": "router",
+    "question_id": "m01",
+    "question": "Find trials whose eligibility mentions prior immunotherapy failure.",
+    "predicted_route": "semantic",
+    "answer": "The eligibility criteria mention prior immunotherapy failure in several trials. \n\n\u2022 NCT05607563 EXCLUDES patients who have grade \u22653 immune-mediated adverse event that associated with a prior immunotherapy;\n\u2022 NCT03881488 EXCLUDES prior treatment with other investigational immune-oncology therapies, which implies previous immunotherapy failure;\n\u2022 NCT03742258 EXCLUDES patients with exposure to chemotherapy or immunotherapy =< 30 days prior to starting study treatment, which includes those who failed prior immunotherapy;\n\u2022 NCT07481721 EXCLUDES prior treatment with immune checkpoint inhibitors or other immunotherapies, indicating previous immunotherapy failure;\n\u2022 NCT07221942 EXCLUDES patients who received prior immunotherapy for mUC or for an alternative malignancy unless they developed an immune related adverse event while on therapy requiring cessation of therapy or use of disease modifying agents, corticosteroids, or immunosuppressive drugs.",
+    "hits": [
+      {
+        "nct_id": "NCT04897022",
+        "criterion_type": "inclusion",
+        "criterion_text": "At least one prior line of systemic therapy. Note: Patients who were on prior immunotherapy are eligible.",
+        "score": 0.7594085313300035,
+        "rerank_score": 0.8079013824462891
+      },
+      {
+        "nct_id": "NCT03803774",
+        "criterion_type": "inclusion",
+        "criterion_text": "Patients who have had prior treatment with immune therapies are eligible",
+        "score": 0.7555340369581038,
+        "rerank_score": 0.6602978110313416
+      },
+      {
+        "nct_id": "NCT05607563",
+        "criterion_type": "exclusion",
+        "criterion_text": "Patients who have grade \u22653 immune-mediated adverse event that associated with a prior immunotherapy;",
+        "score": 0.7555099566859205,
+        "rerank_score": 0.4929957091808319
+      },
+      {
+        "nct_id": "NCT03881488",
+        "criterion_type": "exclusion",
+        "criterion_text": "Prior treatment with other investigational immune-oncology therapies",
+        "score": 0.7612406015396118,
+        "rerank_score": 0.3553065359592438
+      },
+      {
+        "nct_id": "NCT03742258",
+        "criterion_type": "exclusion",
+        "criterion_text": "Patients with exposure to chemotherapy or immunotherapy =< 30 days prior to starting study treatment are not eligible",
+        "score": 0.7553020940811069,
+        "rerank_score": 0.292568564414978
+      },
+      {
+        "nct_id": "NCT03233711",
+        "criterion_type": "inclusion",
+        "criterion_text": "REGISTRATION TO STEP 2 ELIGIBILITY CRITERIA: No prior treatment with an immune checkpoint inhibitor (anti-PD-1, anti-PD-L1, anti-PD-L2, anti-CTLA4 monoclonal antibody)",
+        "score": 0.7562154501842165,
+        "rerank_score": 0.27663180232048035
+      },
+      {
+        "nct_id": "NCT04300855",
+        "criterion_type": "exclusion",
+        "criterion_text": "Participants who have been treated with: hormone therapy, immunotherapy, chemotherapy and/or radiation, for any malignancies within the past 2 years prior to registration.Patients with a prior or concurrent malignancy whose natural history or treatment does not have the potential to interfere with the safety or efficacy assessment of the investigational regimen are eligible for this trial. All patients with metastatic disease will be excluded",
+        "score": 0.754675223030117,
+        "rerank_score": 0.23771552741527557
+      },
+      {
+        "nct_id": "NCT07221942",
+        "criterion_type": "exclusion",
+        "criterion_text": "Patients who received prior immunotherapy for mUC or for an alternative malignancy are eligible unless they developed an immune related adverse event while on therapy requiring cessation of therapy or use of disease modifying agents, corticosteroids, or immunosuppressive drugs.",
+        "score": 0.7622300640714427,
+        "rerank_score": 0.23688329756259918
+      },
+      {
+        "nct_id": "NCT07481721",
+        "criterion_type": "exclusion",
+        "criterion_text": "Prior treatment with immune checkpoint inhibitors or other immunotherapies",
+        "score": 0.7687849905446485,
+        "rerank_score": 0.19921714067459106
+      },
+      {
+        "nct_id": "NCT05081609",
+        "criterion_type": "inclusion",
+        "criterion_text": "Participants who have previously received an immunotherapy prior to C1D1 must have any immune-related toxicities resolved to \u2264Grade 1 or baseline (prior to the immunotherapy) to be eligible, with the exception of participants on well controlled physiologic endocrine replacement",
+        "score": 0.7575477343684092,
+        "rerank_score": 0.1801706999540329
+      }
+    ],
+    "sql": null,
+    "sql_rows": 0,
+    "scalar": null,
+    "cited": [
+      "NCT03742258",
+      "NCT03881488",
+      "NCT05607563",
+      "NCT07221942",
+      "NCT07481721"
+    ],
+    "fabricated": [],
+    "uncited_claims": 1,
+    "n_context_items": 10,
+    "latency_s": 26.976,
+    "total_tokens": 1356,
+    "error": null,
+    "route_confidence": 0.7,
+    "route_source": "rules",
+    "route_reasoning": "asks about eligibility prose (eligibilit, mentions, prior) with no structured filter"
+  },
+  {
+    "config": "router",
+    "question_id": "m02",
+    "question": "Which trials mention prior stem cell transplant in their eligibility?",
+    "predicted_route": "semantic",
+    "answer": "Prior stem cell transplant is mentioned in several eligibility criteria. Here are the trials that mention prior stem cell transplant:\n\n\u2022 NCT03591744 EXCLUDES patients with a prior stem cell transplant.\n\u2022 NCT03834948 EXCLUDES patients with a prior organ or stem cell transplant, which includes stem cell transplantation.\n\u2022 NCT03301896 EXCLUDES patients with prior stem cell transplants.\n\u2022 NCT03746431 EXCLUDES patients with prior organ transplantation, including stem cell transplantation.\n\u2022 NCT05841563 EXCLUDES patients with prior bone marrow or stem cell transplantation.\n\u2022 NCT05835609 EXCLUDES patients with prior bone marrow or stem cell transplantation.\n\u2022 NCT05197426 EXCLUDES patients with prior bone marrow or stem cell transplantation.\n\nNote that none of the retrieved trials allow patients with a prior stem cell transplant.",
+    "hits": [
+      {
+        "nct_id": "NCT03591744",
+        "criterion_type": "exclusion",
+        "criterion_text": "Prior stem cell transplant.",
+        "score": 0.8327643521409832,
+        "rerank_score": 0.7341660857200623
+      },
+      {
+        "nct_id": "NCT03834948",
+        "criterion_type": "exclusion",
+        "criterion_text": "Prior organ or stem cell transplant",
+        "score": 0.8109075346854971,
+        "rerank_score": 0.5540785193443298
+      },
+      {
+        "nct_id": "NCT03534180",
+        "criterion_type": "inclusion",
+        "criterion_text": "Prior stem cell transplant allowed",
+        "score": 0.8308672254106756,
+        "rerank_score": 0.3908085823059082
+      },
+      {
+        "nct_id": "NCT04930653",
+        "criterion_type": "exclusion",
+        "criterion_text": "Prior stem cell transplantation",
+        "score": 0.8342004418373108,
+        "rerank_score": 0.38774338364601135
+      },
+      {
+        "nct_id": "NCT03944941",
+        "criterion_type": "exclusion",
+        "criterion_text": "Organ transplant including prior stem cell transplant",
+        "score": 0.8109343680544164,
+        "rerank_score": 0.3427312672138214
+      },
+      {
+        "nct_id": "NCT03301896",
+        "criterion_type": "exclusion",
+        "criterion_text": "Patients with prior stem cell transplants.",
+        "score": 0.8095772493389605,
+        "rerank_score": 0.30833756923675537
+      },
+      {
+        "nct_id": "NCT03746431",
+        "criterion_type": "exclusion",
+        "criterion_text": "Prior organ transplantation, including stem cell transplantation.",
+        "score": 0.8276758995442569,
+        "rerank_score": 0.22461406886577606
+      },
+      {
+        "nct_id": "NCT05841563",
+        "criterion_type": "exclusion",
+        "criterion_text": "Prior bone marrow or stem cell transplantation.",
+        "score": 0.8113793618309132,
+        "rerank_score": 0.20247593522071838
+      },
+      {
+        "nct_id": "NCT05835609",
+        "criterion_type": "exclusion",
+        "criterion_text": "Prior bone marrow or stem cell transplantation.",
+        "score": 0.8113793618309132,
+        "rerank_score": 0.20247593522071838
+      },
+      {
+        "nct_id": "NCT05197426",
+        "criterion_type": "exclusion",
+        "criterion_text": "Prior bone marrow or stem cell transplantation",
+        "score": 0.8151812222924164,
+        "rerank_score": 0.14585858583450317
+      }
+    ],
+    "sql": null,
+    "sql_rows": 0,
+    "scalar": null,
+    "cited": [
+      "NCT03301896",
+      "NCT03591744",
+      "NCT03746431",
+      "NCT03834948",
+      "NCT05197426",
+      "NCT05835609",
+      "NCT05841563"
+    ],
+    "fabricated": [],
+    "uncited_claims": 1,
+    "n_context_items": 10,
+    "latency_s": 18.874,
+    "total_tokens": 1052,
+    "error": null,
+    "route_confidence": 0.7,
+    "route_source": "rules",
+    "route_reasoning": "asks about eligibility prose (eligibilit, mention, prior) with no structured filter"
+  },
+  {
+    "config": "router",
+    "question_id": "m03",
+    "question": "Find trials that require an ECOG performance status of 0 or 1.",
+    "predicted_route": "semantic",
+    "answer": "The retrieved criteria indicate that an ECOG performance status of 0 or 1 is a requirement for patient eligibility in several clinical trials.\n\n\u2022 NCT03879811 ALLOWS patients with an ECOG performance status of 0 or 1.\n\u2022 NCT06210243 ALLOWS patients with an ECOG performance status of 0 or 1.\n\u2022 NCT07276399 ALLOWS patients with an ECOG performance status of 0 or 1.\n\u2022 NCT06532032 ALLOWS patients with an ECOG performance status of 0 or 1.\n\u2022 NCT05039177 ALLOWS patients with an ECOG performance status of 0 or 1.\n\u2022 NCT04959981 ALLOWS patients with an ECOG performance status of 0 or 1.\n\u2022 NCT03385226 ALLOWS patients with an ECOG performance status of 0 or 1.\n\u2022 NCT04796194 ALLOWS patients with an ECOG performance status of 0 or 1.\n\u2022 NCT06328673 ALLOWS patients with an ECOG performance status of 0 or 1.\n\nNote: The criterion in NCT07070232 is UNSPECIFIED, so it does not provide clear information on whether it allows or excludes patients with an ECOG performance status of 0 or 1.",
+    "hits": [
+      {
+        "nct_id": "NCT03879811",
+        "criterion_type": "inclusion",
+        "criterion_text": "Have an ECOG performance status of 0 or 1",
+        "score": 0.8648374161221153,
+        "rerank_score": 0.9999662637710571
+      },
+      {
+        "nct_id": "NCT06210243",
+        "criterion_type": "inclusion",
+        "criterion_text": "Have an ECOG performance status of 0 or 1",
+        "score": 0.8648374161221153,
+        "rerank_score": 0.9999662637710571
+      },
+      {
+        "nct_id": "NCT07276399",
+        "criterion_type": "inclusion",
+        "criterion_text": "Have an ECOG performance status of 0 or 1",
+        "score": 0.8648374161221153,
+        "rerank_score": 0.9999662637710571
+      },
+      {
+        "nct_id": "NCT06532032",
+        "criterion_type": "inclusion",
+        "criterion_text": "Have an ECOG performance status of 0 or 1",
+        "score": 0.8648374161221153,
+        "rerank_score": 0.9999662637710571
+      },
+      {
+        "nct_id": "NCT05039177",
+        "criterion_type": "inclusion",
+        "criterion_text": "Have ECOG performance status of 0 or 1.",
+        "score": 0.8604670423408465,
+        "rerank_score": 0.9999661445617676
+      },
+      {
+        "nct_id": "NCT07070232",
+        "criterion_type": "unspecified",
+        "criterion_text": "Have ECOG performance status of 0 or 1.",
+        "score": 0.8604670423408465,
+        "rerank_score": 0.9999661445617676
+      },
+      {
+        "nct_id": "NCT04959981",
+        "criterion_type": "inclusion",
+        "criterion_text": "Have ECOG performance status of 0 or 1.",
+        "score": 0.8604670423408465,
+        "rerank_score": 0.9999661445617676
+      },
+      {
+        "nct_id": "NCT03385226",
+        "criterion_type": "inclusion",
+        "criterion_text": "Have ECOG performance status of 0 or 1",
+        "score": 0.8579766919640731,
+        "rerank_score": 0.9999661445617676
+      },
+      {
+        "nct_id": "NCT04796194",
+        "criterion_type": "inclusion",
+        "criterion_text": "Have an ECOG performance status of 0 or 1.",
+        "score": 0.8552059107773471,
+        "rerank_score": 0.9999661445617676
+      },
+      {
+        "nct_id": "NCT06328673",
+        "criterion_type": "inclusion",
+        "criterion_text": "Have an ECOG performance status of 0 or 1.",
+        "score": 0.8552059107773471,
+        "rerank_score": 0.9999661445617676
+      }
+    ],
+    "sql": null,
+    "sql_rows": 0,
+    "scalar": null,
+    "cited": [
+      "NCT03385226",
+      "NCT03879811",
+      "NCT04796194",
+      "NCT04959981",
+      "NCT05039177",
+      "NCT06210243",
+      "NCT06328673",
+      "NCT06532032",
+      "NCT07070232",
+      "NCT07276399"
+    ],
+    "fabricated": [],
+    "uncited_claims": 1,
+    "n_context_items": 10,
+    "latency_s": 26.006,
+    "total_tokens": 1244,
+    "error": null,
+    "route_confidence": 0.35,
+    "route_source": "rules",
+    "route_reasoning": "no clear structured or semantic signal; defaulting to semantic search"
+  },
+  {
+    "config": "router",
+    "question_id": "m04",
+    "question": "Which trials mention brain metastases in their eligibility criteria?",
+    "predicted_route": "semantic",
+    "answer": "The eligibility criteria for brain metastases are mentioned in several trials. Here are the details:\n\n* NCT05593094 ALLOWS participants with new, untreated, progressive, or stable brain metastases to join.\n* NCT03678025 EXCLUDES patients with known brain metastases.\n* NCT06075810 ALLOWS participants with known brain metastases if specific conditions are met.\n* NCT04702737 ALLOWS participants with treated brain metastases provided they meet defined criteria.\n* NCT04885998 ALLOWS participants with treated brain metastases provided they meet defined criteria.\n* NCT05947500 ALLOWS patients with treated brain metastases if follow-up brain imaging shows no evidence of progressive brain metastases and it has been at least 4 weeks since CNS directed therapy.\n* NCT05060016 ALLOWS participants with treated brain metastases provided they meet defined criteria.\n* NCT06390995 ALLOWS participants with central nervous system disease involvement, including brain metastases, if they have had the metastases resected or received radiation therapy ending at least 4 weeks prior to study Day 1 and meet all of the following criteria.",
+    "hits": [
+      {
+        "nct_id": "NCT05593094",
+        "criterion_type": "inclusion",
+        "criterion_text": "Participants with new, untreated, progressive, or stable brain metastases are eligible",
+        "score": 0.8333999911785206,
+        "rerank_score": 0.9815635681152344
+      },
+      {
+        "nct_id": "NCT03678025",
+        "criterion_type": "inclusion",
+        "criterion_text": "STEP 1 REGISTRATION: DISEASE-RELATED CRITERIA: Patients with known brain metastases are not eligible. Brain imaging studies are not required for eligibility if the patient has no neurologic signs or symptoms suggestive of brain metastasis. If brain imaging studies are performed, they must be negative for disease.",
+        "score": 0.818747736887429,
+        "rerank_score": 0.9655173420906067
+      },
+      {
+        "nct_id": "NCT06075810",
+        "criterion_type": "inclusion",
+        "criterion_text": "Participants with known brain metastases may be eligible if specific conditions are met.",
+        "score": 0.8176545609441676,
+        "rerank_score": 0.9578248262405396
+      },
+      {
+        "nct_id": "NCT04702737",
+        "criterion_type": "inclusion",
+        "criterion_text": "Participants with treated brain metastases are eligible provided they meet defined criteria",
+        "score": 0.8395279719415201,
+        "rerank_score": 0.8863271474838257
+      },
+      {
+        "nct_id": "NCT04885998",
+        "criterion_type": "inclusion",
+        "criterion_text": "Participants with treated brain metastases are eligible provided they meet defined criteria",
+        "score": 0.8395279719415201,
+        "rerank_score": 0.8863271474838257
+      },
+      {
+        "nct_id": "NCT05947500",
+        "criterion_type": "inclusion",
+        "criterion_text": "REGISTRATION ELIGIBILITY: Patients with treated brain metastases are eligible if follow-up brain imaging during screening shows no evidence of progressive brain metastases and it has been at least 4 weeks since central nervous system (CNS) directed therapy",
+        "score": 0.7987541914357518,
+        "rerank_score": 0.884206235408783
+      },
+      {
+        "nct_id": "NCT05060016",
+        "criterion_type": "inclusion",
+        "criterion_text": "Participants with treated brain metastases are eligible provided they meet defined criteria.",
+        "score": 0.8229910836821164,
+        "rerank_score": 0.8264358043670654
+      },
+      {
+        "nct_id": "NCT06390995",
+        "criterion_type": "inclusion",
+        "criterion_text": "Participants with central nervous system (CNS) disease involvement are eligible if they have had brain metastases resected or have received radiation therapy ending at least 4 weeks prior to study Day 1 and they meet all of the following criteria: <!-- -->",
+        "score": 0.8076097713214583,
+        "rerank_score": 0.7732218503952026
+      },
+      {
+        "nct_id": "NCT05779423",
+        "criterion_type": "inclusion",
+        "criterion_text": "Participants with asymptomatic brain metastases are eligible.",
+        "score": 0.8177425752724883,
+        "rerank_score": 0.7529752254486084
+      },
+      {
+        "nct_id": "NCT04759248",
+        "criterion_type": "inclusion",
+        "criterion_text": "Participants with asymptomatic brain metastases are eligible.",
+        "score": 0.8177425752724883,
+        "rerank_score": 0.7529752254486084
+      }
+    ],
+    "sql": null,
+    "sql_rows": 0,
+    "scalar": null,
+    "cited": [
+      "NCT03678025",
+      "NCT04702737",
+      "NCT04885998",
+      "NCT05060016",
+      "NCT05593094",
+      "NCT05947500",
+      "NCT06075810",
+      "NCT06390995"
+    ],
+    "fabricated": [],
+    "uncited_claims": 1,
+    "n_context_items": 10,
+    "latency_s": 25.6,
+    "total_tokens": 1326,
+    "error": null,
+    "route_confidence": 0.7,
+    "route_source": "rules",
+    "route_reasoning": "asks about eligibility prose (eligibilit, criteri, mention) with no structured filter"
+  },
+  {
+    "config": "router",
+    "question_id": "m05",
+    "question": "Find trials requiring measurable disease by RECIST criteria.",
+    "predicted_route": "semantic",
+    "answer": "The trials require measurable disease by RECIST criteria for patient eligibility. \n\n\u2022 NCT04495621 ALLOWS patients with measurable disease according to RECIST criteria (INCLUSION).\n\u2022 NCT05578872 ALLOWS patients with measurable disease based on RECIST (INCLUSION).\n\u2022 NCT05426811 ALLOWS patients with measurable disease according to RECIST (INCLUSION).\n\u2022 NCT04705818 ALLOWS patients with measurable disease according to RECIST (INCLUSION).\n\u2022 NCT04007744 ALLOWS patients with measurable disease by RECIST criteria (INCLUSION).\n\u2022 NCT03844763 ALLOWS patients with measurable disease by RECIST criteria (INCLUSION).\n\u2022 NCT05181033 ALLOWS patients with measurable disease by RECIST criteria (INCLUSION).\n\u2022 NCT03591666 ALLOWS patients with measurable disease per the RECIST criteria (INCLUSION).\n\u2022 NCT05430009 ALLOWS patients whose disease must be measurable per RECIST criteria (INCLUSION).\n\u2022 NCT04351230 ALLOWS patients with measurable disease as defined by RECIST criteria (INCLUSION).",
+    "hits": [
+      {
+        "nct_id": "NCT04495621",
+        "criterion_type": "inclusion",
+        "criterion_text": "Measurable disease according to RECIST criteria.",
+        "score": 0.8502308890429968,
+        "rerank_score": 0.9999620914459229
+      },
+      {
+        "nct_id": "NCT05578872",
+        "criterion_type": "inclusion",
+        "criterion_text": "Have measurable disease based on RECIST;",
+        "score": 0.8578019993842247,
+        "rerank_score": 0.9999464750289917
+      },
+      {
+        "nct_id": "NCT05426811",
+        "criterion_type": "inclusion",
+        "criterion_text": "Measurable disease according to RECIST",
+        "score": 0.8490844964981079,
+        "rerank_score": 0.9999128580093384
+      },
+      {
+        "nct_id": "NCT04705818",
+        "criterion_type": "inclusion",
+        "criterion_text": "Measurable disease according to RECIST",
+        "score": 0.8490844964981079,
+        "rerank_score": 0.9999128580093384
+      },
+      {
+        "nct_id": "NCT04007744",
+        "criterion_type": "inclusion",
+        "criterion_text": "Measurable disease by RECIST criteria.",
+        "score": 0.85398168373991,
+        "rerank_score": 0.9998511075973511
+      },
+      {
+        "nct_id": "NCT03844763",
+        "criterion_type": "inclusion",
+        "criterion_text": "Measurable disease by RECIST criteria.",
+        "score": 0.85398168373991,
+        "rerank_score": 0.9998511075973511
+      },
+      {
+        "nct_id": "NCT05181033",
+        "criterion_type": "inclusion",
+        "criterion_text": "Measurable disease by RECIST criteria.",
+        "score": 0.85398168373991,
+        "rerank_score": 0.9998511075973511
+      },
+      {
+        "nct_id": "NCT03591666",
+        "criterion_type": "inclusion",
+        "criterion_text": "Measurable disease per the RECIST criteria.",
+        "score": 0.8499248504281297,
+        "rerank_score": 0.9997747540473938
+      },
+      {
+        "nct_id": "NCT05430009",
+        "criterion_type": "inclusion",
+        "criterion_text": "Disease must be measurable per RECIST criteria",
+        "score": 0.8539409985683211,
+        "rerank_score": 0.9994200468063354
+      },
+      {
+        "nct_id": "NCT04351230",
+        "criterion_type": "inclusion",
+        "criterion_text": "Measurable disease as defined by RECIST criteria",
+        "score": 0.8573070338598511,
+        "rerank_score": 0.999403715133667
+      }
+    ],
+    "sql": null,
+    "sql_rows": 0,
+    "scalar": null,
+    "cited": [
+      "NCT03591666",
+      "NCT03844763",
+      "NCT04007744",
+      "NCT04351230",
+      "NCT04495621",
+      "NCT04705818",
+      "NCT05181033",
+      "NCT05426811",
+      "NCT05430009",
+      "NCT05578872"
+    ],
+    "fabricated": [],
+    "uncited_claims": 1,
+    "n_context_items": 10,
+    "latency_s": 22.346,
+    "total_tokens": 1128,
+    "error": null,
+    "route_confidence": 0.7,
+    "route_source": "rules",
+    "route_reasoning": "asks about eligibility prose (criteri) with no structured filter"
+  },
+  {
+    "config": "router",
+    "question_id": "m06",
+    "question": "Which trials exclude patients with active hepatitis B?",
+    "predicted_route": "hybrid",
+    "answer": "The following clinical trials exclude patients with active hepatitis B:\n\n\u2022 NCT03245541 EXCLUDES patients who have a known positive HBV surface antigen (HBsAg) result.\n\u2022 NCT03287427 EXCLUDES patients who have a positive Hepatitis B surface antigen [HBsAg] test at screening.\n\u2022 NCT03397706 EXCLUDES patients with known active hepatitis B virus infection.\n\u2022 NCT03379441 EXCLUDES patients with known active Hepatitis B (e.g., hepatitis B virus surface antigen [HBsAg] reactive).\n\u2022 NCT03468985 EXCLUDES patients with known chronic active hepatitis B (defined as a positive hepatitis B surface antigen and/or hepatitis B viral load in the last\n\u2022 NCT03265080 EXCLUDES patients who have known active hepatitis B (e.g., hepatitis B surface antigen [HBsAg] reactive).\n\u2022 NCT03374332 EXCLUDES patients with active hepatitis B or C.\n\u2022 NCT03225664 EXCLUDES patients who have known active hepatitis B (e.g., hepatitis B surface antigen [HBsAg] reactive) or hepatitis C (e.g., hepatitis C virus [HCV] ribonucleic acid [RNA] [qualitative]) is detected.\n\u2022 NCT03422393 EXCLUDES patients with active hepatitis B or C infection.",
+    "hits": [
+      {
+        "nct_id": "NCT03245541",
+        "criterion_type": "exclusion",
+        "criterion_text": "Active hepatitis B virus (HBV) is defined by a known positive HBV surface antigen (HBsAg) result. Patients with a past or resolved HBV infection (defined as the presence of hepatitis B core antibody and absence of HBsAg and PCR negative) are eligible.",
+        "score": 0.8388649091060308,
+        "rerank_score": 0.9993745684623718
+      },
+      {
+        "nct_id": "NCT03287427",
+        "criterion_type": "exclusion",
+        "criterion_text": "Active Hepatitis B: (defined as having a positive Hepatitis B surface antigen [HBsAg] test at screening). Patients with past or resolved Hepatitis B infection (defined as having a negative HBsAg test and a positive IgG antibody to Hepatitis B core antigen [anti-HBc]) are eligible. Hepatitis B virus (HBV) DNA must be obtained in these patients prior to Cycle 1, Day 1, and must demonstrate no active infection.",
+        "score": 0.8318632640675621,
+        "rerank_score": 0.9988162517547607
+      },
+      {
+        "nct_id": "NCT03397706",
+        "criterion_type": "exclusion",
+        "criterion_text": "Known active hepatitis B virus infection",
+        "score": 0.8704296637605881,
+        "rerank_score": 0.9978049397468567
+      },
+      {
+        "nct_id": "NCT03379441",
+        "criterion_type": "exclusion",
+        "criterion_text": "Has known active Hepatitis B (e.g., hepatitis B virus surface antigen [HBsAg] reactive) or Hepatitis C (e.g., HCV ribonucleic acid [RNA] qualitative is detected).",
+        "score": 0.8347197574042985,
+        "rerank_score": 0.9948155283927917
+      },
+      {
+        "nct_id": "NCT03468985",
+        "criterion_type": "exclusion",
+        "criterion_text": "Patients with known chronic active hepatitis B (defined as a positive hepatitis B surface antigen and/or hepatitis B viral load in the last",
+        "score": 0.836109797490811,
+        "rerank_score": 0.9932772517204285
+      },
+      {
+        "nct_id": "NCT03265080",
+        "criterion_type": "exclusion",
+        "criterion_text": "Known active hepatitis B (e.g., hepatitis B surface antigen [HBsAg] reactive) or hepatitis C (e.g., Hepatitis C virus ribonucleic acid [HCV RNA] [qualitative] is detected).",
+        "score": 0.8345923320674633,
+        "rerank_score": 0.9921187162399292
+      },
+      {
+        "nct_id": "NCT03374332",
+        "criterion_type": "exclusion",
+        "criterion_text": "Active hepatitis B or C",
+        "score": 0.8647749423980774,
+        "rerank_score": 0.9915289878845215
+      },
+      {
+        "nct_id": "NCT03225664",
+        "criterion_type": "exclusion",
+        "criterion_text": "Has known active hepatitis B (e.g., hepatitis B surface antigen [HBsAg] reactive) or hepatitis C (e.g., hepatitis C virus [HCV] ribonucleic acid [RNA] [qualitative]) is detected",
+        "score": 0.8328202564287857,
+        "rerank_score": 0.9903500080108643
+      },
+      {
+        "nct_id": "NCT03422393",
+        "criterion_type": "exclusion",
+        "criterion_text": "Active hepatitis B or C infection.",
+        "score": 0.8571853722819601,
+        "rerank_score": 0.9894639253616333
+      },
+      {
+        "nct_id": "NCT03325322",
+        "criterion_type": "exclusion",
+        "criterion_text": "Active hepatitis B or C infection",
+        "score": 0.8410004282593997,
+        "rerank_score": 0.9892940521240234
+      }
+    ],
+    "sql": "SELECT nct_id FROM v_trials LIMIT 2000",
+    "sql_rows": 0,
+    "scalar": null,
+    "cited": [
+      "NCT03225664",
+      "NCT03245541",
+      "NCT03265080",
+      "NCT03287427",
+      "NCT03374332",
+      "NCT03379441",
+      "NCT03397706",
+      "NCT03422393",
+      "NCT03468985"
+    ],
+    "fabricated": [],
+    "uncited_claims": 1,
+    "n_context_items": 10,
+    "latency_s": 34.23,
+    "total_tokens": 2708,
+    "error": null,
+    "route_confidence": 0.75,
+    "route_source": "rules",
+    "route_reasoning": "mentions free-text eligibility concepts (exclude, patients with) and structured filters (active); LLM split the two halves"
+  },
+  {
+    "config": "router",
+    "question_id": "m07",
+    "question": "Find trials that mention pregnancy or breastfeeding in their criteria.",
+    "predicted_route": "semantic",
+    "answer": "The retrieved criteria indicate that pregnancy or breastfeeding are generally excluded from these clinical trials. Here are the specific trials:\n\n\u2022 NCT03667677 EXCLUDES patients who are pregnant, breastfeeding, or have a pregnancy plan during the study.\n\u2022 NCT05658458 EXCLUDES patients who are pregnant or breastfeeding or plans to become pregnant or to breastfeed during the course of the trial.\n\u2022 NCT05672966 EXCLUDES patients who are pregnant or breastfeeding or plan to get pregnant or breastfeed during the study.\n\u2022 NCT04826003 EXCLUDES patients who are pregnant or breastfeeding, or intention of becoming pregnant during the study.\n\u2022 NCT07018947 EXCLUDES patients who are pregnant or breastfeeding, or intention of becoming pregnant during the study.\n\u2022 NCT07466251 EXCLUDES patients who are pregnant or breastfeeding, or planning to become pregnant during the study.\n\u2022 NCT07699328 EXCLUDES patients who are pregnant or breastfeeding, or planning to become pregnant during the study.\n\u2022 NCT05525455 EXCLUDES patients who are pregnant or breastfeeding or plans to become pregnant during the study.",
+    "hits": [
+      {
+        "nct_id": "NCT03667677",
+        "criterion_type": "exclusion",
+        "criterion_text": "Breastfeeding, pregnancy, or a pregnancy plan during the study;",
+        "score": 0.821217130350047,
+        "rerank_score": 0.9993410706520081
+      },
+      {
+        "nct_id": "NCT05658458",
+        "criterion_type": "exclusion",
+        "criterion_text": "Is pregnant or breast feeding or plans to become pregnant or to breastfeed during the course of the trial.",
+        "score": 0.8289396574641327,
+        "rerank_score": 0.9989168643951416
+      },
+      {
+        "nct_id": "NCT05672966",
+        "criterion_type": "exclusion",
+        "criterion_text": "Pregnancy or breast feeding or plan to get pregnant or breastfeed during the study.",
+        "score": 0.8057152496063343,
+        "rerank_score": 0.9988536834716797
+      },
+      {
+        "nct_id": "NCT04826003",
+        "criterion_type": "exclusion",
+        "criterion_text": "Pregnancy or breastfeeding, or intention of becoming pregnant during the study.",
+        "score": 0.808265209197998,
+        "rerank_score": 0.9988264441490173
+      },
+      {
+        "nct_id": "NCT07018947",
+        "criterion_type": "exclusion",
+        "criterion_text": "Pregnancy or breastfeeding, or intention of becoming pregnant during the study.",
+        "score": 0.808265209197998,
+        "rerank_score": 0.9988264441490173
+      },
+      {
+        "nct_id": "NCT07466251",
+        "criterion_type": "exclusion",
+        "criterion_text": "Pregnant or breastfeeding, or planning to become pregnant during the study.",
+        "score": 0.8035871971884139,
+        "rerank_score": 0.9987473487854004
+      },
+      {
+        "nct_id": "NCT07699328",
+        "criterion_type": "exclusion",
+        "criterion_text": "Pregnant or breastfeeding, or planning to become pregnant during the study.",
+        "score": 0.8035870662720274,
+        "rerank_score": 0.9987473487854004
+      },
+      {
+        "nct_id": "NCT05525455",
+        "criterion_type": "exclusion",
+        "criterion_text": "Pregnant or breastfeeding or plans to become pregnant during the study.",
+        "score": 0.8047250276476235,
+        "rerank_score": 0.9986584186553955
+      },
+      {
+        "nct_id": "NCT03784443",
+        "criterion_type": "exclusion",
+        "criterion_text": "Pregnancy or breastfeeding, or intention to become pregnant during the study.",
+        "score": 0.8107479214668274,
+        "rerank_score": 0.9985686540603638
+      },
+      {
+        "nct_id": "NCT05432466",
+        "criterion_type": "exclusion",
+        "criterion_text": "Breastfeeding, pregnancy, or planned pregnancy during the trial.",
+        "score": 0.8560536079342893,
+        "rerank_score": 0.99852055311203
+      }
+    ],
+    "sql": null,
+    "sql_rows": 0,
+    "scalar": null,
+    "cited": [
+      "NCT03667677",
+      "NCT04826003",
+      "NCT05525455",
+      "NCT05658458",
+      "NCT05672966",
+      "NCT07018947",
+      "NCT07466251",
+      "NCT07699328"
+    ],
+    "fabricated": [],
+    "uncited_claims": 1,
+    "n_context_items": 10,
+    "latency_s": 21.538,
+    "total_tokens": 1184,
+    "error": null,
+    "route_confidence": 0.7,
+    "route_source": "rules",
+    "route_reasoning": "asks about eligibility prose (criteri, mention) with no structured filter"
+  },
+  {
+    "config": "router",
+    "question_id": "m08",
+    "question": "Which trials mention an HbA1c threshold for entry?",
+    "predicted_route": "semantic",
+    "answer": "The trials mention specific HbA1c thresholds for entry. \n\n\u2022 NCT05803421 ALLOWS patients with an unspecified HbA1c level at screening.\n\u2022 NCT03495102 EXCLUDES patients with HbA1c <7.5% or >11.0% at study entry.\n\u2022 NCT03529123 ALLOWS patients with HbA1c \u2265 7.5% or \u2264 10% at screening visit.\n\u2022 NCT04537923 ALLOWS patients with HbA1c between \u22657.5% and \u226411%.\n\u2022 NCT06974825 ALLOWS patients with HbA1c between 7.0% and 10% at screening/baseline.\n\u2022 NCT04333823 EXCLUDES patients with a lower (6.5 to <7.0%) or higher (>10.0 to 11.0%) HbA1c level, unless considered by the investigator.\n\u2022 NCT05536804 ALLOWS patients with an unspecified HbA1c \u22649.5% at screening.\n\u2022 NCT07064486 ALLOWS patients with HbA1c between \u22657.5% and \u226411.0% at screening.\n\u2022 NCT07077525 ALLOWS patients with HbA1c level between 6.5% - 10.0% before study initiation.\n\u2022 NCT06716424 ALLOWS patients with HbA1c between \u2265 7.5% and \u226410.5% inclusive, during screening.\n\nNote: The trials that exclude a specific HbA1c threshold are those that do not allow it.",
+    "hits": [
+      {
+        "nct_id": "NCT05803421",
+        "criterion_type": "inclusion",
+        "criterion_text": "Have HbA1c at screening",
+        "score": 0.7435376185544166,
+        "rerank_score": 0.6430670022964478
+      },
+      {
+        "nct_id": "NCT03495102",
+        "criterion_type": "inclusion",
+        "criterion_text": "Have HbA1c \u22657.5% and \u226411.0% at study entry",
+        "score": 0.787523650751223,
+        "rerank_score": 0.3905334770679474
+      },
+      {
+        "nct_id": "NCT03529123",
+        "criterion_type": "inclusion",
+        "criterion_text": "Glycosylated hemoglobin (HbA1c) at screening visit \u2265 7.5% or \u2264 10%;",
+        "score": 0.7347898799431519,
+        "rerank_score": 0.2894606590270996
+      },
+      {
+        "nct_id": "NCT04537923",
+        "criterion_type": "inclusion",
+        "criterion_text": "Have HbA1c between \u22657.5% and \u226411%",
+        "score": 0.7300274693933217,
+        "rerank_score": 0.2175970822572708
+      },
+      {
+        "nct_id": "NCT06974825",
+        "criterion_type": "inclusion",
+        "criterion_text": "Glycosylated hemoglobin (HbA1c) at screening/baseline: 7.0% \u2264 HbA1c \u2264 10%;",
+        "score": 0.7339461166922959,
+        "rerank_score": 0.20755648612976074
+      },
+      {
+        "nct_id": "NCT04333823",
+        "criterion_type": "inclusion",
+        "criterion_text": "HbA1c: 7.0-10 % at time of screening. Participants with a lower (6.5 to <7.0%) or a higher HbA1c (>10.0 to 11.0%) may be considered, based upon investigator discretion, if patient is adherent with study safety criteria, including a good understanding of diabetes management, regular and consistent blood glucose monitoring, appropriate ketone testing and DKA symptom recognition, appropriate adjustment of insulin doses for meals and activity as well as illness.",
+        "score": 0.7298771464971181,
+        "rerank_score": 0.17068713903427124
+      },
+      {
+        "nct_id": "NCT05536804",
+        "criterion_type": "inclusion",
+        "criterion_text": "Have HbA1c \u22649.5% at screening",
+        "score": 0.739841103553772,
+        "rerank_score": 0.1691862791776657
+      },
+      {
+        "nct_id": "NCT07064486",
+        "criterion_type": "inclusion",
+        "criterion_text": "Have HbA1c between \u22657.5% and \u226411.0% at screening",
+        "score": 0.7363244295120239,
+        "rerank_score": 0.16452692449092865
+      },
+      {
+        "nct_id": "NCT07077525",
+        "criterion_type": "inclusion",
+        "criterion_text": "HbA1c level between 6.5% - 10.0% (47.5-107.7 mmol/mol) before study initiation",
+        "score": 0.7570151380282529,
+        "rerank_score": 0.13909544050693512
+      },
+      {
+        "nct_id": "NCT06716424",
+        "criterion_type": "inclusion",
+        "criterion_text": "HbA1c between \u2265 7.5% and \u226410.5% inclusive, during screening",
+        "score": 0.7350782752037048,
+        "rerank_score": 0.11497228592634201
+      }
+    ],
+    "sql": null,
+    "sql_rows": 0,
+    "scalar": null,
+    "cited": [
+      "NCT03495102",
+      "NCT03529123",
+      "NCT04333823",
+      "NCT04537923",
+      "NCT05536804",
+      "NCT05803421",
+      "NCT06716424",
+      "NCT06974825",
+      "NCT07064486",
+      "NCT07077525"
+    ],
+    "fabricated": [],
+    "uncited_claims": 2,
+    "n_context_items": 10,
+    "latency_s": 31.518,
+    "total_tokens": 1481,
+    "error": null,
+    "route_confidence": 0.7,
+    "route_source": "rules",
+    "route_reasoning": "asks about eligibility prose (mention) with no structured filter"
+  },
+  {
+    "config": "router",
+    "question_id": "m09",
+    "question": "Find trials that exclude patients with severe renal impairment.",
+    "predicted_route": "semantic",
+    "answer": "The retrieved criteria indicate that patients with severe renal impairment are excluded from several clinical trials. \n\n\u2022 NCT04793399 EXCLUDES patients with severe renal impairment.\n\u2022 NCT05787873 EXCLUDES patients with severe renal impairment.\n\u2022 NCT06562296 EXCLUDES a subject with end stage renal disease requiring dialysis, which implies severe renal impairment.\n\u2022 NCT06364267 EXCLUDES patients with moderate or severe renal impairment.\n\u2022 NCT05797935 EXCLUDES patients with moderate or severe renal impairment.",
+    "hits": [
+      {
+        "nct_id": "NCT04793399",
+        "criterion_type": "exclusion",
+        "criterion_text": "Patients with severe renal impairment",
+        "score": 0.7561101978853214,
+        "rerank_score": 0.9997637867927551
+      },
+      {
+        "nct_id": "NCT05787873",
+        "criterion_type": "exclusion",
+        "criterion_text": "Patients with severe renal impairment",
+        "score": 0.756110154274409,
+        "rerank_score": 0.9997637867927551
+      },
+      {
+        "nct_id": "NCT06562296",
+        "criterion_type": "exclusion",
+        "criterion_text": "A subject with end stage renal disease requiring dialysis is excluded.",
+        "score": 0.7662452370305233,
+        "rerank_score": 0.9997054934501648
+      },
+      {
+        "nct_id": "NCT06364267",
+        "criterion_type": "exclusion",
+        "criterion_text": "Patients with moderate or severe renal impairment.",
+        "score": 0.7525954175882694,
+        "rerank_score": 0.9996472597122192
+      },
+      {
+        "nct_id": "NCT05797935",
+        "criterion_type": "exclusion",
+        "criterion_text": "Patients with moderate or severe renal impairment",
+        "score": 0.755683444609745,
+        "rerank_score": 0.9994871616363525
+      },
+      {
+        "nct_id": "NCT06297603",
+        "criterion_type": "inclusion",
+        "criterion_text": "Have moderate or severe renal impairment",
+        "score": 0.7489615901995182,
+        "rerank_score": 0.9991292357444763
+      },
+      {
+        "nct_id": "NCT04970121",
+        "criterion_type": "exclusion",
+        "criterion_text": "Patients with other medical history or evidence of disease that has the potential to confound trial results are excluded from the study\uff1b",
+        "score": 0.7651500053927341,
+        "rerank_score": 0.9989759922027588
+      },
+      {
+        "nct_id": "NCT06388369",
+        "criterion_type": "exclusion",
+        "criterion_text": "Significant disease or condition which, in the investigator's opinion, would exclude the patient from the study",
+        "score": 0.7498231008912636,
+        "rerank_score": 0.9987300038337708
+      },
+      {
+        "nct_id": "NCT05395910",
+        "criterion_type": "exclusion",
+        "criterion_text": "Significant disease or conditions which, in the investigator's opinion, would exclude patient from the study",
+        "score": 0.755604363810889,
+        "rerank_score": 0.9982538819313049
+      },
+      {
+        "nct_id": "NCT05199311",
+        "criterion_type": "exclusion",
+        "criterion_text": "Subjects with serious renal impairment ([CrCl] < 30 mL/min) or requiring dialysis would be excluded",
+        "score": 0.7488502040848105,
+        "rerank_score": 0.9972151517868042
+      }
+    ],
+    "sql": null,
+    "sql_rows": 0,
+    "scalar": null,
+    "cited": [
+      "NCT04793399",
+      "NCT05787873",
+      "NCT05797935",
+      "NCT06364267",
+      "NCT06562296"
+    ],
+    "fabricated": [],
+    "uncited_claims": 1,
+    "n_context_items": 10,
+    "latency_s": 18.049,
+    "total_tokens": 1076,
+    "error": null,
+    "route_confidence": 0.7,
+    "route_source": "rules",
+    "route_reasoning": "asks about eligibility prose (exclude, patients with) with no structured filter"
+  },
+  {
+    "config": "router",
+    "question_id": "m10",
+    "question": "Which trials mention prior anti-PD-1 therapy?",
+    "predicted_route": "semantic",
+    "answer": "The trials mention prior anti-PD-1 therapy as an exclusion criterion for patients who have received such treatment. \n\n\u2022 NCT06627647 EXCLUDES patients with any prior treatment with an anti-PD-1 or anti-PD-L1 agent.\n\u2022 NCT06692738 EXCLUDES patients with any prior treatment with an anti-PD-1 or anti-PD-L1 agent.\n\u2022 NCT04675333 EXCLUDES patients with prior treatment with anti-PD-1 or PD-L1.\n\u2022 NCT04675294 EXCLUDES patients with prior treatment with anti-PD-1 or PD-L1.\n\u2022 NCT07050186 EXCLUDES patients with prior treatment with PD-1 or PD-L1 inhibitors.\n\u2022 NCT04900818 EXCLUDES patients with prior treatment with anti-PD-1 or PD-L1 agent\n\u2022 NCT04761744 EXCLUDES any patient with prior treatment with PD-1 or PD-L1 inhibitor.\n\u2022 NCT04521686 EXCLUDES patients with prior treatment with anti-PD 1 or anti-PD L1 therapies.\n\u2022 NCT04042701 EXCLUDES patients with prior therapy with an anti-PD-1 or anti-PD-L1 agent\n\u2022 NCT03419897 EXCLUDES patients with prior therapies targeting PD-1 or PD-L1",
+    "hits": [
+      {
+        "nct_id": "NCT06627647",
+        "criterion_type": "exclusion",
+        "criterion_text": "Any prior treatment with an anti-PD-1 or anti-PD-L1 agent.",
+        "score": 0.8604611920760702,
+        "rerank_score": 0.9223521947860718
+      },
+      {
+        "nct_id": "NCT06692738",
+        "criterion_type": "exclusion",
+        "criterion_text": "Any prior treatment with an anti-PD-1 or anti-PD-L1 agent.",
+        "score": 0.8604611920760702,
+        "rerank_score": 0.9223521947860718
+      },
+      {
+        "nct_id": "NCT04675333",
+        "criterion_type": "exclusion",
+        "criterion_text": "Prior treatment with anti-PD-1 or PD-L1.",
+        "score": 0.8652540961059405,
+        "rerank_score": 0.8628405928611755
+      },
+      {
+        "nct_id": "NCT04675294",
+        "criterion_type": "exclusion",
+        "criterion_text": "Prior treatment with anti-PD-1 or PD-L1.",
+        "score": 0.8652540961059405,
+        "rerank_score": 0.8628405928611755
+      },
+      {
+        "nct_id": "NCT07050186",
+        "criterion_type": "exclusion",
+        "criterion_text": "Prior treatment with PD-1 or PD-L1 inhibitors.",
+        "score": 0.8546525830795976,
+        "rerank_score": 0.8571509718894958
+      },
+      {
+        "nct_id": "NCT04900818",
+        "criterion_type": "exclusion",
+        "criterion_text": "Prior treatment with anti-PD-1 or PD-L1 agent",
+        "score": 0.8571457011352541,
+        "rerank_score": 0.8529893755912781
+      },
+      {
+        "nct_id": "NCT04761744",
+        "criterion_type": "exclusion",
+        "criterion_text": "Any prior treatment with PD-1 or PD-L1 inhibitor.",
+        "score": 0.8576841269543262,
+        "rerank_score": 0.8308900594711304
+      },
+      {
+        "nct_id": "NCT04521686",
+        "criterion_type": "exclusion",
+        "criterion_text": "Prior treatment with anti-PD 1 or anti-PD L1 therapies.",
+        "score": 0.8759692380594595,
+        "rerank_score": 0.7814010381698608
+      },
+      {
+        "nct_id": "NCT04042701",
+        "criterion_type": "exclusion",
+        "criterion_text": "Prior therapy with an anti-PD-1 or anti-PD-L1 agent",
+        "score": 0.8711866246442034,
+        "rerank_score": 0.7608062624931335
+      },
+      {
+        "nct_id": "NCT03419897",
+        "criterion_type": "exclusion",
+        "criterion_text": "Prior therapies targeting PD-1 or PD-L1",
+        "score": 0.8624177307086878,
+        "rerank_score": 0.7483183741569519
+      }
+    ],
+    "sql": null,
+    "sql_rows": 0,
+    "scalar": null,
+    "cited": [
+      "NCT03419897",
+      "NCT04042701",
+      "NCT04521686",
+      "NCT04675294",
+      "NCT04675333",
+      "NCT04761744",
+      "NCT04900818",
+      "NCT06627647",
+      "NCT06692738",
+      "NCT07050186"
+    ],
+    "fabricated": [],
+    "uncited_claims": 1,
+    "n_context_items": 10,
+    "latency_s": 25.529,
+    "total_tokens": 1261,
+    "error": null,
+    "route_confidence": 0.7,
+    "route_source": "rules",
+    "route_reasoning": "asks about eligibility prose (mention, prior) with no structured filter"
+  },
+  {
+    "config": "router",
+    "question_id": "m11",
+    "question": "Find trials that specify a minimum life expectancy.",
+    "predicted_route": "semantic",
+    "answer": "The trials specify a minimum life expectancy as an inclusion criterion for patients to participate. \n\n\u2022 NCT06782555: Allows patients with a minimum estimated life expectancy of at least 3 months.\n\u2022 NCT06952010: Allows patients with a minimum life expectancy of \u2265 12 weeks.\n\u2022 NCT07123103: Allows patients with a minimum life expectancy of \u2265 12 weeks.\n\u2022 NCT07431281: Allows patients with a minimum life expectancy of \u2265 12 weeks.\n\u2022 NCT04576208: Allows patients with a minimum life expectancy of \u22653 months.",
+    "hits": [
+      {
+        "nct_id": "NCT03335059",
+        "criterion_type": "inclusion",
+        "criterion_text": "A life expectancy at least of the duration of the study.",
+        "score": 0.7447373587832413,
+        "rerank_score": 0.9985752105712891
+      },
+      {
+        "nct_id": "NCT05243550",
+        "criterion_type": "inclusion",
+        "criterion_text": "Has an anticipated life expectancy of at least the duration of the trial.",
+        "score": 0.7629448113704844,
+        "rerank_score": 0.9822026491165161
+      },
+      {
+        "nct_id": "NCT05136898",
+        "criterion_type": "inclusion",
+        "criterion_text": "Has an anticipated life expectancy of at least the duration of the trial.",
+        "score": 0.7629448113704844,
+        "rerank_score": 0.9822026491165161
+      },
+      {
+        "nct_id": "NCT06331299",
+        "criterion_type": "inclusion",
+        "criterion_text": "Has an anticipated life expectancy of at least the duration of the trial.",
+        "score": 0.7629448113704844,
+        "rerank_score": 0.9822026491165161
+      },
+      {
+        "nct_id": "NCT06782555",
+        "criterion_type": "inclusion",
+        "criterion_text": "Appropriate to enter a clinical trial with a minimum estimated life expectancy of at least 3 months.",
+        "score": 0.7885744806699584,
+        "rerank_score": 0.9754164814949036
+      },
+      {
+        "nct_id": "NCT06952010",
+        "criterion_type": "inclusion",
+        "criterion_text": "Minimum life expectancy of \u2265 12 weeks.",
+        "score": 0.7336120009422511,
+        "rerank_score": 0.9505521059036255
+      },
+      {
+        "nct_id": "NCT07123103",
+        "criterion_type": "inclusion",
+        "criterion_text": "Minimum life expectancy of \u2265 12 weeks.",
+        "score": 0.7336120009422511,
+        "rerank_score": 0.9505521059036255
+      },
+      {
+        "nct_id": "NCT07431281",
+        "criterion_type": "inclusion",
+        "criterion_text": "Minimum life expectancy of \u2265 12 weeks.",
+        "score": 0.7336120009422511,
+        "rerank_score": 0.9505521059036255
+      },
+      {
+        "nct_id": "NCT04576208",
+        "criterion_type": "inclusion",
+        "criterion_text": "Minimum life expectancy of \u22653 months.",
+        "score": 0.739190832424722,
+        "rerank_score": 0.9482963681221008
+      },
+      {
+        "nct_id": "NCT05187832",
+        "criterion_type": "inclusion",
+        "criterion_text": "Minimum life expectancy of a least 3 months as determined by the Investigator.",
+        "score": 0.7581041681201781,
+        "rerank_score": 0.9255791306495667
+      }
+    ],
+    "sql": null,
+    "sql_rows": 0,
+    "scalar": null,
+    "cited": [
+      "NCT04576208",
+      "NCT06782555",
+      "NCT06952010",
+      "NCT07123103",
+      "NCT07431281"
+    ],
+    "fabricated": [],
+    "uncited_claims": 1,
+    "n_context_items": 10,
+    "latency_s": 15.375,
+    "total_tokens": 1064,
+    "error": null,
+    "route_confidence": 0.35,
+    "route_source": "rules",
+    "route_reasoning": "no clear structured or semantic signal; defaulting to semantic search"
+  },
+  {
+    "config": "router",
+    "question_id": "m12",
+    "question": "Which trials exclude patients with uncontrolled hypertension?",
+    "predicted_route": "semantic",
+    "answer": "Patients with uncontrolled hypertension are excluded from all the listed clinical trials. \n\n\u2022 NCT04320888: EXCLUDES patients with uncontrolled hypertension\n\u2022 NCT03987204: EXCLUDES patients with uncontrolled hypertension\n\u2022 NCT05395741: EXCLUDES patients with uncontrolled hypertension\n\u2022 NCT05455424: EXCLUDES patients with uncontrolled hypertension\n\u2022 NCT06712186: EXCLUDES patients with uncontrolled hypertension\n\u2022 NCT03589222: EXCLUDES patients with uncontrolled hypertension\n\u2022 NCT04013646: EXCLUDES patients with uncontrolled hypertension\n\u2022 NCT04111848: EXCLUDES patients with uncontrolled hypertension\n\u2022 NCT04561362: EXCLUDES patients with uncontrolled hypertension",
+    "hits": [
+      {
+        "nct_id": "NCT04320888",
+        "criterion_type": "exclusion",
+        "criterion_text": "Patients with uncontrolled hypertension are excluded",
+        "score": 0.83855106945489,
+        "rerank_score": 0.9999467134475708
+      },
+      {
+        "nct_id": "NCT03987204",
+        "criterion_type": "exclusion",
+        "criterion_text": "Patients with uncontrolled hypertension will be excluded",
+        "score": 0.8218094845243861,
+        "rerank_score": 0.9995725750923157
+      },
+      {
+        "nct_id": "NCT05395741",
+        "criterion_type": "exclusion",
+        "criterion_text": "Patients with uncontrolled hypertension.",
+        "score": 0.7817085672803377,
+        "rerank_score": 0.9980047345161438
+      },
+      {
+        "nct_id": "NCT05455424",
+        "criterion_type": "exclusion",
+        "criterion_text": "Patients with uncontrolled hypertension.",
+        "score": 0.7817085672803377,
+        "rerank_score": 0.9980047345161438
+      },
+      {
+        "nct_id": "NCT06712186",
+        "criterion_type": "exclusion",
+        "criterion_text": "Patients with uncontrolled hypertension.",
+        "score": 0.7817085672803377,
+        "rerank_score": 0.9980047345161438
+      },
+      {
+        "nct_id": "NCT03589222",
+        "criterion_type": "exclusion",
+        "criterion_text": "Patients with uncontrolled hypertension.",
+        "score": 0.7817085672803377,
+        "rerank_score": 0.9980047345161438
+      },
+      {
+        "nct_id": "NCT03506048",
+        "criterion_type": "exclusion",
+        "criterion_text": "Patients with uncontrolled hypertension (requirement for more than 2 blood pressure [BP] medications or grade 2 or higher BP elevation while on adequate doses of not more than 2 antihypertensive agents) are excluded from the study because one of the significant adverse events of lenvatinib is worsening hypertension",
+        "score": 0.7889689819561396,
+        "rerank_score": 0.9970741271972656
+      },
+      {
+        "nct_id": "NCT04013646",
+        "criterion_type": "exclusion",
+        "criterion_text": "Patients with uncontrolled hypertension",
+        "score": 0.787187968157289,
+        "rerank_score": 0.9964702129364014
+      },
+      {
+        "nct_id": "NCT04111848",
+        "criterion_type": "exclusion",
+        "criterion_text": "Patients with uncontrolled hypertension",
+        "score": 0.7871879085526371,
+        "rerank_score": 0.9964702129364014
+      },
+      {
+        "nct_id": "NCT04561362",
+        "criterion_type": "exclusion",
+        "criterion_text": "Patients with uncontrolled hypertension",
+        "score": 0.7871879085526371,
+        "rerank_score": 0.9964702129364014
+      }
+    ],
+    "sql": null,
+    "sql_rows": 0,
+    "scalar": null,
+    "cited": [
+      "NCT03589222",
+      "NCT03987204",
+      "NCT04013646",
+      "NCT04111848",
+      "NCT04320888",
+      "NCT04561362",
+      "NCT05395741",
+      "NCT05455424",
+      "NCT06712186"
+    ],
+    "fabricated": [],
+    "uncited_claims": 1,
+    "n_context_items": 10,
+    "latency_s": 18.248,
+    "total_tokens": 1099,
+    "error": null,
+    "route_confidence": 0.7,
+    "route_source": "rules",
+    "route_reasoning": "asks about eligibility prose (exclude, patients with) with no structured filter"
+  },
+  {
+    "config": "router",
+    "question_id": "m13",
+    "question": "Find trials that exclude patients with HIV infection.",
+    "predicted_route": "semantic",
+    "answer": "The retrieved clinical trials all exclude patients with HIV infection. Here are the specific trials:\n\n\u2022 NCT06510361 EXCLUDES patients with HIV\n\u2022 NCT04322643 EXCLUDES patients with known HIV/AIDS\n\u2022 NCT03568097 EXCLUDES patients with a known history of testing positive for HIV or known acquired immunodeficiency syndrome\n\u2022 NCT02659800 EXCLUDES patients with human immunodeficiency virus (HIV)\n\u2022 NCT04970121 does not specifically mention HIV, but excludes patients with other medical history or evidence of disease that has the potential to confound trial results; \n\u2022 NCT05198479 EXCLUDES patients with known history of Human Immunodeficiency Virus (HIV)\n\u2022 NCT03256916 EXCLUDES HIV positive patients\n\u2022 NCT03628209 EXCLUDES patients with known HIV or hepatitis B or C\n\u2022 NCT03723915 EXCLUDES patients with a known history of Human Immunodeficiency Virus (HIV)",
+    "hits": [
+      {
+        "nct_id": "NCT06510361",
+        "criterion_type": "exclusion",
+        "criterion_text": "Patients with HIV will be excluded",
+        "score": 0.8154997449517613,
+        "rerank_score": 0.9998795986175537
+      },
+      {
+        "nct_id": "NCT04322643",
+        "criterion_type": "exclusion",
+        "criterion_text": "Patients are excluded if they have known HIV/AIDS.",
+        "score": 0.7996347428239232,
+        "rerank_score": 0.9993900060653687
+      },
+      {
+        "nct_id": "NCT03568097",
+        "criterion_type": "exclusion",
+        "criterion_text": "Patients with known history of testing positive for HIV or known acquired immunodeficiency syndrome are excluded.",
+        "score": 0.7808315623302212,
+        "rerank_score": 0.9992126226425171
+      },
+      {
+        "nct_id": "NCT02659800",
+        "criterion_type": "exclusion",
+        "criterion_text": "Patients with human immunodeficiency virus (HIV) are excluded",
+        "score": 0.8177452956461426,
+        "rerank_score": 0.9990154504776001
+      },
+      {
+        "nct_id": "NCT04970121",
+        "criterion_type": "exclusion",
+        "criterion_text": "Patients with other medical history or evidence of disease that has the potential to confound trial results are excluded from the study\uff1b",
+        "score": 0.7910374153897122,
+        "rerank_score": 0.9982231259346008
+      },
+      {
+        "nct_id": "NCT05198479",
+        "criterion_type": "exclusion",
+        "criterion_text": "Patients with known history of Human Immunodeficiency Virus (HIV) will be excluded.",
+        "score": 0.7900580403226033,
+        "rerank_score": 0.9978762865066528
+      },
+      {
+        "nct_id": "NCT05451056",
+        "criterion_type": "exclusion",
+        "criterion_text": "Subjects participating in other clinical trials are excluded.",
+        "score": 0.812693998171353,
+        "rerank_score": 0.9978010058403015
+      },
+      {
+        "nct_id": "NCT03256916",
+        "criterion_type": "exclusion",
+        "criterion_text": "HIV positive patients will be excluded.",
+        "score": 0.7942935228347778,
+        "rerank_score": 0.996996283531189
+      },
+      {
+        "nct_id": "NCT03628209",
+        "criterion_type": "exclusion",
+        "criterion_text": "Patients with known HIV or hepatitis B or C are excluded",
+        "score": 0.8026262513917292,
+        "rerank_score": 0.9967082738876343
+      },
+      {
+        "nct_id": "NCT03723915",
+        "criterion_type": "exclusion",
+        "criterion_text": "Patients with a known history of Human Immunodeficiency Virus (HIV) (HIV 1/2 antibodies) are excluded.",
+        "score": 0.7879017844317272,
+        "rerank_score": 0.9961776733398438
+      }
+    ],
+    "sql": null,
+    "sql_rows": 0,
+    "scalar": null,
+    "cited": [
+      "NCT02659800",
+      "NCT03256916",
+      "NCT03568097",
+      "NCT03628209",
+      "NCT03723915",
+      "NCT04322643",
+      "NCT04970121",
+      "NCT05198479",
+      "NCT06510361"
+    ],
+    "fabricated": [],
+    "uncited_claims": 1,
+    "n_context_items": 10,
+    "latency_s": 21.616,
+    "total_tokens": 1161,
+    "error": null,
+    "route_confidence": 0.7,
+    "route_source": "rules",
+    "route_reasoning": "asks about eligibility prose (exclude, patients with) with no structured filter"
+  },
+  {
+    "config": "router",
+    "question_id": "m14",
+    "question": "Which trials require adequate bone marrow function?",
+    "predicted_route": "semantic",
+    "answer": "The trials require adequate bone marrow function for patient eligibility. \n\n\u2022 NCT03223103 ALLOWS patients with adequate bone marrow function to join.\n\u2022 NCT03935347 ALLOWS patients with adequate bone marrow function to join.\n\u2022 NCT04305548 ALLOWS patients with adequate bone marrow function to join.\n\u2022 NCT05358704 ALLOWS patients with adequate bone marrow function to join.\n\u2022 NCT03493451 ALLOWS patients with adequate bone marrow function to join.\n\u2022 NCT03852511 ALLOWS patients with adequate bone marrow function to join.\n\u2022 NCT05043714 ALLOWS patients with adequate bone marrow function to join.\n\u2022 NCT06943521 ALLOWS patients with adequate bone marrow function to join.\n\u2022 NCT03631953 ALLOWS patients with adequate bone marrow function to join.\n\u2022 NCT04688853 ALLOWS patients with adequate bone marrow function to join.",
+    "hits": [
+      {
+        "nct_id": "NCT03223103",
+        "criterion_type": "inclusion",
+        "criterion_text": "Have adequate bone marrow function",
+        "score": 0.864620888599,
+        "rerank_score": 0.9949583411216736
+      },
+      {
+        "nct_id": "NCT03935347",
+        "criterion_type": "inclusion",
+        "criterion_text": "Adequate bone marrow function",
+        "score": 0.8587598288798449,
+        "rerank_score": 0.8668429851531982
+      },
+      {
+        "nct_id": "NCT04305548",
+        "criterion_type": "inclusion",
+        "criterion_text": "Adequate bone marrow function",
+        "score": 0.8587598288798449,
+        "rerank_score": 0.8668429851531982
+      },
+      {
+        "nct_id": "NCT05358704",
+        "criterion_type": "inclusion",
+        "criterion_text": "Adequate bone marrow function",
+        "score": 0.8587598288798449,
+        "rerank_score": 0.8668429851531982
+      },
+      {
+        "nct_id": "NCT03493451",
+        "criterion_type": "inclusion",
+        "criterion_text": "Adequate bone marrow function",
+        "score": 0.8587597608566345,
+        "rerank_score": 0.8668429851531982
+      },
+      {
+        "nct_id": "NCT03852511",
+        "criterion_type": "inclusion",
+        "criterion_text": "Adequate bone marrow function",
+        "score": 0.8587597608566345,
+        "rerank_score": 0.8668429851531982
+      },
+      {
+        "nct_id": "NCT05043714",
+        "criterion_type": "inclusion",
+        "criterion_text": "Adequate bone marrow function",
+        "score": 0.8587597608566345,
+        "rerank_score": 0.8668429851531982
+      },
+      {
+        "nct_id": "NCT06943521",
+        "criterion_type": "inclusion",
+        "criterion_text": "Adequate bone marrow function",
+        "score": 0.8587597608566345,
+        "rerank_score": 0.8668429851531982
+      },
+      {
+        "nct_id": "NCT03631953",
+        "criterion_type": "inclusion",
+        "criterion_text": "Adequate bone marrow function",
+        "score": 0.8587597608566345,
+        "rerank_score": 0.8668429851531982
+      },
+      {
+        "nct_id": "NCT04688853",
+        "criterion_type": "inclusion",
+        "criterion_text": "Adequate bone marrow function",
+        "score": 0.8587597608566345,
+        "rerank_score": 0.8668429851531982
+      }
+    ],
+    "sql": null,
+    "sql_rows": 0,
+    "scalar": null,
+    "cited": [
+      "NCT03223103",
+      "NCT03493451",
+      "NCT03631953",
+      "NCT03852511",
+      "NCT03935347",
+      "NCT04305548",
+      "NCT04688853",
+      "NCT05043714",
+      "NCT05358704",
+      "NCT06943521"
+    ],
+    "fabricated": [],
+    "uncited_claims": 1,
+    "n_context_items": 10,
+    "latency_s": 17.752,
+    "total_tokens": 1069,
+    "error": null,
+    "route_confidence": 0.35,
+    "route_source": "rules",
+    "route_reasoning": "no clear structured or semantic signal; defaulting to semantic search"
+  },
+  {
+    "config": "router",
+    "question_id": "m15",
+    "question": "Find trials mentioning prior radiotherapy in their eligibility.",
+    "predicted_route": "semantic",
+    "answer": "The context mentions prior radiotherapy as an exclusion criterion in several trials. Here are the details:\n\n\u2022 NCT04133948 EXCLUDES patients who have had prior radiotherapy.\n\u2022 NCT04949113 EXCLUDES patients who have had prior radiotherapy.\n\u2022 NCT03649464 ALLOWS patients who have had prior radiotherapy.\n\u2022 NCT05043987 EXCLUDES patients who have had prior radiotherapy.\n\u2022 NCT05999630 EXCLUDES patients who have had prior radiotherapy.\n\u2022 NCT05116202 EXCLUDES patients who have had prior radiotherapy.\n\u2022 NCT02432417 EXCLUDES patients who have had prior radiotherapy.\n\u2022 NCT04327999 EXCLUDES patients who have had prior radiotherapy.\n\u2022 NCT05131919 EXCLUDES patients who have had prior radiotherapy for the disease under study.\n\u2022 NCT07381231 EXCLUDES patients who have had prior radiotherapy to the intended treatment site.\n\nNote that none of the retrieved trials allow patients with a history of prior radiotherapy, but some specifically exclude them.",
+    "hits": [
+      {
+        "nct_id": "NCT04133948",
+        "criterion_type": "exclusion",
+        "criterion_text": "Prior radiotherapy.",
+        "score": 0.7853498502523278,
+        "rerank_score": 0.9988245368003845
+      },
+      {
+        "nct_id": "NCT04949113",
+        "criterion_type": "exclusion",
+        "criterion_text": "Prior radiotherapy;",
+        "score": 0.7966053031291717,
+        "rerank_score": 0.9957301020622253
+      },
+      {
+        "nct_id": "NCT03649464",
+        "criterion_type": "inclusion",
+        "criterion_text": "Prior radiotherapy",
+        "score": 0.7883746119439181,
+        "rerank_score": 0.9957035183906555
+      },
+      {
+        "nct_id": "NCT05043987",
+        "criterion_type": "exclusion",
+        "criterion_text": "Prior radiotherapy",
+        "score": 0.7883746119439181,
+        "rerank_score": 0.9957035183906555
+      },
+      {
+        "nct_id": "NCT05999630",
+        "criterion_type": "exclusion",
+        "criterion_text": "Prior radiotherapy",
+        "score": 0.7883746119439181,
+        "rerank_score": 0.9957035183906555
+      },
+      {
+        "nct_id": "NCT05116202",
+        "criterion_type": "exclusion",
+        "criterion_text": "Prior radiotherapy",
+        "score": 0.7883746119439181,
+        "rerank_score": 0.9957035183906555
+      },
+      {
+        "nct_id": "NCT02432417",
+        "criterion_type": "exclusion",
+        "criterion_text": "Prior radiotherapy",
+        "score": 0.7883746119439181,
+        "rerank_score": 0.9957035183906555
+      },
+      {
+        "nct_id": "NCT04327999",
+        "criterion_type": "exclusion",
+        "criterion_text": "Prior radiotherapy",
+        "score": 0.7883746119439181,
+        "rerank_score": 0.9957035183906555
+      },
+      {
+        "nct_id": "NCT05131919",
+        "criterion_type": "exclusion",
+        "criterion_text": "Prior radiotherapy for the disease under study",
+        "score": 0.8068226555518472,
+        "rerank_score": 0.9894877672195435
+      },
+      {
+        "nct_id": "NCT07381231",
+        "criterion_type": "exclusion",
+        "criterion_text": "Prior radiotherapy to the intended treatment site",
+        "score": 0.7807177043816913,
+        "rerank_score": 0.9711758494377136
+      }
+    ],
+    "sql": null,
+    "sql_rows": 0,
+    "scalar": null,
+    "cited": [
+      "NCT02432417",
+      "NCT03649464",
+      "NCT04133948",
+      "NCT04327999",
+      "NCT04949113",
+      "NCT05043987",
+      "NCT05116202",
+      "NCT05131919",
+      "NCT05999630",
+      "NCT07381231"
+    ],
+    "fabricated": [],
+    "uncited_claims": 1,
+    "n_context_items": 10,
+    "latency_s": 21.629,
+    "total_tokens": 1093,
+    "error": null,
+    "route_confidence": 0.7,
+    "route_source": "rules",
+    "route_reasoning": "asks about eligibility prose (eligibilit, mentioning, prior) with no structured filter"
+  },
+  {
+    "config": "router",
+    "question_id": "m16",
+    "question": "Which trials exclude patients with a recent myocardial infarction?",
+    "predicted_route": "semantic",
+    "answer": "The following clinical trials exclude patients with a recent myocardial infarction:\n\n\u2022 NCT05435053 EXCLUDES patients who have had a recent myocardial infarction\n\u2022 NCT05609656 EXCLUDES patients who have had a recent myocardial infarction\n\u2022 NCT06265259 EXCLUDES patients who have had a recent acute myocardial infarction\n\u2022 NCT07027670 EXCLUDES patients who have had a recent acute myocardial infarction",
+    "hits": [
+      {
+        "nct_id": "NCT04970121",
+        "criterion_type": "exclusion",
+        "criterion_text": "Patients with other medical history or evidence of disease that has the potential to confound trial results are excluded from the study\uff1b",
+        "score": 0.7719778972831246,
+        "rerank_score": 0.9953389167785645
+      },
+      {
+        "nct_id": "NCT02971501",
+        "criterion_type": "exclusion",
+        "criterion_text": "Patients with clinically significant cardiovascular disease are excluded",
+        "score": 0.746608041125776,
+        "rerank_score": 0.9898678064346313
+      },
+      {
+        "nct_id": "NCT03587311",
+        "criterion_type": "exclusion",
+        "criterion_text": "Patients with clinically significant cardiovascular disease are excluded",
+        "score": 0.746608041125776,
+        "rerank_score": 0.9898678064346313
+      },
+      {
+        "nct_id": "NCT05435053",
+        "criterion_type": "exclusion",
+        "criterion_text": "Recent myocardial infarction",
+        "score": 0.7556426736862122,
+        "rerank_score": 0.9883071780204773
+      },
+      {
+        "nct_id": "NCT05609656",
+        "criterion_type": "exclusion",
+        "criterion_text": "Recent myocardial infarction",
+        "score": 0.7556426736862122,
+        "rerank_score": 0.9883071780204773
+      },
+      {
+        "nct_id": "NCT05902520",
+        "criterion_type": "exclusion",
+        "criterion_text": "Patients with evidence of ischemia on exercise tolerance test, stress thallium study, or baseline EKG are excluded.",
+        "score": 0.7663633416729431,
+        "rerank_score": 0.9847118854522705
+      },
+      {
+        "nct_id": "NCT05451056",
+        "criterion_type": "exclusion",
+        "criterion_text": "Subjects participating in other clinical trials are excluded.",
+        "score": 0.7426824212439045,
+        "rerank_score": 0.9842166900634766
+      },
+      {
+        "nct_id": "NCT03031730",
+        "criterion_type": "exclusion",
+        "criterion_text": "Subjects with myocardial infarction within 6 months of study day 1, symptomatic congestive heart failure (New York Heart Association [NYHA] class III and higher), unstable angina, or cardiac arrhythmia requiring medication are excluded",
+        "score": 0.7441622379164679,
+        "rerank_score": 0.9741843342781067
+      },
+      {
+        "nct_id": "NCT06265259",
+        "criterion_type": "exclusion",
+        "criterion_text": "Recent acute myocardial infarction",
+        "score": 0.7444482667579734,
+        "rerank_score": 0.9686365127563477
+      },
+      {
+        "nct_id": "NCT07027670",
+        "criterion_type": "exclusion",
+        "criterion_text": "Recent acute myocardial infarction",
+        "score": 0.7444480601272945,
+        "rerank_score": 0.9686365127563477
+      }
+    ],
+    "sql": null,
+    "sql_rows": 0,
+    "scalar": null,
+    "cited": [
+      "NCT05435053",
+      "NCT05609656",
+      "NCT06265259",
+      "NCT07027670"
+    ],
+    "fabricated": [],
+    "uncited_claims": 1,
+    "n_context_items": 10,
+    "latency_s": 18.224,
+    "total_tokens": 1076,
+    "error": null,
+    "route_confidence": 0.7,
+    "route_source": "rules",
+    "route_reasoning": "asks about eligibility prose (exclude, patients with) with no structured filter"
+  },
+  {
+    "config": "router",
+    "question_id": "m17",
+    "question": "Find trials that require the participant to be able to give informed consent.",
+    "predicted_route": "semantic",
+    "answer": "The trials require participants to be able to give informed consent. Here are the details:\n\n\u2022 NCT04855435: Allows patients who can provide informed consent and comply with trial procedures.\n\u2022 NCT03580967: Allows patients who have the ability to provide informed consent to participate in the study.\n\u2022 NCT07631650: Allows patients who can give documented informed consent to participate in this study.\n\u2022 NCT05020912: Allows patients who must provide informed consent to participate in the trial.\n\u2022 NCT03537131: Allows patients who are willing and able to give informed consent for participation in the trial.\n\u2022 NCT03936621: Allows patients who are capable of providing informed consent to participate in the study.\n\u2022 NCT04052269: Allows patients who can give informed consent to participate in the study.\n\u2022 NCT03936218: Allows patients who must be able to give informed consent for participation in the trial.\n\u2022 NCT03101748: Allows patients who are able to provide written informed consent for the trial.\n\u2022 NCT03275597: Allows patients who must be willing and able to provide written informed consent for the trial.",
+    "hits": [
+      {
+        "nct_id": "NCT04855435",
+        "criterion_type": "unspecified",
+        "criterion_text": "Ability to provide informed consent and comply with trial procedures.",
+        "score": 0.8175455549305074,
+        "rerank_score": 0.9996905326843262
+      },
+      {
+        "nct_id": "NCT03580967",
+        "criterion_type": "inclusion",
+        "criterion_text": "Must have the ability to provide informed consent to participate in the study.",
+        "score": 0.8295818814510671,
+        "rerank_score": 0.9996342658996582
+      },
+      {
+        "nct_id": "NCT07631650",
+        "criterion_type": "inclusion",
+        "criterion_text": "Must be able to give documented informed consent to participate in this study",
+        "score": 0.8207910701784169,
+        "rerank_score": 0.9993078708648682
+      },
+      {
+        "nct_id": "NCT05020912",
+        "criterion_type": "inclusion",
+        "criterion_text": "Must provide informed consent to participate in the trial.",
+        "score": 0.8537369108921863,
+        "rerank_score": 0.9991828799247742
+      },
+      {
+        "nct_id": "NCT03537131",
+        "criterion_type": "inclusion",
+        "criterion_text": "Willing and able to give informed consent for participation in the trial",
+        "score": 0.8213472579303731,
+        "rerank_score": 0.9991495609283447
+      },
+      {
+        "nct_id": "NCT03936621",
+        "criterion_type": "inclusion",
+        "criterion_text": "Are capable of providing informed consent to participate in the study",
+        "score": 0.829728706704359,
+        "rerank_score": 0.9985975623130798
+      },
+      {
+        "nct_id": "NCT04052269",
+        "criterion_type": "inclusion",
+        "criterion_text": "Able to give informed consent to participate in the study",
+        "score": 0.8218263600079643,
+        "rerank_score": 0.9984365105628967
+      },
+      {
+        "nct_id": "NCT03936218",
+        "criterion_type": "inclusion",
+        "criterion_text": "Patient must be able to give informed consent for participation in the trial.",
+        "score": 0.8347085864581427,
+        "rerank_score": 0.9984132051467896
+      },
+      {
+        "nct_id": "NCT03101748",
+        "criterion_type": "inclusion",
+        "criterion_text": "Able to provide written informed consent for the trial",
+        "score": 0.8231239914894104,
+        "rerank_score": 0.9980165958404541
+      },
+      {
+        "nct_id": "NCT03275597",
+        "criterion_type": "inclusion",
+        "criterion_text": "Participant must be willing and able to provide written informed consent for the trial.",
+        "score": 0.8258491546927934,
+        "rerank_score": 0.9978260397911072
+      }
+    ],
+    "sql": null,
+    "sql_rows": 0,
+    "scalar": null,
+    "cited": [
+      "NCT03101748",
+      "NCT03275597",
+      "NCT03537131",
+      "NCT03580967",
+      "NCT03936218",
+      "NCT03936621",
+      "NCT04052269",
+      "NCT04855435",
+      "NCT05020912",
+      "NCT07631650"
+    ],
+    "fabricated": [],
+    "uncited_claims": 1,
+    "n_context_items": 10,
+    "latency_s": 36.579,
+    "total_tokens": 1169,
+    "error": null,
+    "route_confidence": 0.35,
+    "route_source": "rules",
+    "route_reasoning": "no clear structured or semantic signal; defaulting to semantic search"
+  },
+  {
+    "config": "router",
+    "question_id": "h01",
+    "question": "Which recruiting phase 2 oncology trials in Massachusetts allow patients with a history of autoimmune disease?",
+    "predicted_route": "hybrid",
+    "answer": "None of the recruiting phase 2 oncology trials in Massachusetts allow patients with a history of autoimmune disease. \n\n\u2022 NCT05987241 ALLOWS patients with no active or history of autoimmune disease that might recur.\n\u2022 NCT05783609 EXCLUDES patients with a history of autoimmune disease, including various conditions.\n\nNote: The context does not specify the location (Massachusetts) for any of the trials.",
+    "hits": [
+      {
+        "nct_id": "NCT07213830",
+        "criterion_type": "exclusion",
+        "criterion_text": "History of known autoimmune disease",
+        "score": 0.9516316738787297,
+        "rerank_score": 0.9998273849487305
+      },
+      {
+        "nct_id": "NCT06747845",
+        "criterion_type": "exclusion",
+        "criterion_text": "Patients will be excluded if they have a history of or active autoimmune disease, defined as: patients with a history of inflammatory bowel disease are excluded from this study, as are patients with a history of symptomatic autoimmune disease (e.g. rheumatoid arthritis, systemic progressive sclerosis (scleroderma), systemic lupus erythematosus, autoimmune vasculitis e.g. Wegener's Granulomatosis); motor neuropathy considered of autoimmune origin (e.g. Guillain-Barre Syndrome).",
+        "score": 0.774759752253284,
+        "rerank_score": 0.9941743016242981
+      },
+      {
+        "nct_id": "NCT07527858",
+        "criterion_type": "exclusion",
+        "criterion_text": "History of autoimmune disease or active autoimmune disease that has required systemic treatment within 2 years.",
+        "score": 0.832740336762608,
+        "rerank_score": 0.9939430356025696
+      },
+      {
+        "nct_id": "NCT05642455",
+        "criterion_type": "exclusion",
+        "criterion_text": "History of autoimmune or immune mediated disease",
+        "score": 0.9279592590307896,
+        "rerank_score": 0.9913383722305298
+      },
+      {
+        "nct_id": "NCT04486352",
+        "criterion_type": "exclusion",
+        "criterion_text": "Have an active or history of autoimmune disease or immune deficiency",
+        "score": 0.8172560930252133,
+        "rerank_score": 0.990225613117218
+      },
+      {
+        "nct_id": "NCT05968326",
+        "criterion_type": "exclusion",
+        "criterion_text": "Active or history of autoimmune disease or immune deficiency",
+        "score": 0.8733161948119557,
+        "rerank_score": 0.9866836667060852
+      },
+      {
+        "nct_id": "NCT04802759",
+        "criterion_type": "exclusion",
+        "criterion_text": "Active or history of autoimmune disease or immune deficiency",
+        "score": 0.8733161948119557,
+        "rerank_score": 0.9866836667060852
+      },
+      {
+        "nct_id": "NCT05987241",
+        "criterion_type": "inclusion",
+        "criterion_text": "PRE-REGISTRATION (STEP 0): No active autoimmune disease or history of autoimmune disease that might recur, which may affect vital organ function or require immune suppressive treatment including systemic corticosteroids. These include but are not limited to patients with a history of immune related neurologic disease, multiple sclerosis, autoimmune (demyelinating) neuropathy, Guillain-Barre syndrome, myasthenia gravis; systemic autoimmune disease such as systemic lupus erythematosus (SLE), connective tissue diseases, scleroderma, inflammatory bowel disease (IBD), Crohn's, ulcerative colitis, hepatitis; and patients with a history of toxic epidermal necrolysis (TEN), Stevens- Johnson syndrome, or phospholipid syndrome because of the risk of recurrence or exacerbation of disease.",
+        "score": 0.7729703919309158,
+        "rerank_score": 0.9846467971801758
+      },
+      {
+        "nct_id": "NCT04787042",
+        "criterion_type": "exclusion",
+        "criterion_text": "History of active autoimmune disorders",
+        "score": 0.9098558152237858,
+        "rerank_score": 0.9846216440200806
+      },
+      {
+        "nct_id": "NCT05783609",
+        "criterion_type": "exclusion",
+        "criterion_text": "History of autoimmune disease, including but not limited to myocarditis, pneumonitis, myasthenia gravis, myositis, autoimmune hepatitis, systemic lupus erythematosus, rheumatoid arthritis, inflammatory bowel disease, vascular thrombosis associated with antiphospholipid syndrome, Wegener's granulomatosis, Sj\u00f6gren's syndrome, Guillain-Barr\u00e9 syndrome, multiple sclerosis, vasculitis, or glomerulonephritis.",
+        "score": 0.8100656753817733,
+        "rerank_score": 0.9817203283309937
+      }
+    ],
+    "sql": "SELECT nct_id FROM v_trials WHERE overall_status = 'RECRUITING' AND phases @> ARRAY['PHASE2'] AND therapeutic_areas @> ARRAY['oncology'] AND 'Massachusetts' = ANY(states) LIMIT 2000",
+    "sql_rows": 0,
+    "scalar": null,
+    "cited": [
+      "NCT05783609",
+      "NCT05987241"
+    ],
+    "fabricated": [],
+    "uncited_claims": 1,
+    "n_context_items": 10,
+    "latency_s": 53.715,
+    "total_tokens": 2662,
+    "error": null,
+    "route_confidence": 0.75,
+    "route_source": "rules",
+    "route_reasoning": "mentions free-text eligibility concepts (history of, allow, patients with) and structured filters (phase 2, recruiting, in massachusetts); LLM split the two halves"
+  },
+  {
+    "config": "router",
+    "question_id": "h02",
+    "question": "Which recruiting phase 3 diabetes trials exclude patients with severe renal impairment?",
+    "predicted_route": "hybrid",
+    "answer": "The following Phase 3 diabetes trials exclude patients with severe renal impairment:\n\n\u2022 NCT05174052 EXCLUDES patients with severe renal impairment due to an eGFR <30mL/minute/1.73m2.\n\u2022 NCT06387199 EXCLUDES patients with severe impairment of renal function with eGFR <30 mL/min/1.73 m2, measured within the last 12 months.\n\u2022 NCT07059377 EXCLUDES patients with acute, chronic or end-stage renal failure.\n\u2022 NCT07284511 EXCLUDES patients with severe renal impairment with eGFR <30 mL/min/1.73 m2 (CKD-EPI), measured within the last four months.\n\nNote: None of the retrieved trials allow patients with severe renal impairment to participate.",
+    "hits": [
+      {
+        "nct_id": "NCT07481747",
+        "criterion_type": "exclusion",
+        "criterion_text": "Severe renal impairment (eGFR <30 mL/min/1.73 m\u00b2)",
+        "score": 0.8510127917233945,
+        "rerank_score": 0.9965007305145264
+      },
+      {
+        "nct_id": "NCT06955416",
+        "criterion_type": "exclusion",
+        "criterion_text": "Acute kidney injury",
+        "score": 0.7428618890899986,
+        "rerank_score": 0.9960227012634277
+      },
+      {
+        "nct_id": "NCT07284511",
+        "criterion_type": "exclusion",
+        "criterion_text": "Severe renal impairment with eGFR <30 mL/min/1.73 m2 (CKD-EPI), measured within the last four months.",
+        "score": 0.8010228157653116,
+        "rerank_score": 0.9932184815406799
+      },
+      {
+        "nct_id": "NCT07059377",
+        "criterion_type": "exclusion",
+        "criterion_text": "Acute, chronic or end-stage renal failure",
+        "score": 0.7536130988097731,
+        "rerank_score": 0.9921843409538269
+      },
+      {
+        "nct_id": "NCT06894784",
+        "criterion_type": "unspecified",
+        "criterion_text": "Severe impairment of renal function with an eGFR < 30 mL/min/1.73 m2 within four months of admission. eGFR will be computed using the CKD-EPI method.",
+        "score": 0.7384775876998901,
+        "rerank_score": 0.9892870187759399
+      },
+      {
+        "nct_id": "NCT05174052",
+        "criterion_type": "exclusion",
+        "criterion_text": "Severe renal impairment with eGFR<30mL/minute/1.73m2,",
+        "score": 0.814010907054599,
+        "rerank_score": 0.9891769289970398
+      },
+      {
+        "nct_id": "NCT06772168",
+        "criterion_type": "unspecified",
+        "criterion_text": "A patient with severe renal impairment (eGFR < 45 mL/min/1.73 m2 for a patient taking metformin at 1,000 mg, or eGFR < 60 mL/min/1.73 m2 for a patient taking metformin at > 1,000 mg) or hepatic impairment (AST or ALT is 2.5 times the upper limit of normal range)",
+        "score": 0.7554503679275513,
+        "rerank_score": 0.9888013601303101
+      },
+      {
+        "nct_id": "NCT07662135",
+        "criterion_type": "inclusion",
+        "criterion_text": "Impaired renal function",
+        "score": 0.8610219955444336,
+        "rerank_score": 0.9873061180114746
+      },
+      {
+        "nct_id": "NCT03925714",
+        "criterion_type": "exclusion",
+        "criterion_text": "Hepatic or renal impairment.",
+        "score": 0.8281408157180826,
+        "rerank_score": 0.9774754047393799
+      },
+      {
+        "nct_id": "NCT06387199",
+        "criterion_type": "exclusion",
+        "criterion_text": "Severe impairment of renal function with eGFR <30 mL/min/1.73 m2 (using CKD-EPI formula), measured within the last 12 months",
+        "score": 0.787640535463111,
+        "rerank_score": 0.9759231805801392
+      }
+    ],
+    "sql": "SELECT nct_id FROM v_trials WHERE overall_status = 'RECRUITING' AND therapeutic_areas @> ARRAY['diabetes'] AND phases @> ARRAY['PHASE3'] LIMIT 2000",
+    "sql_rows": 0,
+    "scalar": null,
+    "cited": [
+      "NCT05174052",
+      "NCT06387199",
+      "NCT07059377",
+      "NCT07284511"
+    ],
+    "fabricated": [],
+    "uncited_claims": 1,
+    "n_context_items": 10,
+    "latency_s": 21.126,
+    "total_tokens": 2526,
+    "error": null,
+    "route_confidence": 0.75,
+    "route_source": "rules",
+    "route_reasoning": "mentions free-text eligibility concepts (exclude, patients with) and structured filters (phase 3, recruiting, phase 3); LLM split the two halves"
+  },
+  {
+    "config": "router",
+    "question_id": "h03",
+    "question": "Are there phase 1 oncology trials in California that mention brain metastases?",
+    "predicted_route": "hybrid",
+    "answer": "Based on the provided context, there are several phase 1 oncology trials in California that mention brain metastases. Here are the details:\n\n\u2022 NCT03535363 EXCLUDES patients with brainstem metastases.\n\u2022 NCT04868604 EXCLUDES patients with brain metastasis.\n\u2022 NCT05028218 EXCLUDES patients with brain metastases.\n\u2022 NCT05354323 EXCLUDES patients with brain metastasis.\n\u2022 NCT06087289 EXCLUDES patients with brain metastases.\n\u2022 NCT06104449 EXCLUDES patients who have brain metastases.\n\u2022 NCT06197178 EXCLUDES patients with brain metastases.\n\u2022 NCT06648902 EXCLUDES patients with brain metastases.\n\nNote that none of the retrieved trials allow patients with brain metastases to participate.",
+    "hits": [
+      {
+        "nct_id": "NCT06197178",
+        "criterion_type": "exclusion",
+        "criterion_text": "Brain metastases.",
+        "score": 0.9187389113022195,
+        "rerank_score": 0.9999666213989258
+      },
+      {
+        "nct_id": "NCT06648902",
+        "criterion_type": "exclusion",
+        "criterion_text": "Brain metastases",
+        "score": 0.9520579662219363,
+        "rerank_score": 0.9999659061431885
+      },
+      {
+        "nct_id": "NCT06087289",
+        "criterion_type": "exclusion",
+        "criterion_text": "Brain metastases",
+        "score": 0.9520579066173022,
+        "rerank_score": 0.9999659061431885
+      },
+      {
+        "nct_id": "NCT06104449",
+        "criterion_type": "exclusion",
+        "criterion_text": "Has brain metastases",
+        "score": 0.932156113748445,
+        "rerank_score": 0.9999643564224243
+      },
+      {
+        "nct_id": "NCT05028218",
+        "criterion_type": "exclusion",
+        "criterion_text": "Brain metastases ;",
+        "score": 0.9359547686711793,
+        "rerank_score": 0.9999418258666992
+      },
+      {
+        "nct_id": "NCT05354323",
+        "criterion_type": "exclusion",
+        "criterion_text": "Brain metastasis.",
+        "score": 0.8993976324258314,
+        "rerank_score": 0.9999336004257202
+      },
+      {
+        "nct_id": "NCT04868604",
+        "criterion_type": "exclusion",
+        "criterion_text": "Brain metastasis;",
+        "score": 0.9110310938861832,
+        "rerank_score": 0.9997525811195374
+      },
+      {
+        "nct_id": "NCT05770310",
+        "criterion_type": "exclusion",
+        "criterion_text": "Brain or meningeal metastases",
+        "score": 0.8814886000434432,
+        "rerank_score": 0.9990233182907104
+      },
+      {
+        "nct_id": "NCT03535363",
+        "criterion_type": "exclusion",
+        "criterion_text": "Brainstem metastases",
+        "score": 0.8915335801700923,
+        "rerank_score": 0.9988119602203369
+      },
+      {
+        "nct_id": "NCT04932187",
+        "criterion_type": "exclusion",
+        "criterion_text": "Brain or meningeal metastasis.",
+        "score": 0.8821603726053031,
+        "rerank_score": 0.9987452030181885
+      }
+    ],
+    "sql": "SELECT nct_id FROM v_trials WHERE phases @> ARRAY['PHASE1'] AND therapeutic_areas @> ARRAY['oncology'] LIMIT 2000",
+    "sql_rows": 0,
+    "scalar": null,
+    "cited": [
+      "NCT03535363",
+      "NCT04868604",
+      "NCT05028218",
+      "NCT05354323",
+      "NCT06087289",
+      "NCT06104449",
+      "NCT06197178",
+      "NCT06648902"
+    ],
+    "fabricated": [],
+    "uncited_claims": 0,
+    "n_context_items": 10,
+    "latency_s": 21.184,
+    "total_tokens": 2316,
+    "error": null,
+    "route_confidence": 0.75,
+    "route_source": "rules",
+    "route_reasoning": "mentions free-text eligibility concepts (mention) and structured filters (phase 1, in california, phase 1); LLM split the two halves"
+  },
+  {
+    "config": "router",
+    "question_id": "h04",
+    "question": "Which recruiting cardiovascular trials exclude patients with a recent myocardial infarction?",
+    "predicted_route": "hybrid",
+    "answer": "The following recruiting cardiovascular trials exclude patients with a recent myocardial infarction:\n\n\u2022 NCT07241104 EXCLUDES patients who have recently had an acute presentation of myocarditis (which may be related to or cause a myocardial infarction).\n\u2022 NCT07509086 EXCLUDES patients with a history of myocardial infarction.\n\u2022 NCT06488105 EXCLUDES patients with a recent myocardial infarction or arrhythmia in the previous year.\n\u2022 NCT04974138 EXCLUDES patients who have previously been diagnosed with a myocardial infarction.\n\u2022 NCT04974151 EXCLUDES patients who have previously been diagnosed with a myocardial infarction.\n\u2022 NCT05844462 EXCLUDES patients with a recent myocardial infarction less than 90 days ago.\n\u2022 NCT05732051 EXCLUDES patients with an acute myocardial infarction within the last three months.",
+    "hits": [
+      {
+        "nct_id": "NCT07588503",
+        "criterion_type": "exclusion",
+        "criterion_text": "Myocardial infarction",
+        "score": 0.8530288005419745,
+        "rerank_score": 0.9982818365097046
+      },
+      {
+        "nct_id": "NCT07241104",
+        "criterion_type": "exclusion",
+        "criterion_text": "Recent acute presentation of myocarditis",
+        "score": 0.8415153309973498,
+        "rerank_score": 0.9963719844818115
+      },
+      {
+        "nct_id": "NCT05733767",
+        "criterion_type": "inclusion",
+        "criterion_text": "myocardial infarction",
+        "score": 0.8530290302003647,
+        "rerank_score": 0.9955770969390869
+      },
+      {
+        "nct_id": "NCT07509086",
+        "criterion_type": "exclusion",
+        "criterion_text": "Myocardial infarction;",
+        "score": 0.857060406908892,
+        "rerank_score": 0.9954341053962708
+      },
+      {
+        "nct_id": "NCT06488105",
+        "criterion_type": "inclusion",
+        "criterion_text": "Myocardial Infarction",
+        "score": 0.8530288005419745,
+        "rerank_score": 0.9953765869140625
+      },
+      {
+        "nct_id": "NCT06930638",
+        "criterion_type": "exclusion",
+        "criterion_text": "Myocardial infarction or arrhythmia in the previous year",
+        "score": 0.8215713926383513,
+        "rerank_score": 0.9952272176742554
+      },
+      {
+        "nct_id": "NCT04974138",
+        "criterion_type": "exclusion",
+        "criterion_text": "Previously diagnosed myocardial infarction;",
+        "score": 0.8847433729699317,
+        "rerank_score": 0.9947258830070496
+      },
+      {
+        "nct_id": "NCT04974151",
+        "criterion_type": "exclusion",
+        "criterion_text": "Previously diagnosed myocardial infarction;",
+        "score": 0.8847433729699317,
+        "rerank_score": 0.9947258830070496
+      },
+      {
+        "nct_id": "NCT05844462",
+        "criterion_type": "exclusion",
+        "criterion_text": "Recent myocardial infarction <90 days",
+        "score": 0.8954098491493144,
+        "rerank_score": 0.9942529797554016
+      },
+      {
+        "nct_id": "NCT05732051",
+        "criterion_type": "exclusion",
+        "criterion_text": "Acute myocardial infarction within the last three months",
+        "score": 0.8659336487015661,
+        "rerank_score": 0.9934356212615967
+      }
+    ],
+    "sql": "SELECT nct_id FROM v_trials WHERE overall_status = 'RECRUITING' AND therapeutic_areas @> ARRAY['cardiovascular'] LIMIT 2000",
+    "sql_rows": 0,
+    "scalar": null,
+    "cited": [
+      "NCT04974138",
+      "NCT04974151",
+      "NCT05732051",
+      "NCT05844462",
+      "NCT06488105",
+      "NCT07241104",
+      "NCT07509086"
+    ],
+    "fabricated": [],
+    "uncited_claims": 1,
+    "n_context_items": 10,
+    "latency_s": 22.734,
+    "total_tokens": 2339,
+    "error": null,
+    "route_confidence": 0.75,
+    "route_source": "rules",
+    "route_reasoning": "mentions free-text eligibility concepts (exclude, patients with) and structured filters (recruiting, recruiting, cardiovascular); LLM split the two halves"
+  },
+  {
+    "config": "router",
+    "question_id": "h05",
+    "question": "Which phase 2 oncology trials in New York mention prior immunotherapy?",
+    "predicted_route": "hybrid",
+    "answer": "Based on the provided clinical trial eligibility criteria, prior immunotherapy is mentioned as an exclusion criterion in several phase 2 oncology trials. The following trials exclude patients with a history of prior immunotherapy:\n\n\u2022 NCT03258554 EXCLUDES patients who have received prior immunotherapy.\n\u2022 NCT03634800 EXCLUDES patients with prior exposure to immunotherapy.\n\u2022 NCT05500092 EXCLUDES patients who have previously received immunotherapy.\n\u2022 NCT06557278 EXCLUDES patients with prior experimental immunotherapy.\n\u2022 NCT04068610 EXCLUDES patients with prior immunotherapy or anti-angiogenics.\n\u2022 NCT04014205 EXCLUDES patients with prior treatment with systemic immunotherapeutic agents.\n\u2022 NCT06788990 EXCLUDES patients who have received an immune checkpoint inhibitor within 6 months prior to study treatment initiation.\n\nNote that none of the retrieved trials allow patients with a history of prior immunotherapy.",
+    "hits": [
+      {
+        "nct_id": "NCT03258554",
+        "criterion_type": "exclusion",
+        "criterion_text": "Prior immunotherapy",
+        "score": 0.9568515964569836,
+        "rerank_score": 0.9999408721923828
+      },
+      {
+        "nct_id": "NCT03634800",
+        "criterion_type": "exclusion",
+        "criterion_text": "Prior exposure to immunotherapy.",
+        "score": 0.8775333981156249,
+        "rerank_score": 0.9994744658470154
+      },
+      {
+        "nct_id": "NCT05500092",
+        "criterion_type": "exclusion",
+        "criterion_text": "Previous receipt of immunotherapy.",
+        "score": 0.798951208904038,
+        "rerank_score": 0.9988623857498169
+      },
+      {
+        "nct_id": "NCT06557278",
+        "criterion_type": "exclusion",
+        "criterion_text": "Prior experimental immunotherapy",
+        "score": 0.9044658853012769,
+        "rerank_score": 0.9979081153869629
+      },
+      {
+        "nct_id": "NCT04216316",
+        "criterion_type": "inclusion",
+        "criterion_text": "Patients with prior immunotherapy given as neoadjuvant, adjuvant, or consolidation therapy for early stage or loco-regionally advanced disease are eligible, if treatment is completed one year prior to initiation of treatment",
+        "score": 0.8050768971443234,
+        "rerank_score": 0.9976335763931274
+      },
+      {
+        "nct_id": "NCT06003231",
+        "criterion_type": "inclusion",
+        "criterion_text": "Prior therapies",
+        "score": 0.8228638979358794,
+        "rerank_score": 0.9969143867492676
+      },
+      {
+        "nct_id": "NCT05163041",
+        "criterion_type": "exclusion",
+        "criterion_text": "Prior immunotherapy, including monoclonal antibodies, within 28 days or 5 half-lives of the first dose of study drug, whichever is shorter",
+        "score": 0.7997966169463545,
+        "rerank_score": 0.9967085123062134
+      },
+      {
+        "nct_id": "NCT04068610",
+        "criterion_type": "exclusion",
+        "criterion_text": "Prior immunotherapy or anti-angiogenics.",
+        "score": 0.8617561890788549,
+        "rerank_score": 0.9959577918052673
+      },
+      {
+        "nct_id": "NCT04014205",
+        "criterion_type": "exclusion",
+        "criterion_text": "Prior treatment with systemic immunotherapeutic agents.",
+        "score": 0.842801144290052,
+        "rerank_score": 0.9956014156341553
+      },
+      {
+        "nct_id": "NCT06788990",
+        "criterion_type": "exclusion",
+        "criterion_text": "Prior therapy with an immune checkpoint inhibitor completed within 6 months prior to study treatment initiation.",
+        "score": 0.7987779377070264,
+        "rerank_score": 0.9952816367149353
+      }
+    ],
+    "sql": "SELECT nct_id FROM v_trials WHERE therapeutic_areas @> ARRAY['oncology'] AND phases @> ARRAY['PHASE2'] AND 'New York' = ANY(states) LIMIT 2000",
+    "sql_rows": 0,
+    "scalar": null,
+    "cited": [
+      "NCT03258554",
+      "NCT03634800",
+      "NCT04014205",
+      "NCT04068610",
+      "NCT05500092",
+      "NCT06557278",
+      "NCT06788990"
+    ],
+    "fabricated": [],
+    "uncited_claims": 1,
+    "n_context_items": 10,
+    "latency_s": 25.43,
+    "total_tokens": 2497,
+    "error": null,
+    "route_confidence": 0.75,
+    "route_source": "rules",
+    "route_reasoning": "mentions free-text eligibility concepts (mention, prior) and structured filters (phase 2, in new york, phase 2); LLM split the two halves"
+  },
+  {
+    "config": "router",
+    "question_id": "h06",
+    "question": "Which recruiting diabetes trials mention an HbA1c requirement?",
+    "predicted_route": "hybrid",
+    "answer": "The following recruiting diabetes trials mention an HbA1c requirement:\n\n\u2022 NCT07502508: Allows participants with HbA1c between 7.5% and 9.5%.\n\u2022 NCT06716203: Allows participants with HbA1c between 7.5% and 11.0%.\n\u2022 NCT06716216: Allows participants with HbA1c between 7.5% and 11.0%.\n\u2022 NCT07053319: Allows participants with HbA1c between 7.0% and 11.0%.\n\u2022 NCT07053306: Allows participants with HbA1c between 7.0% and 11.0%.\n\u2022 NCT05960656: Allows participants with HbA1c between 7.0% and 11.0%.\n\u2022 NCT07502495: Allows participants with HbA1c between 7.5% and 10.5%.\n\u2022 NCT07064486: Allows participants with HbA1c between 7.5% and 11.0%.\n\nNote that none of the retrieved trials allow participants with an HbA1C >100 mmol/L, as this is a criterion for exclusion in trial NCT06906081.",
+    "hits": [
+      {
+        "nct_id": "NCT07502508",
+        "criterion_type": "inclusion",
+        "criterion_text": "Have HbA1c \u22657.5 and \u22649.5%",
+        "score": 0.8009560941510145,
+        "rerank_score": 0.9718621969223022
+      },
+      {
+        "nct_id": "NCT06716203",
+        "criterion_type": "inclusion",
+        "criterion_text": "Have HbA1c between \u22657.5% and \u226411.0%\uff1b",
+        "score": 0.7995408773422241,
+        "rerank_score": 0.9697412252426147
+      },
+      {
+        "nct_id": "NCT06716216",
+        "criterion_type": "inclusion",
+        "criterion_text": "Have HbA1c between \u22657.5% and \u226411.0%\uff1b",
+        "score": 0.7995408773422241,
+        "rerank_score": 0.9697412252426147
+      },
+      {
+        "nct_id": "NCT07053319",
+        "criterion_type": "inclusion",
+        "criterion_text": "HbA1c = 7.0-11%",
+        "score": 0.7700221538543701,
+        "rerank_score": 0.9697210788726807
+      },
+      {
+        "nct_id": "NCT07053306",
+        "criterion_type": "inclusion",
+        "criterion_text": "HbA1c = 7.0-11%",
+        "score": 0.7700221538543701,
+        "rerank_score": 0.9697210788726807
+      },
+      {
+        "nct_id": "NCT05960656",
+        "criterion_type": "inclusion",
+        "criterion_text": "HbA1c = 7.0-11%",
+        "score": 0.7700221538543701,
+        "rerank_score": 0.9697210788726807
+      },
+      {
+        "nct_id": "NCT06906081",
+        "criterion_type": "unspecified",
+        "criterion_text": "HbA1C >100 mmol/L",
+        "score": 0.7814389672468371,
+        "rerank_score": 0.966827929019928
+      },
+      {
+        "nct_id": "NCT07502495",
+        "criterion_type": "inclusion",
+        "criterion_text": "Have HbA1c \u22657.5 and \u226410.5%",
+        "score": 0.7969338297843933,
+        "rerank_score": 0.9651697874069214
+      },
+      {
+        "nct_id": "NCT07064486",
+        "criterion_type": "inclusion",
+        "criterion_text": "Have HbA1c between \u22657.5% and \u226411.0% at screening",
+        "score": 0.776852011680603,
+        "rerank_score": 0.9569410085678101
+      },
+      {
+        "nct_id": "NCT05644717",
+        "criterion_type": "inclusion",
+        "criterion_text": "HbA1C % \u2265 6.5 to 10",
+        "score": 0.7959975478647692,
+        "rerank_score": 0.9556170105934143
+      }
+    ],
+    "sql": "SELECT nct_id FROM v_trials WHERE therapeutic_areas @> ARRAY['diabetes'] AND overall_status = 'RECRUITING' LIMIT 2000",
+    "sql_rows": 0,
+    "scalar": null,
+    "cited": [
+      "NCT05960656",
+      "NCT06716203",
+      "NCT06716216",
+      "NCT06906081",
+      "NCT07053306",
+      "NCT07053319",
+      "NCT07064486",
+      "NCT07502495",
+      "NCT07502508"
+    ],
+    "fabricated": [],
+    "uncited_claims": 1,
+    "n_context_items": 10,
+    "latency_s": 25.339,
+    "total_tokens": 2494,
+    "error": null,
+    "route_confidence": 0.75,
+    "route_source": "rules",
+    "route_reasoning": "mentions free-text eligibility concepts (mention) and structured filters (recruiting, recruiting, diabetes); LLM split the two halves"
+  },
+  {
+    "config": "router",
+    "question_id": "h07",
+    "question": "Which phase 3 oncology trials exclude patients with HIV?",
+    "predicted_route": "hybrid",
+    "answer": "The following Phase 3 oncology trials exclude patients with HIV infection:\n\n\u2022 NCT07132463 EXCLUDES patients with HIV infection.\n\u2022 NCT05738616 EXCLUDES patients with HIV infection.\n\u2022 NCT06900218 EXCLUDES patients with HIV infection.\n\u2022 NCT06732323 EXCLUDES patients with Human Immunodeficiency Virus (HIV) infection.\n\u2022 NCT06930794 EXCLUDES patients with known human immunodeficiency virus (HIV) infection or known history of acquired immunodeficiency syndrome (AIDS).\n\u2022 NCT05303714 EXCLUDES patients with HIV infection.\n\u2022 NCT06346197 EXCLUDES patients with HIV infection.\n\u2022 NCT07235319 EXCLUDES patients with HIV infection.\n\u2022 NCT04551053 EXCLUDES patients with known HIV infection.\n\u2022 NCT04796922 EXCLUDES patients with known HIV infection.",
+    "hits": [
+      {
+        "nct_id": "NCT07132463",
+        "criterion_type": "exclusion",
+        "criterion_text": "HIV infection.",
+        "score": 0.8302032643920193,
+        "rerank_score": 0.9923222661018372
+      },
+      {
+        "nct_id": "NCT05738616",
+        "criterion_type": "exclusion",
+        "criterion_text": "HIV infection.",
+        "score": 0.8302032047873639,
+        "rerank_score": 0.9923222661018372
+      },
+      {
+        "nct_id": "NCT06900218",
+        "criterion_type": "exclusion",
+        "criterion_text": "HIV infection.",
+        "score": 0.8302032047873639,
+        "rerank_score": 0.9923222661018372
+      },
+      {
+        "nct_id": "NCT06732323",
+        "criterion_type": "exclusion",
+        "criterion_text": "Human Immunodeficiency Virus (HIV) infection.",
+        "score": 0.8318629512746025,
+        "rerank_score": 0.9918792843818665
+      },
+      {
+        "nct_id": "NCT06930794",
+        "criterion_type": "exclusion",
+        "criterion_text": "Known human immunodeficiency virus (HIV) infection or known history of acquired immunodeficiency syndrome (AIDS).",
+        "score": 0.8205753885670932,
+        "rerank_score": 0.9913384914398193
+      },
+      {
+        "nct_id": "NCT05303714",
+        "criterion_type": "exclusion",
+        "criterion_text": "HIV infection",
+        "score": 0.8185021416993896,
+        "rerank_score": 0.9909217953681946
+      },
+      {
+        "nct_id": "NCT06346197",
+        "criterion_type": "exclusion",
+        "criterion_text": "HIV infection",
+        "score": 0.8185021416993896,
+        "rerank_score": 0.9909217953681946
+      },
+      {
+        "nct_id": "NCT07235319",
+        "criterion_type": "exclusion",
+        "criterion_text": "HIV infection",
+        "score": 0.8185020685195923,
+        "rerank_score": 0.9909217953681946
+      },
+      {
+        "nct_id": "NCT04551053",
+        "criterion_type": "exclusion",
+        "criterion_text": "Known HIV infection.",
+        "score": 0.8197141397169759,
+        "rerank_score": 0.989936351776123
+      },
+      {
+        "nct_id": "NCT04796922",
+        "criterion_type": "exclusion",
+        "criterion_text": "Known HIV infection.",
+        "score": 0.8197141397169759,
+        "rerank_score": 0.989936351776123
+      }
+    ],
+    "sql": "SELECT nct_id FROM v_trials WHERE phases @> ARRAY['PHASE3'] AND therapeutic_areas @> ARRAY['oncology'] LIMIT 2000",
+    "sql_rows": 0,
+    "scalar": null,
+    "cited": [
+      "NCT04551053",
+      "NCT04796922",
+      "NCT05303714",
+      "NCT05738616",
+      "NCT06346197",
+      "NCT06732323",
+      "NCT06900218",
+      "NCT06930794",
+      "NCT07132463",
+      "NCT07235319"
+    ],
+    "fabricated": [],
+    "uncited_claims": 1,
+    "n_context_items": 10,
+    "latency_s": 21.046,
+    "total_tokens": 2354,
+    "error": null,
+    "route_confidence": 0.75,
+    "route_source": "rules",
+    "route_reasoning": "mentions free-text eligibility concepts (exclude, patients with) and structured filters (phase 3, phase 3, oncology); LLM split the two halves"
+  },
+  {
+    "config": "router",
+    "question_id": "h08",
+    "question": "Which recruiting phase 2 trials in Texas require an ECOG performance status of 0 or 1?",
+    "predicted_route": "structured",
+    "answer": "No matching trials found.",
+    "hits": [],
+    "sql": "SELECT nct_id, brief_title FROM v_trials WHERE overall_status = 'RECRUITING' AND phases @> ARRAY['PHASE2'] AND 'Texas' = ANY(states) AND conditions @> ARRAY['ECOG performance status 0 or 1'] LIMIT 500",
+    "sql_rows": 0,
+    "scalar": null,
+    "cited": [],
+    "fabricated": [],
+    "uncited_claims": 0,
+    "n_context_items": 0,
+    "latency_s": 3.64,
+    "total_tokens": 1171,
+    "error": null,
+    "route_confidence": 0.7,
+    "route_source": "rules",
+    "route_reasoning": "asks for a value computed over columns (phase 2, recruiting)"
+  },
+  {
+    "config": "router",
+    "question_id": "h09",
+    "question": "Which completed phase 3 diabetes trials mention metformin in their eligibility?",
+    "predicted_route": "hybrid",
+    "answer": "The following completed phase 3 diabetes trials mention metformin in their eligibility criteria:\n\n\u2022 NCT03798080 ALLOWS patients who are taking Metformin (\u22651500 mg/day or maximal tolerated dose).\n\u2022 NCT06109311 ALLOWS patients who are taking either metformin.\n\u2022 NCT04707469 ALLOWS patients who are taking Metformin (equal to or above 1500 mg or maximum tolerated or effective dose).\n\u2022 NCT05275400 ALLOWS patients who are taking metformin.\n\u2022 NCT04770532 ALLOWS patients who are taking Metformin.\n\u2022 NCT03344692 ALLOWS patients who are taking Metformin.\n\u2022 NCT06269107 ALLOWS patients who are taking Metformin.\n\u2022 NCT04605991 ALLOWS patients who are taking Metformin.\n\u2022 NCT05013229 ALLOWS patients who are taking Metformin.\n\nAll of the retrieved trials allow patients who are taking metformin to participate.",
+    "hits": [
+      {
+        "nct_id": "NCT03798080",
+        "criterion_type": "inclusion",
+        "criterion_text": "Metformin (\u22651500 mg/day or maximal tolerated dose).",
+        "score": 0.7777372366864344,
+        "rerank_score": 0.8941354751586914
+      },
+      {
+        "nct_id": "NCT06109311",
+        "criterion_type": "inclusion",
+        "criterion_text": "metformin, or",
+        "score": 0.7717779184778492,
+        "rerank_score": 0.8604867458343506
+      },
+      {
+        "nct_id": "NCT04707469",
+        "criterion_type": "inclusion",
+        "criterion_text": "Metformin (equal to or above1500 mg or maximum tolerated or effective dose).",
+        "score": 0.773144291230696,
+        "rerank_score": 0.8275437951087952
+      },
+      {
+        "nct_id": "NCT03798054",
+        "criterion_type": "exclusion",
+        "criterion_text": "Metformin maximal tolerated dose <1500 mg/day.",
+        "score": 0.7396974498304106,
+        "rerank_score": 0.819253146648407
+      },
+      {
+        "nct_id": "NCT05275400",
+        "criterion_type": "inclusion",
+        "criterion_text": "metformin",
+        "score": 0.8033982989134014,
+        "rerank_score": 0.6810615658760071
+      },
+      {
+        "nct_id": "NCT04770532",
+        "criterion_type": "inclusion",
+        "criterion_text": "Metformin",
+        "score": 0.8033983946859362,
+        "rerank_score": 0.6348332762718201
+      },
+      {
+        "nct_id": "NCT03344692",
+        "criterion_type": "inclusion",
+        "criterion_text": "Metformin",
+        "score": 0.8033983946859362,
+        "rerank_score": 0.6348332762718201
+      },
+      {
+        "nct_id": "NCT06269107",
+        "criterion_type": "inclusion",
+        "criterion_text": "Metformin",
+        "score": 0.8033983590244269,
+        "rerank_score": 0.6348332762718201
+      },
+      {
+        "nct_id": "NCT04605991",
+        "criterion_type": "inclusion",
+        "criterion_text": "Metformin",
+        "score": 0.8033983590244269,
+        "rerank_score": 0.6348332762718201
+      },
+      {
+        "nct_id": "NCT05013229",
+        "criterion_type": "inclusion",
+        "criterion_text": "Metformin",
+        "score": 0.8033983590244269,
+        "rerank_score": 0.6348332762718201
+      }
+    ],
+    "sql": "SELECT nct_id FROM v_trials WHERE overall_status = 'COMPLETED' AND phases @> ARRAY['PHASE3'] AND therapeutic_areas @> ARRAY['diabetes'] LIMIT 2000",
+    "sql_rows": 0,
+    "scalar": null,
+    "cited": [
+      "NCT03344692",
+      "NCT03798080",
+      "NCT04605991",
+      "NCT04707469",
+      "NCT04770532",
+      "NCT05013229",
+      "NCT05275400",
+      "NCT06109311",
+      "NCT06269107"
+    ],
+    "fabricated": [],
+    "uncited_claims": 1,
+    "n_context_items": 10,
+    "latency_s": 23.171,
+    "total_tokens": 2376,
+    "error": null,
+    "route_confidence": 0.75,
+    "route_source": "rules",
+    "route_reasoning": "mentions free-text eligibility concepts (eligibilit, mention) and structured filters (phase 3, phase 3, diabetes); LLM split the two halves"
+  },
+  {
+    "config": "router",
+    "question_id": "h10",
+    "question": "Which recruiting oncology trials in Florida exclude prior stem cell transplant?",
+    "predicted_route": "hybrid",
+    "answer": "Based on the provided eligibility criteria, there are several recruiting oncology trials in Florida that exclude prior stem cell transplant. Here are the details:\n\n\u2022 NCT03686124 EXCLUDES patients with a history of prior stem cell transplantation.\n\u2022 NCT06150664 EXCLUDES patients with a history of prior organ transplantation (which includes stem cell transplantation).\n\u2022 NCT05800366 EXCLUDES patients with a history of prior organ transplantation (which includes stem cell transplantation).\n\u2022 NCT05675410 EXCLUDES patients who have undergone prior allogeneic stem cell transplantation.\n\u2022 NCT06121180 EXCLUDES patients with a history of prior allogeneic or autologous stem cell transplantation.\n\u2022 NCT04975152 EXCLUDES patients with a history of prior allogeneic or autologous stem cell transplantation.",
+    "hits": [
+      {
+        "nct_id": "NCT05541822",
+        "criterion_type": "exclusion",
+        "criterion_text": "Prior organ or stem cell transplant.",
+        "score": 0.8970552047374508,
+        "rerank_score": 0.9995322227478027
+      },
+      {
+        "nct_id": "NCT03686124",
+        "criterion_type": "exclusion",
+        "criterion_text": "Prior stem cell transplantation or solid organ transplantation",
+        "score": 0.847877899606777,
+        "rerank_score": 0.9973324537277222
+      },
+      {
+        "nct_id": "NCT06351527",
+        "criterion_type": "exclusion",
+        "criterion_text": "Prior autologous stem cell transplant (unless \u2265 3 months since transplant); or prior chimeric cell therapy (unless \u2265 3 months since cell infusion).",
+        "score": 0.830075542908801,
+        "rerank_score": 0.996715784072876
+      },
+      {
+        "nct_id": "NCT06150664",
+        "criterion_type": "exclusion",
+        "criterion_text": "Prior organ transplantation",
+        "score": 0.8576663137574441,
+        "rerank_score": 0.9958915710449219
+      },
+      {
+        "nct_id": "NCT05800366",
+        "criterion_type": "exclusion",
+        "criterion_text": "Prior organ transplantation",
+        "score": 0.8576663137574441,
+        "rerank_score": 0.9958915710449219
+      },
+      {
+        "nct_id": "NCT05442216",
+        "criterion_type": "exclusion",
+        "criterion_text": "Previous allogeneic stem cell transplant within 60 days prior to registration.",
+        "score": 0.8286425573442857,
+        "rerank_score": 0.9932078719139099
+      },
+      {
+        "nct_id": "NCT05675410",
+        "criterion_type": "exclusion",
+        "criterion_text": "Prior allogeneic stem cell transplantation",
+        "score": 0.9092981273354233,
+        "rerank_score": 0.9907891154289246
+      },
+      {
+        "nct_id": "NCT06121180",
+        "criterion_type": "exclusion",
+        "criterion_text": "Prior allogeneic stem cell transplantation, or autologous stem cell transplantation.",
+        "score": 0.8519965763100446,
+        "rerank_score": 0.9903842210769653
+      },
+      {
+        "nct_id": "NCT04975152",
+        "criterion_type": "exclusion",
+        "criterion_text": "Prior allogeneic stem cell transplantation, or autologous stem cell transplantation.",
+        "score": 0.8519965763100446,
+        "rerank_score": 0.9903842210769653
+      },
+      {
+        "nct_id": "NCT06704152",
+        "criterion_type": "exclusion",
+        "criterion_text": "Prior history of allogeneic stem cell transplantation",
+        "score": 0.8367405326985281,
+        "rerank_score": 0.990045964717865
+      }
+    ],
+    "sql": "SELECT nct_id FROM v_trials WHERE overall_status = 'RECRUITING' AND therapeutic_areas @> ARRAY['oncology'] AND 'Florida' = ANY(states) LIMIT 2000",
+    "sql_rows": 0,
+    "scalar": null,
+    "cited": [
+      "NCT03686124",
+      "NCT04975152",
+      "NCT05675410",
+      "NCT05800366",
+      "NCT06121180",
+      "NCT06150664"
+    ],
+    "fabricated": [],
+    "uncited_claims": 0,
+    "n_context_items": 10,
+    "latency_s": 22.471,
+    "total_tokens": 2425,
+    "error": null,
+    "route_confidence": 0.75,
+    "route_source": "rules",
+    "route_reasoning": "mentions free-text eligibility concepts (prior, exclude) and structured filters (recruiting, in florida, recruiting); LLM split the two halves"
+  },
+  {
+    "config": "router",
+    "question_id": "h11",
+    "question": "Which phase 1 trials mention prior radiotherapy?",
+    "predicted_route": "hybrid",
+    "answer": "The following Phase 1 trials mention prior radiotherapy as an exclusion criterion. \n\n\u2022 NCT04133948 EXCLUDES patients who have received prior radiotherapy.\n\u2022 NCT03696537 EXCLUDES patients who have received prior radiation therapy.\n\u2022 NCT06524570 EXCLUDES patients who have received prior radiotherapy within 8 weeks prior to the first dose of study treatment, with an exception for certain cases.\n\u2022 NCT06110572 EXCLUDES patients who have received prior radiotherapy that would preclude delivery of protocol-based radiotherapy to normal organ tolerance per patient's study physician.\n\u2022 NCT03607955 EXCLUDES patients who have received prior radiotherapy to any portion of the abdominal cavity or pelvis, with some exceptions.\n\u2022 NCT05570422 EXCLUDES patients who have received previous pelvic or abdominal radiotherapy.\n\u2022 NCT05912075 EXCLUDES patients who have received previous radiotherapy in the pelvic region.\n\nNote: None of the retrieved trials allow prior radiotherapy.",
+    "hits": [
+      {
+        "nct_id": "NCT04133948",
+        "criterion_type": "exclusion",
+        "criterion_text": "Prior radiotherapy.",
+        "score": 0.944997232705966,
+        "rerank_score": 0.9999628067016602
+      },
+      {
+        "nct_id": "NCT03696537",
+        "criterion_type": "exclusion",
+        "criterion_text": "Prior radiation therapy",
+        "score": 0.9261641138342724,
+        "rerank_score": 0.999808132648468
+      },
+      {
+        "nct_id": "NCT06524570",
+        "criterion_type": "exclusion",
+        "criterion_text": "Prior radiotherapy within 8 weeks prior to the first dose of the study treatment. The patient will be excluded from the study if the only targetable lesion has directly been treated with radiation therapy in the past with an exception for lesions that showed massive regrowth.",
+        "score": 0.8051708085275631,
+        "rerank_score": 0.9994413256645203
+      },
+      {
+        "nct_id": "NCT06351332",
+        "criterion_type": "inclusion",
+        "criterion_text": "Prior radiation therapy: Patients may have received prior radiation therapy in either the metastatic or early-stage setting. Radiation therapy must be completed at least 14 days prior to study treatment initiation, unless given for palliation when 7 days is acceptable, and patients should have recovered from adverse effects of radiation to grade \u22641.",
+        "score": 0.8277489234952252,
+        "rerank_score": 0.9988560676574707
+      },
+      {
+        "nct_id": "NCT06110572",
+        "criterion_type": "exclusion",
+        "criterion_text": "Prior radiotherapy that would preclude delivery of protocol- based radiotherapy to normal organ tolerance per patient's study physician",
+        "score": 0.8267893624635001,
+        "rerank_score": 0.9984925985336304
+      },
+      {
+        "nct_id": "NCT03607955",
+        "criterion_type": "exclusion",
+        "criterion_text": "Received prior radiotherapy to any portion of the abdominal cavity or pelvis. Prior radiation for localized cancer of the breast, head and neck, or skin is permitted, provided that it was completed more than 3 years prior to registration and the patient remains free of recurrent or metastatic disease.",
+        "score": 0.8313374117225331,
+        "rerank_score": 0.9979121088981628
+      },
+      {
+        "nct_id": "NCT05570422",
+        "criterion_type": "exclusion",
+        "criterion_text": "Previous pelvic or abdominal radiotherapy.",
+        "score": 0.8163574800171811,
+        "rerank_score": 0.9956212639808655
+      },
+      {
+        "nct_id": "NCT05912075",
+        "criterion_type": "exclusion",
+        "criterion_text": "Previous radiotherapy in the pelvic region",
+        "score": 0.8223360108242149,
+        "rerank_score": 0.9950975775718689
+      },
+      {
+        "nct_id": "NCT05338658",
+        "criterion_type": "inclusion",
+        "criterion_text": "Prior palliative radiotherapy within 7 days of start of study treatment. Participants must have recovered from all radiation-related toxicities (prior irradiation to targeted lesions is not permitted)",
+        "score": 0.7956232543846897,
+        "rerank_score": 0.9947643280029297
+      },
+      {
+        "nct_id": "NCT05561374",
+        "criterion_type": "exclusion",
+        "criterion_text": "Patients completing radiotherapy treatment less than 2 weeks prior to planned study treatment initiation.",
+        "score": 0.790502549633021,
+        "rerank_score": 0.9944595098495483
+      }
+    ],
+    "sql": "SELECT nct_id FROM v_trials WHERE phases @> ARRAY['PHASE1'] LIMIT 2000",
+    "sql_rows": 0,
+    "scalar": null,
+    "cited": [
+      "NCT03607955",
+      "NCT03696537",
+      "NCT04133948",
+      "NCT05570422",
+      "NCT05912075",
+      "NCT06110572",
+      "NCT06524570"
+    ],
+    "fabricated": [],
+    "uncited_claims": 1,
+    "n_context_items": 10,
+    "latency_s": 26.441,
+    "total_tokens": 2558,
+    "error": null,
+    "route_confidence": 0.75,
+    "route_source": "rules",
+    "route_reasoning": "mentions free-text eligibility concepts (mention, prior) and structured filters (phase 1, phase 1); LLM split the two halves"
+  },
+  {
+    "config": "router",
+    "question_id": "h12",
+    "question": "Which recruiting phase 2 cardiovascular trials exclude pregnant women?",
+    "predicted_route": "hybrid",
+    "answer": "The following recruiting phase 2 cardiovascular trials exclude pregnant women:\n\n\u2022 NCT05664191 EXCLUDES pregnant women\n\u2022 NCT06596369 EXCLUDES pregnant women\n\u2022 NCT07482020 EXCLUDES pregnant women\n\u2022 NCT05892510 EXCLUDES pregnant women\n\u2022 NCT06620523 EXCLUDES pregnant women\n\u2022 NCT05725837 EXCLUDES pregnant women\n\u2022 NCT06359782 EXCLUDES pregnant woman",
+    "hits": [
+      {
+        "nct_id": "NCT05664191",
+        "criterion_type": "exclusion",
+        "criterion_text": "pregnant women",
+        "score": 0.8935451507568614,
+        "rerank_score": 0.9999483823776245
+      },
+      {
+        "nct_id": "NCT06596369",
+        "criterion_type": "exclusion",
+        "criterion_text": "pregnant women",
+        "score": 0.8935449123382823,
+        "rerank_score": 0.9999483823776245
+      },
+      {
+        "nct_id": "NCT07482020",
+        "criterion_type": "exclusion",
+        "criterion_text": "Pregnant women.",
+        "score": 0.8414716844176321,
+        "rerank_score": 0.999927282333374
+      },
+      {
+        "nct_id": "NCT05892510",
+        "criterion_type": "exclusion",
+        "criterion_text": "Pregnant women.",
+        "score": 0.8414716782378705,
+        "rerank_score": 0.999927282333374
+      },
+      {
+        "nct_id": "NCT06620523",
+        "criterion_type": "exclusion",
+        "criterion_text": "Pregnant women",
+        "score": 0.8935449123382823,
+        "rerank_score": 0.9999181032180786
+      },
+      {
+        "nct_id": "NCT05725837",
+        "criterion_type": "exclusion",
+        "criterion_text": "Pregnant women;",
+        "score": 0.8724328799505898,
+        "rerank_score": 0.9999103546142578
+      },
+      {
+        "nct_id": "NCT06359782",
+        "criterion_type": "exclusion",
+        "criterion_text": "Pregnant woman",
+        "score": 0.8390333460609193,
+        "rerank_score": 0.9998646974563599
+      },
+      {
+        "nct_id": "NCT06902896",
+        "criterion_type": "exclusion",
+        "criterion_text": "Women who are pregnant or may become pregnant.",
+        "score": 0.8402312994003535,
+        "rerank_score": 0.9996745586395264
+      },
+      {
+        "nct_id": "NCT05530421",
+        "criterion_type": "exclusion",
+        "criterion_text": "Pregnant or breastfeeding females.",
+        "score": 0.804751157760643,
+        "rerank_score": 0.9990874528884888
+      },
+      {
+        "nct_id": "NCT06616389",
+        "criterion_type": "exclusion",
+        "criterion_text": "Pregnant or breastfeeding females.",
+        "score": 0.804751157760643,
+        "rerank_score": 0.9990874528884888
+      }
+    ],
+    "sql": "SELECT nct_id FROM v_trials WHERE overall_status = 'RECRUITING' AND phases @> ARRAY['PHASE2'] AND therapeutic_areas @> ARRAY['cardiovascular'] LIMIT 2000",
+    "sql_rows": 0,
+    "scalar": null,
+    "cited": [
+      "NCT05664191",
+      "NCT05725837",
+      "NCT05892510",
+      "NCT06359782",
+      "NCT06596369",
+      "NCT06620523",
+      "NCT07482020"
+    ],
+    "fabricated": [],
+    "uncited_claims": 1,
+    "n_context_items": 10,
+    "latency_s": 19.38,
+    "total_tokens": 2254,
+    "error": null,
+    "route_confidence": 0.75,
+    "route_source": "rules",
+    "route_reasoning": "mentions free-text eligibility concepts (exclude) and structured filters (phase 2, recruiting, phase 2); LLM split the two halves"
+  },
+  {
+    "config": "router",
+    "question_id": "h13",
+    "question": "Which oncology trials in Massachusetts require measurable disease by RECIST?",
+    "predicted_route": "semantic",
+    "answer": "Based on the provided clinical trial eligibility criteria, all trials require measurable disease by RECIST for patient enrollment. Here are the specific trials that meet this criterion:\n\n\u2022 NCT05870761 ALLOWS patients with measurable disease by RECIST.\n\u2022 NCT06730308 ALLOWS patients with measurable disease as defined by RECIST.\n\u2022 NCT03595059 ALLOWS patients with measurable disease defined by Response Evaluation Criteria in Solid Tumors (RECIST) criteria.\n\u2022 NCT03576131 ALLOWS patients with measurable disease according to Response Evaluation Criteria In Solid Tumors (RECIST) version 1.1\n\u2022 NCT05945823 ALLOWS patients with measurable disease as defined by Response Evaluation Criteria in Solid Tumors (RECIST) guidelines.\n\u2022 NCT05609370 ALLOWS participants with measurable disease as defined per RECIST((Response Evaluation Criteria in Solid Tumors) version 1.1\n\u2022 NCT05767866 ALLOWS must have measurable disease by response evaluation criteria in solid tumors (RECIST) v1.1.\n\u2022 NCT03914300 ALLOWS patients with measurable disease as defined by Response Evaluation Criteria in Solid Tumors (RECIST) v1.1\n\u2022 NCT04878029 ALLOWS Must have measurable disease according to Response Evaluation Criteria in Solid Tumors (RECIST) (Version 1.1)\n\u2022 NCT04079712 ALLOWS Patients must have measurable disease as defined by Response Evaluation Criteria in Solid Tumors (RECIST) version (v)1.1",
+    "hits": [
+      {
+        "nct_id": "NCT05870761",
+        "criterion_type": "inclusion",
+        "criterion_text": "Patient must have measurable disease by RECIST",
+        "score": 0.78832621991891,
+        "rerank_score": 0.9888318777084351
+      },
+      {
+        "nct_id": "NCT06730308",
+        "criterion_type": "inclusion",
+        "criterion_text": "Measurable Disease: Patients must have measurable disease as defined by RECIST (Response Evaluation Criteria in Solid Tumors).",
+        "score": 0.8046490885501,
+        "rerank_score": 0.9405036568641663
+      },
+      {
+        "nct_id": "NCT03595059",
+        "criterion_type": "inclusion",
+        "criterion_text": "Measurable disease defined by Response Evaluation Criteria in Solid Tumors (RECIST) criteria.",
+        "score": 0.7872449628856882,
+        "rerank_score": 0.8844361305236816
+      },
+      {
+        "nct_id": "NCT03576131",
+        "criterion_type": "inclusion",
+        "criterion_text": "Patients must have measurable disease according to Response Evaluation Criteria In Solid Tumors (RECIST) version 1.1",
+        "score": 0.787365364275311,
+        "rerank_score": 0.8770877718925476
+      },
+      {
+        "nct_id": "NCT05945823",
+        "criterion_type": "inclusion",
+        "criterion_text": "Measurable disease as defined by Response Evaluation Criteria in Solid Tumors (RECIST) guidelines.",
+        "score": 0.7891102684604802,
+        "rerank_score": 0.8739305734634399
+      },
+      {
+        "nct_id": "NCT05609370",
+        "criterion_type": "inclusion",
+        "criterion_text": "Participant must have measurable disease as defined per RECIST((Response Evaluation Criteria in Solid Tumors) version 1.1",
+        "score": 0.8035289751783926,
+        "rerank_score": 0.8524988889694214
+      },
+      {
+        "nct_id": "NCT05767866",
+        "criterion_type": "inclusion",
+        "criterion_text": "Must have measurable disease by response evaluation criteria in solid tumors (RECIST) v1.1.",
+        "score": 0.7880779161360364,
+        "rerank_score": 0.8341394066810608
+      },
+      {
+        "nct_id": "NCT03914300",
+        "criterion_type": "inclusion",
+        "criterion_text": "Patients must have measurable disease as defined by Response Evaluation Criteria in Solid Tumors (RECIST) v1.1",
+        "score": 0.7944004772424929,
+        "rerank_score": 0.8180030584335327
+      },
+      {
+        "nct_id": "NCT04878029",
+        "criterion_type": "inclusion",
+        "criterion_text": "Must have measurable disease according to Response Evaluation Criteria in Solid Tumors (RECIST) (Version 1.1)",
+        "score": 0.8025583381846553,
+        "rerank_score": 0.8095691204071045
+      },
+      {
+        "nct_id": "NCT04079712",
+        "criterion_type": "inclusion",
+        "criterion_text": "Patients must have measurable disease as defined by Response Evaluation Criteria in Solid Tumors (RECIST) version (v)1.1",
+        "score": 0.7907403735100236,
+        "rerank_score": 0.8093661069869995
+      }
+    ],
+    "sql": null,
+    "sql_rows": 0,
+    "scalar": null,
+    "cited": [
+      "NCT03576131",
+      "NCT03595059",
+      "NCT03914300",
+      "NCT04079712",
+      "NCT04878029",
+      "NCT05609370",
+      "NCT05767866",
+      "NCT05870761",
+      "NCT05945823",
+      "NCT06730308"
+    ],
+    "fabricated": [],
+    "uncited_claims": 1,
+    "n_context_items": 10,
+    "latency_s": 27.834,
+    "total_tokens": 1405,
+    "error": null,
+    "route_confidence": 0.35,
+    "route_source": "rules",
+    "route_reasoning": "no clear structured or semantic signal; defaulting to semantic search"
+  },
+  {
+    "config": "router",
+    "question_id": "h14",
+    "question": "Which recruiting phase 3 trials exclude patients with active hepatitis B?",
+    "predicted_route": "hybrid",
+    "answer": "The following phase 3 trials exclude patients with active hepatitis B:\n\n\u2022 NCT07232875 EXCLUDES patients with active hepatitis B.\n\u2022 NCT06706401 EXCLUDES patients with active hepatitis B (chronic or acute).\n\u2022 NCT05255471 ALLOWS patients with past or resolved HBV infection, but EXCLUDES those with active HBV.\n\u2022 NCT06258811 EXCLUDES patients with known active hepatitis B.\n\u2022 NCT06733038 EXCLUDES patients with active hepatitis B or hepatitis C.\n\u2022 NCT07511127 EXCLUDES patients with active hepatitis B infection.\n\u2022 NCT06136559 EXCLUDES patients with an active HBV/HCV infection.\n\u2022 NCT06508983 EXCLUDES patients with active hepatitis B, or C.",
+    "hits": [
+      {
+        "nct_id": "NCT07232875",
+        "criterion_type": "exclusion",
+        "criterion_text": "Active hepatitis B",
+        "score": 0.9555707653336772,
+        "rerank_score": 0.9997592568397522
+      },
+      {
+        "nct_id": "NCT06706401",
+        "criterion_type": "exclusion",
+        "criterion_text": "Active hepatitis B (chronic or acute; defined as having a positive hepatitis B surface antigen [HBsAg] test at screening),",
+        "score": 0.8282216107185576,
+        "rerank_score": 0.9993383288383484
+      },
+      {
+        "nct_id": "NCT05255471",
+        "criterion_type": "exclusion",
+        "criterion_text": "Active hepatitis B virus (HBV) is defined by a known positive HBV surface antigen (HBsAg) result. Patients with a past or resolved HBV infection (defined as the presence of hepatitis B core antibody and absence of HBsAg) are eligible.",
+        "score": 0.8391443586859624,
+        "rerank_score": 0.9993313550949097
+      },
+      {
+        "nct_id": "NCT06258811",
+        "criterion_type": "exclusion",
+        "criterion_text": "Known active hepatitis B or C. Active hepatitis B is defined as a known HBsA positive with HBV DNA\u2265500 IU/mL. Active hepatitis C is defined as a known hepatitis C antibody positive and a known amount of hepatitis C virus HCV RNA results greater than the lower limit of detection. The presence of other serious liver diseases, including chronic autoimmune liver disease, primary biliary cirrhosis or sclerosing cholangitis, alcoholic liver disease, or non-alcoholic steatohepatitis (NASH)",
+        "score": 0.849423986604689,
+        "rerank_score": 0.9984986782073975
+      },
+      {
+        "nct_id": "NCT06733038",
+        "criterion_type": "exclusion",
+        "criterion_text": "Active hepatitis B (defined as having a positive hepatitis B surface antigen [HBsAg] test prior to randomization) or hepatitis C;",
+        "score": 0.8265752275512432,
+        "rerank_score": 0.9968090653419495
+      },
+      {
+        "nct_id": "NCT07511127",
+        "criterion_type": "exclusion",
+        "criterion_text": "Active hepatitis B infection, defined as HBV DNA level \u2265 1 \u00d7 10\u00b3 IU/mL;",
+        "score": 0.844538190660498,
+        "rerank_score": 0.9953107237815857
+      },
+      {
+        "nct_id": "NCT06136559",
+        "criterion_type": "exclusion",
+        "criterion_text": "Has an active hepatitis B virus/ hepatitis C virus (HBV/HCV) infection.",
+        "score": 0.8413838271450615,
+        "rerank_score": 0.9935901165008545
+      },
+      {
+        "nct_id": "NCT06852222",
+        "criterion_type": "exclusion",
+        "criterion_text": "Active infectious hepatitis",
+        "score": 0.8714902920419167,
+        "rerank_score": 0.9935429096221924
+      },
+      {
+        "nct_id": "NCT06508983",
+        "criterion_type": "exclusion",
+        "criterion_text": "Active hepatitis B, or C.",
+        "score": 0.873528055758958,
+        "rerank_score": 0.9932482242584229
+      },
+      {
+        "nct_id": "NCT03651206",
+        "criterion_type": "exclusion",
+        "criterion_text": "Patient has known active hepatitis B (e. g., hepatitis B surface antigen [HBsAg] reactive and HBcAb reactive) or hepatitis C (e.g., hepatitis C virus [HCV] ribonucleic acid [qualitative] is detected).",
+        "score": 0.828693079999219,
+        "rerank_score": 0.9928985834121704
+      }
+    ],
+    "sql": "SELECT nct_id FROM v_trials WHERE overall_status = 'RECRUITING' AND phases @> ARRAY['PHASE3'] LIMIT 2000",
+    "sql_rows": 0,
+    "scalar": null,
+    "cited": [
+      "NCT05255471",
+      "NCT06136559",
+      "NCT06258811",
+      "NCT06508983",
+      "NCT06706401",
+      "NCT06733038",
+      "NCT07232875",
+      "NCT07511127"
+    ],
+    "fabricated": [],
+    "uncited_claims": 1,
+    "n_context_items": 10,
+    "latency_s": 25.013,
+    "total_tokens": 2585,
+    "error": null,
+    "route_confidence": 0.75,
+    "route_source": "rules",
+    "route_reasoning": "mentions free-text eligibility concepts (exclude, patients with) and structured filters (phase 3, recruiting, phase 3); LLM split the two halves"
+  },
+  {
+    "config": "router",
+    "question_id": "h15",
+    "question": "Which phase 2 diabetes trials exclude patients with severe hypoglycemia?",
+    "predicted_route": "hybrid",
+    "answer": "The following Phase 2 diabetes trials exclude patients with severe hypoglycemia:\n\n\u2022 NCT04100473 EXCLUDES patients who have had recurrent severe hypoglycemia.\n\u2022 NCT04547439 EXCLUDES patients with a history of severe hypoglycemia within the past six months.\n\u2022 NCT06387199 EXCLUDES patients who have experienced a severe hypoglycemic episode within the last 3 months.\n\u2022 NCT05205928 EXCLUDES patients who have had a severe hypoglycemic episode within the last 3 months.\n\u2022 NCT07055516 EXCLUDES patients with a history of severe hypoglycemia in the 6 months prior to screening.",
+    "hits": [
+      {
+        "nct_id": "NCT06046417",
+        "criterion_type": "exclusion",
+        "criterion_text": "Severe hypoglycemia requiring hospitalization in the past month. Severe hypoglycemia is defined as requiring the assistance of another person, due to altered consciousness, to administer carbohydrates, glucagon, or other resuscitative actions.",
+        "score": 0.8580405200695697,
+        "rerank_score": 0.9997343420982361
+      },
+      {
+        "nct_id": "NCT07284511",
+        "criterion_type": "exclusion",
+        "criterion_text": "Severe hypoglycemia requiring hospitalization in the past 2 months. Severe hypoglycemia is defined as requiring the assistance of another person, due to altered consciousness, to administer carbohydrates, glucagon, or other resuscitative actions.",
+        "score": 0.8574194652611211,
+        "rerank_score": 0.9997089505195618
+      },
+      {
+        "nct_id": "NCT04100473",
+        "criterion_type": "exclusion",
+        "criterion_text": "Recurrent severe hypoglycemia.",
+        "score": 0.8556430425856699,
+        "rerank_score": 0.9980025887489319
+      },
+      {
+        "nct_id": "NCT06651515",
+        "criterion_type": "inclusion",
+        "criterion_text": "Recurrent severe hypoglycemia",
+        "score": 0.859546014097572,
+        "rerank_score": 0.995327353477478
+      },
+      {
+        "nct_id": "NCT07581197",
+        "criterion_type": "inclusion",
+        "criterion_text": "Recurrent severe hypoglycemia",
+        "score": 0.859546014097572,
+        "rerank_score": 0.995327353477478
+      },
+      {
+        "nct_id": "NCT04547439",
+        "criterion_type": "exclusion",
+        "criterion_text": "history of severe hypoglycemia defined as hypoglycemic episodes requiring assistance from others within the past six months.",
+        "score": 0.8329425156815337,
+        "rerank_score": 0.9923945665359497
+      },
+      {
+        "nct_id": "NCT06387199",
+        "criterion_type": "exclusion",
+        "criterion_text": "Severe hypoglycemic episode within the last 3 months, defined as an event where glucose was < 4 mmol/L resulting in seizure, loss of consciousness, or need to present to the emergency department",
+        "score": 0.8224604937481291,
+        "rerank_score": 0.9907392263412476
+      },
+      {
+        "nct_id": "NCT05205928",
+        "criterion_type": "exclusion",
+        "criterion_text": "Severe hypoglycemic episode within the last 3 months, defined as an event where glucose was < 4 mmol/L resulting in seizure, loss of consciousness, or need to present to the emergency department",
+        "score": 0.8224604937481291,
+        "rerank_score": 0.9907392263412476
+      },
+      {
+        "nct_id": "NCT07055516",
+        "criterion_type": "exclusion",
+        "criterion_text": "Have had 1 or more episode(s) of severe hypoglycemia in the 6 months prior to screening (Level 3 ADA 2025) defined as a severe event characterized by altered mental and/or physical status requiring assistance for treatment of hypoglycemia irrespective of glucose level, or has a history of hypoglycemia unawareness or poor recognition of hypoglycemic symptoms. Any participant that the investigator feels will not be able to communicate an understanding of hypoglycemic symptoms and the appropriate treatment of hypoglycemia should also be excluded.",
+        "score": 0.8492560386657775,
+        "rerank_score": 0.9904430508613586
+      },
+      {
+        "nct_id": "NCT07029009",
+        "criterion_type": "exclusion",
+        "criterion_text": "severe hypoglycemia (glucose < 50 mg/dL) within 3 months of study enrollment",
+        "score": 0.8173947443130779,
+        "rerank_score": 0.9871578812599182
+      }
+    ],
+    "sql": "SELECT nct_id FROM v_trials WHERE phases @> ARRAY['PHASE2'] AND therapeutic_areas @> ARRAY['diabetes'] LIMIT 2000",
+    "sql_rows": 0,
+    "scalar": null,
+    "cited": [
+      "NCT04100473",
+      "NCT04547439",
+      "NCT05205928",
+      "NCT06387199",
+      "NCT07055516"
+    ],
+    "fabricated": [],
+    "uncited_claims": 1,
+    "n_context_items": 10,
+    "latency_s": 24.036,
+    "total_tokens": 2631,
+    "error": null,
+    "route_confidence": 0.75,
+    "route_source": "rules",
+    "route_reasoning": "mentions free-text eligibility concepts (exclude, patients with) and structured filters (phase 2, phase 2, diabetes); LLM split the two halves"
+  },
+  {
+    "config": "router",
+    "question_id": "h16",
+    "question": "Which recruiting phase 1 oncology trials in California mention anti-PD-1 therapy?",
+    "predicted_route": "hybrid",
+    "answer": "None of the recruiting phase 1 oncology trials in California mention anti-PD-1 therapy as an inclusion criterion. However, several trials exclude patients who have received prior anti-PD-1 therapy.\n\n\u2022 NCT05471856 EXCLUDES participants with prior intolerability of a anti-programmed cell death protein 1 (PD-1) or anti-programmed cell death ligand 1 (PD-L1) therapy.\n\u2022 NCT04389632 EXCLUDES patients who have received prior therapy with a PD-1 inhibitor, anti-PD-(L)1, or anti PD-L2 agent due to an immune-mediated adverse event.\n\u2022 NCT05137054 EXCLUDES participants with prior treatment with anti-PD-1 or anti-PD-L1 agents.\n\u2022 NCT04977375 EXCLUDES patients who have received prior therapy with an anti-PD-1, anti-PD-L1, or anti-PD-L2 agent.",
+    "hits": [
+      {
+        "nct_id": "NCT05635643",
+        "criterion_type": "unspecified",
+        "criterion_text": "Participants should have been treated with anti-PD-1/PD-L1-directed systemic therapy for incurable recurrent, advanced, or metastatic disease and experienced progressive disease. targeting agent (separately or in combination therapy).",
+        "score": 0.8124314174137868,
+        "rerank_score": 0.9956450462341309
+      },
+      {
+        "nct_id": "NCT04752826",
+        "criterion_type": "inclusion",
+        "criterion_text": "Required prior therapies will include anti-programmed death-ligand 1 (PD-1) therapy either as monotherapy or as part of a combination regimen.",
+        "score": 0.7771810160387181,
+        "rerank_score": 0.9809289574623108
+      },
+      {
+        "nct_id": "NCT05914116",
+        "criterion_type": "inclusion",
+        "criterion_text": "Has experienced disease progression during or after treatment with an anti-PD-1/L1 agent administered either as monotherapy or in combination. Note: Subjects basically should receive prior standard therapy.",
+        "score": 0.7859043265752335,
+        "rerank_score": 0.9792625904083252
+      },
+      {
+        "nct_id": "NCT07111520",
+        "criterion_type": "unspecified",
+        "criterion_text": "Other therapies may include anti-PD-1/PD-L1 therapy, chemotherapy, and anti-angiogenic agents. These treatments may be administered concurrently/in combination (including with TKI) or sequentially. However, chemotherapy treatment must be limited to 2 lines or less.",
+        "score": 0.7938087223115187,
+        "rerank_score": 0.975699782371521
+      },
+      {
+        "nct_id": "NCT06384807",
+        "criterion_type": "inclusion",
+        "criterion_text": "received \u2264 2 prior lines of systemic anti-cancer therapy and at most one prior anti-programmed cell death protein 1 (PD-1) (programmed death-ligand 1 [PD-L1]) therapy for advanced/ metastatic disease.",
+        "score": 0.7995393993118085,
+        "rerank_score": 0.9700484275817871
+      },
+      {
+        "nct_id": "NCT05877430",
+        "criterion_type": "inclusion",
+        "criterion_text": "Has received at least 2 cycles of anti-PD-(L)1 therapy either as monotherapy or in combination",
+        "score": 0.7961946494231382,
+        "rerank_score": 0.9667888283729553
+      },
+      {
+        "nct_id": "NCT05471856",
+        "criterion_type": "exclusion",
+        "criterion_text": "Prior intolerability of a anti-programmed cell death protein 1 (PD-1) or anti-programmed cell death ligand 1 (PD-L1) therapy.",
+        "score": 0.8394267463342411,
+        "rerank_score": 0.964840292930603
+      },
+      {
+        "nct_id": "NCT04389632",
+        "criterion_type": "exclusion",
+        "criterion_text": "Part C and D: Prior therapy with a PD-1 inhibitor, anti-PD-(L)1, or anti PD-L2 agent or with an agent directed to another stimulatory or co-inhibitory T-cell receptor and was discontinued from that treatment due to a Grade 3 or higher immune-mediated adverse event (IMAE).",
+        "score": 0.779738112037401,
+        "rerank_score": 0.9590075612068176
+      },
+      {
+        "nct_id": "NCT05137054",
+        "criterion_type": "exclusion",
+        "criterion_text": "Prior treatment with anti-PD-1 or anti-PD-L1 agents. Prior exposure to vaccine therapies or other immune checkpoint modulating therapies such as anti-Cytotoxic T Lymphocyte-Associated Antigen 4 (CTLA-4) antibodies is permitted, as described in the protocol",
+        "score": 0.792018795964867,
+        "rerank_score": 0.9349221587181091
+      },
+      {
+        "nct_id": "NCT04977375",
+        "criterion_type": "exclusion",
+        "criterion_text": "Prior therapy with an anti-PD-1, anti-PD-L1, or anti-PD-L2 agent or with an agent directed to another stimulatory or co-inhibitory T-cell receptor",
+        "score": 0.8327431084836866,
+        "rerank_score": 0.9211418032646179
+      }
+    ],
+    "sql": "SELECT nct_id FROM v_trials WHERE overall_status = 'RECRUITING' AND phases @> ARRAY['PHASE1'] AND therapeutic_areas @> ARRAY['oncology'] AND 'California' = ANY(states) LIMIT 2000",
+    "sql_rows": 0,
+    "scalar": null,
+    "cited": [
+      "NCT04389632",
+      "NCT04977375",
+      "NCT05137054",
+      "NCT05471856"
+    ],
+    "fabricated": [],
+    "uncited_claims": 1,
+    "n_context_items": 10,
+    "latency_s": 30.772,
+    "total_tokens": 2796,
+    "error": null,
+    "route_confidence": 0.75,
+    "route_source": "rules",
+    "route_reasoning": "mentions free-text eligibility concepts (mention) and structured filters (phase 1, recruiting, in california); LLM split the two halves"
+  }
+]

@@ -4,9 +4,9 @@ A hybrid agentic RAG assistant over public ClinicalTrials.gov data. Ask a
 question in plain English, get a grounded answer with an NCT ID citation for
 every trial-specific claim.
 
-**Status: Phase 3 of 5 complete and verified** — router, hybrid path and cited synthesis
-work end to end. All three example questions answer correctly; `eval/phase3_verify.py`
-passes 23/23. See [Roadmap](#roadmap).
+**Status: Phase 4 of 5 complete** — evaluation harness, two baselines and the reranker
+comparison. Full results in [eval/results/RESULTS.md](eval/results/RESULTS.md).
+See [Roadmap](#roadmap).
 
 ## The idea
 
@@ -266,6 +266,65 @@ Mean 21.1 s and 2,045 tokens per query. Zero fabricated citations across every
 traced query.
 
 
+## What Phase 4 built
+
+A 50-question labelled set (17 structured / 17 semantic / 16 hybrid) run through
+three configurations. Full tables: **[eval/results/RESULTS.md](eval/results/RESULTS.md)**.
+
+> The gold answers are **unreviewed drafts**. They were written by the same
+> system they grade, so every number is provisional until checked by hand.
+> `eval/questions.yaml` marks each item `reviewed: false` and the harness
+> prints the count on every run.
+
+### Router vs baselines
+
+| | router | vector-only | SQL-only |
+|---|---|---|---|
+| structured | **94%** | 0% | 100% |
+| semantic | **100%** | 100% | 12% |
+| hybrid | **81%** | 0% | 0% |
+| hybrid filter precision | **87%** | 6% | n/a |
+| citation validity | 100% | 100% | 100% |
+| refusal rate | 2% | 0% | 60% |
+
+Each baseline fails exactly where the architecture predicts. Vector-only cannot
+count (0% structured) and ignores filters (6% filter precision — 94% of the
+trials it discusses are the wrong phase, status or state, while still citing
+real NCT IDs, so citation metrics alone say it did fine). SQL-only refuses 60%
+of questions because "prior immunotherapy failure" is not a column.
+
+### Routing: deterministic rules beat the local LLM
+
+| strategy | accuracy | latency | tokens |
+|---|---|---|---|
+| **rules** (shipped) | **92%** | ~0 ms | 0 |
+| rules + LLM when unsure | 88% | varies | ~250 |
+| LLM classifier | 76% | 2–9 s | ~250 |
+
+The 8B model over-routes to `hybrid`, reading "exclude patients with X" as a
+structured filter and sending purely semantic questions down a path where an
+empty SQL filter yields a false "no matching trials found". The LLM is kept
+only for splitting hybrid questions into their two halves.
+
+### Reranker: measured, and it does not help
+
+`bge-reranker-base` moved precision@k by less than ±3% at every k — noise at
+this sample size — for +17% latency. The bi-encoder already retrieves ~95%
+on-topic criteria, so there is no headroom to recover. Wired in, off by
+default, `--rerank` to enable.
+
+### Grounding
+
+Faithfulness **99%** (100/101 claims supported by retrieved context, after
+manually reviewing both flagged claims). Zero fabricated citations across 150
+answers.
+
+RAGAS itself could not be run: llama3.1:8b wraps its JSON in prose and markdown,
+which RAGAS's parser rejects — reproducibly, across three configurations.
+`eval/faithfulness.py` measures the same property with one YES/NO question per
+claim, which an 8B model answers reliably.
+
+
 ## Safety
 
 The text-to-SQL agent (Phase 2) is constrained by three independent layers,
@@ -322,8 +381,8 @@ model, and it doubles as the security boundary.
 | 1 | Ingest, normalise, load structured tables | ✅ done |
 | 2 | Semantic search and text-to-SQL, separately; ingest remaining areas | ✅ done |
 | 3 | Router + hybrid path + synthesizer with citation guardrails | ✅ done |
-| 4 | Eval harness, vector-only and SQL-only baselines, reranker before/after | next |
-| 5 | Streamlit UI, tracing, architecture diagram and results | |
+| 4 | Eval harness, vector-only and SQL-only baselines, reranker before/after | ✅ done |
+| 5 | Streamlit UI, tracing, architecture diagram and results | next |
 
 ## Data source
 

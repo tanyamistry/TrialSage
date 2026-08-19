@@ -33,7 +33,12 @@
       "Bash(PYTHONPATH=src:. .venv/bin/python -m eval.phase3_verify)",
       "Bash(PYTHONPATH=src .venv/bin/python -c ' *)",
       "Bash(make help *)",
-      "Bash(.venv/bin/pytest -q)"
+      "Bash(.venv/bin/pytest -q)",
+      "Bash(PYTHONPATH=src:. .venv/bin/python -m eval.gold)",
+      "Bash(PYTHONPATH=src:. .venv/bin/python -m eval.run_eval --limit 6)",
+      "Bash(PYTHONPATH=src:. .venv/bin/python -u -m eval.run_eval)",
+      "Bash(.venv/bin/pip check *)",
+      "Bash(PYTHONPATH=src:. .venv/bin/python -u -m eval.run_eval --configs router --rerank)"
     ]
   }
 }

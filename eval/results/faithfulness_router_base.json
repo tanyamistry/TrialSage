@@ -1,0 +1,83 @@
+{
+  "faithfulness": 0.9801980198019802,
+  "claims": 101,
+  "supported": 99,
+  "unparseable": 0,
+  "per_answer": [
+    {
+      "question_id": "s11",
+      "claims": 9,
+      "supported": 9,
+      "unsupported_examples": []
+    },
+    {
+      "question_id": "m01",
+      "claims": 5,
+      "supported": 5,
+      "unsupported_examples": []
+    },
+    {
+      "question_id": "m02",
+      "claims": 8,
+      "supported": 6,
+      "unsupported_examples": [
+        "NCT03591744 EXCLUDES patients with a prior stem cell transplant.",
+        "Note that none of the retrieved trials allow patients with a prior stem cell transplant, but rather exclude them."
+      ]
+    },
+    {
+      "question_id": "m03",
+      "claims": 10,
+      "supported": 10,
+      "unsupported_examples": []
+    },
+    {
+      "question_id": "m04",
+      "claims": 10,
+      "supported": 10,
+      "unsupported_examples": []
+    },
+    {
+      "question_id": "m05",
+      "claims": 9,
+      "supported": 9,
+      "unsupported_examples": []
+    },
+    {
+      "question_id": "m06",
+      "claims": 10,
+      "supported": 10,
+      "unsupported_examples": []
+    },
+    {
+      "question_id": "m07",
+      "claims": 9,
+      "supported": 9,
+      "unsupported_examples": []
+    },
+    {
+      "question_id": "m08",
+      "claims": 9,
+      "supported": 9,
+      "unsupported_examples": []
+    },
+    {
+      "question_id": "m09",
+      "claims": 4,
+      "supported": 4,
+      "unsupported_examples": []
+    },
+    {
+      "question_id": "m10",
+      "claims": 11,
+      "supported": 11,
+      "unsupported_examples": []
+    },
+    {
+      "question_id": "m11",
+      "claims": 7,
+      "supported": 7,
+      "unsupported_examples": []
+    }
+  ]
+}

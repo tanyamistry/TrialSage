@@ -1,0 +1,419 @@
+# TrialSage evaluation set — 50 labelled questions
+# =============================================================================
+#
+#  !!  THESE GOLD ANSWERS ARE UNREVIEWED DRAFTS. DO NOT TRUST THEM YET.  !!
+#
+# Every item carries `reviewed: false`. They were drafted by the same system
+# they are meant to evaluate, which makes them circular until a human checks
+# them: measuring the pipeline against its own output would produce numbers
+# that look fine and mean nothing. This is healthcare data, so a wrong gold
+# answer does not just cost accuracy — it silently certifies a wrong system.
+#
+# What to review, in descending order of how much it matters:
+#
+#   1. `route`      — my label for which retriever the question needs. This
+#                     drives the routing-accuracy metric, so a wrong label
+#                     makes the router look wrong when it was right.
+#   2. `gold_sql`   — hand-written SQL for structured questions. The draft
+#                     answer is whatever this returns, so if the SQL is wrong
+#                     the gold answer is wrong in exactly the same way.
+#   3. `expect`     — for semantic/hybrid: what a correct answer must reflect.
+#                     `polarity` is the important one — inclusion and exclusion
+#                     are opposite clinical facts.
+#
+# Set `reviewed: true` on each item you have checked. `make eval` reports how
+# many items are still unreviewed and caveats every metric computed from them.
+#
+# Counts: 17 structured, 17 semantic, 16 hybrid = 50.
+# =============================================================================
+
+meta:
+  version: 1
+  created: "2026-08-14"
+  corpus: "39,343 interventional trials; oncology / diabetes / cardiovascular; start >= 2018; phase 1-4"
+  reviewed_by: null      # put your name here once you have been through it
+  note: "Gold answers are auto-drafted and unverified. See the header."
+
+questions:
+
+  # ---------------------------------------------------------------- structured
+  # Answerable from columns alone: counting, averaging, filtering on
+  # phase / status / date / location / sponsor. Vector search cannot count,
+  # so these are the questions the vector-only baseline should fail.
+
+  - id: s01
+    route: structured
+    reviewed: false
+    question: "How many phase 3 diabetes trials started in 2024?"
+    gold_sql: "SELECT count(*) FROM v_trials WHERE phases @> ARRAY['PHASE3'] AND therapeutic_areas @> ARRAY['diabetes'] AND start_year = 2024"
+    note: "headline example question; live API independently reports 75"
+
+  - id: s02
+    route: structured
+    reviewed: false
+    question: "How many oncology trials are currently recruiting?"
+    gold_sql: "SELECT count(*) FROM v_trials WHERE therapeutic_areas @> ARRAY['oncology'] AND overall_status = 'RECRUITING'"
+
+  - id: s03
+    route: structured
+    reviewed: false
+    question: "What is the average enrollment of completed phase 3 trials?"
+    gold_sql: "SELECT round(avg(enrollment_count)) FROM v_trials WHERE overall_status = 'COMPLETED' AND phases @> ARRAY['PHASE3']"
+
+  - id: s04
+    route: structured
+    reviewed: false
+    question: "How many cardiovascular trials started in 2023?"
+    gold_sql: "SELECT count(*) FROM v_trials WHERE therapeutic_areas @> ARRAY['cardiovascular'] AND start_year = 2023"
+
+  - id: s05
+    route: structured
+    reviewed: false
+    question: "How many trials were terminated?"
+    gold_sql: "SELECT count(*) FROM v_trials WHERE overall_status = 'TERMINATED'"
+
+  - id: s06
+    route: structured
+    reviewed: false
+    question: "How many phase 1 oncology trials have a site in California?"
+    gold_sql: "SELECT count(*) FROM v_trials WHERE phases @> ARRAY['PHASE1'] AND therapeutic_areas @> ARRAY['oncology'] AND 'California' = ANY(states)"
+
+  - id: s07
+    route: structured
+    reviewed: false
+    question: "What is the total enrollment across all recruiting trials?"
+    gold_sql: "SELECT sum(enrollment_count) FROM v_trials WHERE overall_status = 'RECRUITING'"
+
+  - id: s08
+    route: structured
+    reviewed: false
+    question: "How many trials have more than 1000 participants?"
+    gold_sql: "SELECT count(*) FROM v_trials WHERE enrollment_count > 1000"
+
+  - id: s09
+    route: structured
+    reviewed: false
+    question: "How many trials accept healthy volunteers?"
+    gold_sql: "SELECT count(*) FROM v_trials WHERE healthy_volunteers = true"
+
+  - id: s10
+    route: structured
+    reviewed: false
+    question: "How many diabetes trials are sponsored by Novo Nordisk A/S?"
+    gold_sql: "SELECT count(*) FROM v_trials WHERE therapeutic_areas @> ARRAY['diabetes'] AND lead_sponsor = 'Novo Nordisk A/S'"
+
+  - id: s11
+    route: structured
+    reviewed: false
+    question: "What is the largest enrollment of any single trial?"
+    gold_sql: "SELECT max(enrollment_count) FROM v_trials"
+
+  - id: s12
+    route: structured
+    reviewed: false
+    question: "How many trials have sites in more than one country?"
+    gold_sql: "SELECT count(*) FROM v_trials WHERE array_length(countries, 1) > 1"
+
+  - id: s13
+    route: structured
+    reviewed: false
+    question: "How many phase 4 cardiovascular trials are there?"
+    gold_sql: "SELECT count(*) FROM v_trials WHERE phases @> ARRAY['PHASE4'] AND therapeutic_areas @> ARRAY['cardiovascular']"
+
+  - id: s14
+    route: structured
+    reviewed: false
+    question: "How many trials started in 2025?"
+    gold_sql: "SELECT count(*) FROM v_trials WHERE start_year = 2025"
+
+  - id: s15
+    route: structured
+    reviewed: false
+    question: "How many trials enrol female participants only?"
+    gold_sql: "SELECT count(*) FROM v_trials WHERE sex = 'FEMALE'"
+
+  - id: s16
+    route: structured
+    reviewed: false
+    question: "How many oncology trials list Massachusetts as a location?"
+    gold_sql: "SELECT count(*) FROM v_trials WHERE therapeutic_areas @> ARRAY['oncology'] AND 'Massachusetts' = ANY(states)"
+
+  - id: s17
+    route: structured
+    reviewed: false
+    question: "How many trials have a minimum age below 18 years?"
+    gold_sql: "SELECT count(*) FROM v_trials WHERE min_age_years < 18"
+
+  # ------------------------------------------------------------------ semantic
+  # Concepts that exist only in the free-text eligibility criteria. SQL cannot
+  # reach these without a full-text scan that misses paraphrases, so these are
+  # the questions the SQL-only baseline should fail.
+
+  - id: m01
+    route: semantic
+    reviewed: false
+    question: "Find trials whose eligibility mentions prior immunotherapy failure."
+    expect:
+      terms: [immunotherapy, checkpoint, "pd-1", "pd-l1", "anti-pd", progressed, refractory]
+    note: "headline example question"
+
+  - id: m02
+    route: semantic
+    reviewed: false
+    question: "Which trials mention prior stem cell transplant in their eligibility?"
+    expect:
+      terms: [stem cell, transplant, "hsct", allogeneic, autologous]
+
+  - id: m03
+    route: semantic
+    reviewed: false
+    question: "Find trials that require an ECOG performance status of 0 or 1."
+    expect:
+      terms: [ecog, performance status]
+
+  - id: m04
+    route: semantic
+    reviewed: false
+    question: "Which trials mention brain metastases in their eligibility criteria?"
+    expect:
+      terms: [brain metasta, cns metasta, leptomeningeal]
+
+  - id: m05
+    route: semantic
+    reviewed: false
+    question: "Find trials requiring measurable disease by RECIST criteria."
+    expect:
+      terms: [recist, measurable disease]
+
+  - id: m06
+    route: semantic
+    reviewed: false
+    question: "Which trials exclude patients with active hepatitis B?"
+    expect:
+      terms: [hepatitis b, "hbv", "hbsag"]
+      polarity: exclusion
+
+  - id: m07
+    route: semantic
+    reviewed: false
+    question: "Find trials that mention pregnancy or breastfeeding in their criteria."
+    expect:
+      terms: [pregnan, breastfeed, lactating, nursing]
+      polarity: exclusion
+
+  - id: m08
+    route: semantic
+    reviewed: false
+    question: "Which trials mention an HbA1c threshold for entry?"
+    expect:
+      terms: [hba1c, "a1c", glycated haemoglobin, glycated hemoglobin]
+
+  - id: m09
+    route: semantic
+    reviewed: false
+    question: "Find trials that exclude patients with severe renal impairment."
+    expect:
+      terms: [renal, creatinine, "egfr", kidney, dialysis]
+      polarity: exclusion
+
+  - id: m10
+    route: semantic
+    reviewed: false
+    question: "Which trials mention prior anti-PD-1 therapy?"
+    expect:
+      terms: ["pd-1", "pd-l1", "anti-pd", pembrolizumab, nivolumab, checkpoint]
+
+  - id: m11
+    route: semantic
+    reviewed: false
+    question: "Find trials that specify a minimum life expectancy."
+    expect:
+      terms: [life expectancy, survival of at least]
+
+  - id: m12
+    route: semantic
+    reviewed: false
+    question: "Which trials exclude patients with uncontrolled hypertension?"
+    expect:
+      terms: [hypertension, blood pressure, uncontrolled]
+      polarity: exclusion
+
+  - id: m13
+    route: semantic
+    reviewed: false
+    question: "Find trials that exclude patients with HIV infection."
+    expect:
+      terms: ["hiv", human immunodeficiency]
+      polarity: exclusion
+
+  - id: m14
+    route: semantic
+    reviewed: false
+    question: "Which trials require adequate bone marrow function?"
+    expect:
+      terms: [bone marrow, neutrophil, platelet, haemoglobin, hemoglobin, "anc"]
+
+  - id: m15
+    route: semantic
+    reviewed: false
+    question: "Find trials mentioning prior radiotherapy in their eligibility."
+    expect:
+      terms: [radiotherapy, radiation, irradiat]
+
+  - id: m16
+    route: semantic
+    reviewed: false
+    question: "Which trials exclude patients with a recent myocardial infarction?"
+    expect:
+      terms: [myocardial infarction, "mi ", heart attack, acute coronary]
+      polarity: exclusion
+
+  - id: m17
+    route: semantic
+    reviewed: false
+    question: "Find trials that require the participant to be able to give informed consent."
+    expect:
+      terms: [informed consent, consent form, willing and able]
+
+  # -------------------------------------------------------------------- hybrid
+  # Need a structured filter AND an eligibility concept. Both baselines should
+  # struggle: SQL-only cannot reach the prose, vector-only cannot apply the
+  # filter, so it returns semantically similar trials from the wrong phase,
+  # status or state.
+
+  - id: h01
+    route: hybrid
+    reviewed: false
+    question: "Which recruiting phase 2 oncology trials in Massachusetts allow patients with a history of autoimmune disease?"
+    gold_filter_sql: "SELECT nct_id FROM v_trials WHERE overall_status = 'RECRUITING' AND phases @> ARRAY['PHASE2'] AND therapeutic_areas @> ARRAY['oncology'] AND 'Massachusetts' = ANY(states)"
+    expect:
+      terms: [autoimmune]
+      polarity: exclusion
+    note: "headline example question. Every retrieved criterion is an EXCLUSION, so a correct answer must say these trials do NOT allow such patients."
+
+  - id: h02
+    route: hybrid
+    reviewed: false
+    question: "Which recruiting phase 3 diabetes trials exclude patients with severe renal impairment?"
+    gold_filter_sql: "SELECT nct_id FROM v_trials WHERE overall_status = 'RECRUITING' AND phases @> ARRAY['PHASE3'] AND therapeutic_areas @> ARRAY['diabetes']"
+    expect:
+      terms: [renal, creatinine, "egfr", kidney]
+      polarity: exclusion
+
+  - id: h03
+    route: hybrid
+    reviewed: false
+    question: "Are there phase 1 oncology trials in California that mention brain metastases?"
+    gold_filter_sql: "SELECT nct_id FROM v_trials WHERE phases @> ARRAY['PHASE1'] AND therapeutic_areas @> ARRAY['oncology'] AND 'California' = ANY(states)"
+    expect:
+      terms: [brain metasta, cns]
+
+  - id: h04
+    route: hybrid
+    reviewed: false
+    question: "Which recruiting cardiovascular trials exclude patients with a recent myocardial infarction?"
+    gold_filter_sql: "SELECT nct_id FROM v_trials WHERE overall_status = 'RECRUITING' AND therapeutic_areas @> ARRAY['cardiovascular']"
+    expect:
+      terms: [myocardial infarction, acute coronary]
+      polarity: exclusion
+
+  - id: h05
+    route: hybrid
+    reviewed: false
+    question: "Which phase 2 oncology trials in New York mention prior immunotherapy?"
+    gold_filter_sql: "SELECT nct_id FROM v_trials WHERE phases @> ARRAY['PHASE2'] AND therapeutic_areas @> ARRAY['oncology'] AND 'New York' = ANY(states)"
+    expect:
+      terms: [immunotherapy, checkpoint, "pd-1"]
+
+  - id: h06
+    route: hybrid
+    reviewed: false
+    question: "Which recruiting diabetes trials mention an HbA1c requirement?"
+    gold_filter_sql: "SELECT nct_id FROM v_trials WHERE overall_status = 'RECRUITING' AND therapeutic_areas @> ARRAY['diabetes']"
+    expect:
+      terms: [hba1c, "a1c"]
+
+  - id: h07
+    route: hybrid
+    reviewed: false
+    question: "Which phase 3 oncology trials exclude patients with HIV?"
+    gold_filter_sql: "SELECT nct_id FROM v_trials WHERE phases @> ARRAY['PHASE3'] AND therapeutic_areas @> ARRAY['oncology']"
+    expect:
+      terms: ["hiv"]
+      polarity: exclusion
+
+  - id: h08
+    route: hybrid
+    reviewed: false
+    question: "Which recruiting phase 2 trials in Texas require an ECOG performance status of 0 or 1?"
+    gold_filter_sql: "SELECT nct_id FROM v_trials WHERE overall_status = 'RECRUITING' AND phases @> ARRAY['PHASE2'] AND 'Texas' = ANY(states)"
+    expect:
+      terms: [ecog, performance status]
+
+  - id: h09
+    route: hybrid
+    reviewed: false
+    question: "Which completed phase 3 diabetes trials mention metformin in their eligibility?"
+    gold_filter_sql: "SELECT nct_id FROM v_trials WHERE overall_status = 'COMPLETED' AND phases @> ARRAY['PHASE3'] AND therapeutic_areas @> ARRAY['diabetes']"
+    expect:
+      terms: [metformin]
+
+  - id: h10
+    route: hybrid
+    reviewed: false
+    question: "Which recruiting oncology trials in Florida exclude prior stem cell transplant?"
+    gold_filter_sql: "SELECT nct_id FROM v_trials WHERE overall_status = 'RECRUITING' AND therapeutic_areas @> ARRAY['oncology'] AND 'Florida' = ANY(states)"
+    expect:
+      terms: [stem cell, transplant]
+      polarity: exclusion
+
+  - id: h11
+    route: hybrid
+    reviewed: false
+    question: "Which phase 1 trials mention prior radiotherapy?"
+    gold_filter_sql: "SELECT nct_id FROM v_trials WHERE phases @> ARRAY['PHASE1']"
+    expect:
+      terms: [radiotherapy, radiation, irradiat]
+
+  - id: h12
+    route: hybrid
+    reviewed: false
+    question: "Which recruiting phase 2 cardiovascular trials exclude pregnant women?"
+    gold_filter_sql: "SELECT nct_id FROM v_trials WHERE overall_status = 'RECRUITING' AND phases @> ARRAY['PHASE2'] AND therapeutic_areas @> ARRAY['cardiovascular']"
+    expect:
+      terms: [pregnan, breastfeed, lactating]
+      polarity: exclusion
+
+  - id: h13
+    route: hybrid
+    reviewed: false
+    question: "Which oncology trials in Massachusetts require measurable disease by RECIST?"
+    gold_filter_sql: "SELECT nct_id FROM v_trials WHERE therapeutic_areas @> ARRAY['oncology'] AND 'Massachusetts' = ANY(states)"
+    expect:
+      terms: [recist, measurable disease]
+
+  - id: h14
+    route: hybrid
+    reviewed: false
+    question: "Which recruiting phase 3 trials exclude patients with active hepatitis B?"
+    gold_filter_sql: "SELECT nct_id FROM v_trials WHERE overall_status = 'RECRUITING' AND phases @> ARRAY['PHASE3']"
+    expect:
+      terms: [hepatitis b, "hbv", "hbsag"]
+      polarity: exclusion
+
+  - id: h15
+    route: hybrid
+    reviewed: false
+    question: "Which phase 2 diabetes trials exclude patients with severe hypoglycemia?"
+    gold_filter_sql: "SELECT nct_id FROM v_trials WHERE phases @> ARRAY['PHASE2'] AND therapeutic_areas @> ARRAY['diabetes']"
+    expect:
+      terms: [hypoglyc]
+      polarity: exclusion
+
+  - id: h16
+    route: hybrid
+    reviewed: false
+    question: "Which recruiting phase 1 oncology trials in California mention anti-PD-1 therapy?"
+    gold_filter_sql: "SELECT nct_id FROM v_trials WHERE overall_status = 'RECRUITING' AND phases @> ARRAY['PHASE1'] AND therapeutic_areas @> ARRAY['oncology'] AND 'California' = ANY(states)"
+    expect:
+      terms: ["pd-1", "anti-pd", pembrolizumab, nivolumab, checkpoint]

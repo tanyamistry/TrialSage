@@ -17,6 +17,7 @@ makes naive RAG bad at this class of question.
 
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass, field
 from typing import List, Optional
 
@@ -35,13 +36,60 @@ from .sql_agent import SQLResult, generate_sql
 # matches nothing and turns a good question into a false "no trials found".
 # The eligibility half is handled by the vector search, not by SQL.
 _FILTER_TEMPLATE = (
-    "List the nct_id of every trial matching these criteria: {filters}. "
-    "Return only the nct_id column. "
-    "Filter ONLY on phase, status, therapeutic area, location, dates, sponsor, "
-    "enrolment and age. IGNORE any mention of medical history, prior treatment, "
-    "comorbidities or other eligibility-criteria concepts -- those are handled "
-    "separately and must not appear in the WHERE clause."
+    "Find trials matching ONLY this description: {filters}\n"
+    "Return the nct_id column.\n"
+    "\n"
+    "CRITICAL: include a WHERE condition ONLY for something stated explicitly "
+    "above. Do not add a status, phase, area, country, state, date or any other "
+    "condition that is not written there. A filter that is too narrow returns "
+    "nothing and is much worse than one that is too broad.\n"
+    "Ignore any mention of medical history, prior treatment or other "
+    "eligibility-criteria wording -- that is handled separately and must not "
+    "appear in the WHERE clause.\n"
+    "\n"
+    "Example: for \"phase 1 trials\" the whole query is\n"
+    "  SELECT nct_id FROM v_trials WHERE phases @> ARRAY['PHASE1']\n"
+    "-- nothing else, no status, no area, no location."
 )
+
+
+# Eligibility verbs left dangling once the medical concept is removed
+# ("...trials exclude patients with" -> "...trials").
+_DANGLING = re.compile(
+    r"\b(that\s+|which\s+|who\s+)?(exclude|excludes|excluding|allow|allows|"
+    r"allowing|mention|mentions|mentioning|require|requires|requiring|"
+    r"permit|permits|accept|accepts)\b"
+    r"(\s+(patients|participants|people|subjects|individuals))?"
+    r"(\s+(with|who|that|having|of))?\s*[?.]?\s*$",
+    re.IGNORECASE,
+)
+
+
+def strip_semantic(structured: str, semantic: Optional[str]) -> str:
+    """Remove the eligibility concept from the structured half of a question.
+
+    The router is asked to split a hybrid question in two, and usually does --
+    but when it does not, it returns the *whole* question as the structured
+    half while still extracting the semantic concept correctly. The SQL agent
+    then dutifully tries to express that concept as a column filter
+    (`conditions @> ARRAY['HIV']`), matches nothing, and the user gets a
+    confident "no trials found" for a question with thousands of answers.
+
+    Since we know the exact concept the router pulled out, removing it here is
+    deterministic and does not depend on the model cooperating twice.
+    """
+    if not semantic:
+        return structured
+    text = structured
+    needle = semantic.strip().rstrip("?.").strip()
+    if needle and needle.lower() in text.lower():
+        idx = text.lower().index(needle.lower())
+        text = text[:idx] + text[idx + len(needle):]
+    text = _DANGLING.sub("", text).strip()
+    text = re.sub(r"\s{2,}", " ", text).strip(" ,;:?.")
+    # If stripping consumed everything, fall back rather than send an empty
+    # filter -- an empty description makes the agent invent one from nothing.
+    return text or structured
 
 
 @dataclass
@@ -77,6 +125,7 @@ def retrieve_hybrid(
     structured_query: Optional[str] = None,
     k: Optional[int] = None,
     max_candidates: Optional[int] = None,
+    rerank: bool = False,
 ) -> HybridResult:
     """Run the structured filter, then search only within the trials it returned.
 
@@ -92,7 +141,10 @@ def retrieve_hybrid(
     max_candidates = max_candidates or cfg.get("hybrid_max_candidates", 2000)
 
     sem_query = (semantic_query or question).strip()
-    filters = (structured_query or question).strip()
+    # Mechanically remove the eligibility concept from the filter text, rather
+    # than trusting the router to have done the split and the SQL agent to
+    # honour an instruction to ignore it.
+    filters = strip_semantic((structured_query or question).strip(), sem_query)
     result = HybridResult(question=question, semantic_query=sem_query,
                           structured_query=filters)
 
@@ -116,7 +168,8 @@ def retrieve_hybrid(
         return result
 
     # 2. Semantic search restricted to those trials.
-    result.hits = search_trials(sem_query, k=k, nct_ids=result.candidate_ids)
+    result.hits = search_trials(sem_query, k=k, nct_ids=result.candidate_ids,
+                                rerank=rerank)
     result.latency_s = time.perf_counter() - started
     return result
 

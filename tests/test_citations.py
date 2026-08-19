@@ -111,6 +111,13 @@ class TestUncitedClaims:
         "All of the retrieved trials exclude patients with autoimmune disease.",
         "There are 7 trials that exclude patients with this condition.",
         "Several trials exclude patients with prior immunotherapy.",
+        # Lead-in forms observed in the Phase 4 sweep, which the first version
+        # of the exemption missed and wrongly flagged.
+        "The eligibility criteria for prior stem cell transplant are mentioned in several trials.",
+        "The following clinical trials exclude patients with active hepatitis B:",
+        "The retrieved criteria indicate that patients with severe renal impairment are excluded.",
+        "Based on the provided eligibility criteria, several trials exclude prior transplant.",
+        "The majority of the retrieved clinical trials require an ECOG performance status of 0 or 1.",
     ])
     def test_aggregate_summaries_do_not_need_their_own_citation(self, summary):
         """A summary line is supported by the cited bullets beneath it.

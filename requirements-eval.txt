@@ -1,0 +1,9 @@
+# Phase 4 evaluation only. Kept out of requirements.txt because RAGAS pulls in
+# the whole LangChain stack, which is a frequent source of dependency
+# conflicts; installing it separately keeps the core app resolvable.
+#
+#   .venv/bin/pip install -r requirements-eval.txt
+ragas==0.2.10
+langchain-ollama==0.2.2
+langchain-huggingface==0.1.2
+datasets==3.2.0

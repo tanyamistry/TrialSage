@@ -168,6 +168,17 @@ Choose the route:
                  Massachusetts allow patients with a history of autoimmune
                  disease?"
 
+IMPORTANT — "exclude" and "allow" are NOT structured filters. They describe
+eligibility prose, so on their own they mean "semantic", not "hybrid". Choose
+"hybrid" only when the question also names at least one of: a phase, a
+recruiting status, a therapeutic area, a country or US state, a date or year,
+a sponsor, or an enrolment/age threshold.
+
+  "Which trials exclude patients with HIV?"          -> semantic
+      (no phase, no status, no location -- just the concept)
+  "Which phase 3 trials exclude patients with HIV?"  -> hybrid
+      (phase 3 is a structured filter)
+
 Reply with exactly this JSON shape:
 
 {{"route": "structured|semantic|hybrid",
@@ -192,6 +203,61 @@ structured_query matches no column and returns zero trials.
 Question: {question}
 
 JSON:"""
+
+
+_DECOMPOSE_SYSTEM = (
+    "You split a clinical-trials question into two parts and reply with a "
+    "single JSON object. No prose, no markdown."
+)
+
+_DECOMPOSE_PROMPT = """\
+Split this question into two parts:
+
+  "semantic_query"   - ONLY the medical / eligibility concept (prior treatments,
+                       medical history, comorbidities, lab thresholds).
+  "structured_query" - ONLY the database filters (phase, recruiting status,
+                       therapeutic area, country or US state, dates, sponsor).
+
+Neither part may contain anything belonging to the other.
+
+Example
+  Question: "Which recruiting phase 2 oncology trials in Massachusetts allow
+             patients with a history of autoimmune disease?"
+  {{"semantic_query": "history of autoimmune disease",
+    "structured_query": "recruiting phase 2 oncology trials in Massachusetts"}}
+
+Question: {question}
+
+JSON:"""
+
+
+def _decompose(question: str) -> Optional[tuple[Optional[str], Optional[str]]]:
+    """Ask the LLM only to split a hybrid question. Returns None on failure.
+
+    Narrower than full classification, and correspondingly more reliable: the
+    model is not being asked to make the decision, only to cut the sentence in
+    two. If it fails we keep the rules' route and fall back to the whole
+    question, which the downstream `strip_semantic` can still partly recover.
+    """
+    try:
+        llm = get_llm("router")
+        response = llm.complete(_DECOMPOSE_PROMPT.format(question=question),
+                                system=_DECOMPOSE_SYSTEM)
+    except LLMError:
+        return None
+
+    payload = _extract_json(response.text)
+    if not payload:
+        return None
+
+    def _get(name: str) -> Optional[str]:
+        value = payload.get(name)
+        if not isinstance(value, str):
+            return None
+        value = value.strip()
+        return None if not value or value.lower() in ("null", "none", "n/a") else value
+
+    return _get("semantic_query"), _get("structured_query")
 
 
 def _extract_json(text: str) -> Optional[Dict[str, Any]]:
@@ -220,15 +286,47 @@ def _extract_json(text: str) -> Optional[Dict[str, Any]]:
 
 
 def classify(question: str, *, use_llm: bool = True,
-             min_confidence: float = 0.4) -> RouteDecision:
-    """Classify a question, falling back to rules whenever the LLM is unusable.
+             min_confidence: float = 0.4,
+             trust_rules_above: float = 0.0) -> RouteDecision:
+    """Classify a question. Rules decide the route; the LLM decomposes it.
 
-    The fallback triggers on an unreachable model, unparseable output, an
-    invented route name, or a confidence below ``min_confidence``. In every
-    case ``source`` records what actually decided.
+    This ordering is measured, not assumed. On the 50-question evaluation set
+    the deterministic rules route **92%** correctly against the local 8B
+    model's **76%** -- and they do it in microseconds with no tokens. The
+    model's characteristic error is over-routing to `hybrid`: it reads
+    "exclude patients with X" as a structured filter and sends a purely
+    semantic question down the hybrid path, where an empty SQL filter then
+    produces a false "no matching trials found".
+
+    So the LLM is used for what it is genuinely better at -- splitting a hybrid
+    question into its structured and semantic halves, which the rules cannot do.
+
+    ``trust_rules_above`` is the rules-confidence floor above which the LLM is
+    not consulted about the route at all. It defaults to 0.0, i.e. the rules
+    always decide, because letting the model arbitrate the low-confidence cases
+    was measured and made things *worse*: at a 0.65 threshold, accuracy fell
+    from 92% to 88%, and four of the six remaining errors were the LLM
+    overriding a rules decision that had been correct. Raise it to compare the
+    two strategies; leave it at 0.0 in production.
+
+    ``source`` always records what actually decided.
     """
     rules = classify_by_rules(question)
     if not use_llm:
+        return rules
+
+    # Rules are confident: take their route, and use the LLM only to split a
+    # hybrid question in two.
+    if rules.confidence >= trust_rules_above:
+        if rules.route != "hybrid":
+            return rules
+        decomposed = _decompose(question)
+        if decomposed:
+            semantic, structured = decomposed
+            rules.semantic_query = semantic or question
+            rules.structured_query = structured or question
+            rules.source = "rules"
+            rules.reasoning = f"{rules.reasoning}; LLM split the two halves"
         return rules
 
     try:

@@ -46,10 +46,21 @@ _META_TERMS = (
 # inside the summary line itself would be a false positive -- and a guardrail
 # that cries wolf on correct answers is one people learn to ignore.
 _AGGREGATE_PATTERNS = (
+    # Quantifier-initial: "None of the trials allow X."
     r"^\s*(none|all|each|every|most|several|some|both|neither)\b",
     r"\b(none|all|each|every|neither) of (the|these|those)\b",
     r"^\s*(there are|there is)\b",
     r"^\s*\d+\s+(of\s+)?(the\s+)?\w*\s*trials?\b",
+    # Lead-in sentences that introduce the cited bullets beneath them. These
+    # were the bulk of the false positives in the Phase 4 sweep: 38 flagged
+    # "uncited claims", almost all of the form "The eligibility criteria for X
+    # are mentioned in several trials:" immediately followed by cited bullets.
+    r"^\s*the (following|retrieved|above|context|trials?|eligibility|criteria|"
+    r"clinical trials?|majority|studies)\b",
+    r"^\s*(these|those) (trials?|criteria|studies)\b",
+    r"^\s*based on\b",
+    r"\bare mentioned in\b",
+    r"\bhere are the (details|trials|results)\b",
 )
 
 Mode = Literal["flag", "strip"]

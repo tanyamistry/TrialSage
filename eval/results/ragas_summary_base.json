@@ -1,0 +1,8 @@
+{
+  "router": {
+    "faithfulness": null,
+    "faithfulness_n": 0,
+    "rows": 12,
+    "csv": "/Users/tanyamistry/Documents/TrialSage/eval/results/ragas_router_base.csv"
+  }
+}
